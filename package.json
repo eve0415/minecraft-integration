@@ -1,0 +1,46 @@
+{
+  "name": "minecraft-integration",
+  "version": "1.0.0",
+  "description": "Connect to Minecraft Server via Web socket",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "node -r dotenv/config src/main.js",
+    "test": "nodemon --trace-warnings -r dotenv/config src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eve0415/minecraft-integration.git"
+  },
+  "keywords": [
+    "nodejs",
+    "node.js",
+    "discord",
+    "discordjs",
+    "discord-bot",
+    "minecraft"
+  ],
+  "author": "eve0415",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eve0415/minecraft-integration/issues"
+  },
+  "homepage": "https://github.com/eve0415/minecraft-integration#readme",
+  "dependencies": {
+    "better-sqlite3": "^7.1.0",
+    "bufferutil": "^4.0.1",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "erlpack": "github:discordapp/erlpack",
+    "log4js": "^6.3.0",
+    "net": "^1.0.2",
+    "promisify": "0.0.3",
+    "socket.io": "^2.3.0",
+    "utf-8-validate": "^5.0.2",
+    "zlib-sync": "^0.1.7"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "nodemon": "^2.0.4"
+  }
+}
