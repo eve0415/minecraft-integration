@@ -21,5 +21,4 @@ exports.update = (use, chID, mesID) => {
 	const inDatabase = this.getFromUSE(use) ?? this.getFromID(chID);
 	
 	const data = inDatabase ? db.prepare("UPDATE channel SET channelID = ?, messageID = ? WHERE channelUse = ?").run(chID, mesID, use) : add(use, chID, mesID);
-	client.log(data);
 };
