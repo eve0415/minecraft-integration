@@ -111,7 +111,7 @@ module.exports = class socketManager extends EventEmitter {
 			this.listen();
 		});
 		
-		io.listen(25500);
+		io.listen(client.config.port);
 		
 		this.ready = true;
 		client.log("Socket Manager is ready!");

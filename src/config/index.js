@@ -4,6 +4,5 @@ module.exports = {
 	
 	prefix: process.env.prefix,
 	
-	host: process.env.host,
 	port: process.env.port,
 };
