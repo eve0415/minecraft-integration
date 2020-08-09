@@ -21,7 +21,6 @@ module.exports = class linkManager {
 	check(code, discordID, uuid) {
 		return new Promise((resolve, reject) => {
 			const data = this.linking.filter(json => json.code == code);
-			console.log(data);
 			
 			if (!data[0]) return reject("入力されたコードが間違っている可能性があります。確認をして再度お試しください");
 			

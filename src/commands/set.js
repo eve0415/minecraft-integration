@@ -61,10 +61,7 @@ const set = async (message, args) => {
 				
 				if (!client.socketManager.isConnected) client.disableChat();
 			})
-			.catch(async (e) => {
-				console.log(e);
-				message.channel.send("設定に失敗しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
-			});
+			.catch(() => message.channel.send("設定に失敗しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete())));
 	} else {
 		message.channel.send("不明な引数です").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
 	}

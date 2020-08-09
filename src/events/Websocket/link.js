@@ -1,5 +1,4 @@
 module.exports = async (client, data) => {
-	console.log(data);
 	if (!data.code) {
 		const code = await client.linkManager.new(null, data.UUID);
 		client.socketManager.linkPlayer({ UUID: data.UUID, state: "linking", result: code });
