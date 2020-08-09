@@ -1,0 +1,25 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push to server
+        uses: appleboy/ssh-action@master
+        env:
+          SSH_DIR: ${{ secrets.SSH_DIR }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SECRET_KEY }}
+          envs: SSH_DIR
+          script_stop: true
+          script: |
+            cd $SSH_DIR
+            git pull
+            npm install
