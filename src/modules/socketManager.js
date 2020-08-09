@@ -48,6 +48,7 @@ module.exports = class socketManager extends EventEmitter {
 	
 	async status(data) {
 		const info = client.database.getFromUSE("status");
+		if (!info) return;
 		
 		const message = await client.channels.cache.get(info.channelID)?.messages.fetch(info.messageID);
 		
