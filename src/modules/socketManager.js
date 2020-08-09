@@ -64,7 +64,7 @@ module.exports = class socketManager extends EventEmitter {
 	sendFromDiscord(message) {
 		const user = client.database.getFromDiscord(message.author.id);
 		
-		this.sendToServer(JSON.stringify({ UUID: user?.minecraftID ?? null, name: message.author.tag, message: message.content }));
+		this.sendToServer(JSON.stringify({ UUID: user?.minecraftID ?? null, name: message.author.username, message: message.content }));
 	}
 	
 	sendToServer(data) {
