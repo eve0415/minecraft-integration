@@ -1,44 +1,23 @@
-const { MessageEmbed } = require("discord.js");
-
-module.exports = (client, event) => {
-	let embed;
-	
+module.exports = (client, event, data) => {
 	switch (event) {
 		case "STARTING":
-			embed = new MessageEmbed()
-				.setTitle("ステータス")
-				.setColor("YELLOW")
-				.setDescription("起動中です")
-				.addField("状態", "起動中")
-				.addField("プレーヤー", 0, true)
-				.addField("最大人数", 0, true)
-				.setTimestamp(new Date);
-			return client.socketManager.status(embed);
+			return client.socketManager.status(client.embeds.starting);
 			
 		case "STARTED":
 			return client.enableChat();
 			
 		case "STOPPING":
 			client.disableChat();
-			
-			embed = new MessageEmbed()
-				.setTitle("ステータス")
-				.setColor("RED")
-				.setDescription("シャットダウンしています")
-				.addField("状態", "停止中")
-				.addField("プレーヤー", 0, true)
-				.addField("最大人数", 0, true)
-				.setTimestamp(new Date);
-			client.socketManager.status(embed);
+			client.socketManager.status(client.embeds.stopping);
 			
 			setTimeout(() => {
-				embed = new MessageEmbed()
-					.setTitle("ステータス")
-					.setColor("BLACK")
-					.setDescription("オフライン")
-					.setTimestamp(new Date);
-				client.socketManager.status(embed);
-			}, 5000);
+				client.socketManager.status(client.embeds.offline);
+			}, 3000);
 			return; 
+			
+		case "STATUS":
+			client.socketManager.status(client.embeds.status(data));
+	
+			return client.enableChat();
 	}
 };

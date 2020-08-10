@@ -15,6 +15,7 @@ client.fatal = logString => logger.fatal(logString);
 
 client.config = require("../config");
 client.database = require("../database");
+client.embeds = require("../modules/embed");
 
 client.commands = new Collection();
 client.aliases = new Collection();

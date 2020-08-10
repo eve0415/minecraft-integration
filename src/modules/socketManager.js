@@ -34,8 +34,7 @@ module.exports = class socketManager extends EventEmitter {
 		this.ws.on("STARTING", () => this.emit("event", "STARTING"));
 		this.ws.on("STARTED", () => this.emit("event", "STARTED"));
 		this.ws.on("STOPPING", () => this.emit("event", "STOPPING"));
-		
-		this.ws.on("STATUS", (data) => this.emit("status", data));
+		this.ws.on("STATUS", (data) => this.emit("event", "STATUS", data));
 		
 		this.ws.on("MESSAGE", (data) => this.sendToDiscord(data));
 		this.ws.on("ACHIEVEMENT", (data) => this.sendToDiscord(data));
