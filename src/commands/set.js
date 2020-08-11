@@ -1,16 +1,8 @@
-const { MessageEmbed } = require("discord.js");
-
 const set = async (message, args) => {
 	const role = message.guild.members.cache.get(client.user.id).roles.cache.filter(r => r.managed);
 	
 	if (args[0] === "status") {
 		const mes = await message.channel.send("設定しています...");
-		
-		let embed = new MessageEmbed()
-			.setColor("GRAY")
-			.setTitle("ステータス")
-			.setDescription("データを取得中です...")
-			.setTimestamp(new Date);
 			
 		await message.channel.overwritePermissions([
 			{ 
@@ -23,20 +15,12 @@ const set = async (message, args) => {
 			},
 		]);
 		
-		mes.edit("", embed).then(() => message.delete());
+		mes.edit("", client.embeds.new).then(() => message.delete());
 		
 		client.database.channelUpdate("status", mes.channel.id, mes.id);
 		
-		if (client.socketManager.isConnected()) {
-			client.socketManager.sendToServer({ event: "status" });
-		} else {
-			embed = new MessageEmbed()
-				.setColor("BLACK")
-				.setTitle("ステータス")
-				.setDescription("オフライン")
-				.setTimestamp(new Date);
-				
-			mes.edit(embed);
+		if (!client.socketManager.isConnected()) {
+			mes.edit(client.embeds.offline);
 		}
 	} else if (args[0] === "chat") {
 		client.database.channelUpdate("chat", message.channel.id);

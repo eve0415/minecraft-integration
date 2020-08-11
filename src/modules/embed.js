@@ -16,6 +16,12 @@ module.exports = {
 		.addField("使用済みメモリ", data.usedMemory, true)
 		.addField("空きメモリ", data.freeMemory, true)
 		.setTimestamp(new Date),
+		
+	new: new MessageEmbed()
+		.setColor("GRAY")
+		.setTitle("ステータス")
+		.setDescription("データを取得中です...")
+		.setTimestamp(new Date),
         
 	starting: new MessageEmbed()
 		.setTitle("ステータス")
