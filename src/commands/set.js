@@ -3,17 +3,9 @@ const set = async (message, args) => {
 	
 	if (args[0] === "status") {
 		const mes = await message.channel.send("設定しています...");
-			
-		await message.channel.overwritePermissions([
-			{ 
-				id: role.first(),
-				allow: "SEND_MESSAGES",
-			},
-			{ 
-				id: message.guild.roles.everyone,
-				deny: "SEND_MESSAGES", 
-			},
-		]);
+		
+		await message.channel.updateOverwrite(role.first(), { allow: ["SEND_MESSAGES", "VIEW_CHANNEL"] });
+		await message.channel.updateOverwrite(message.guild.roles.everyone, { deny: "SEND_MESSAGES" });
 		
 		mes.edit("", client.embeds.new).then(() => message.delete());
 		
@@ -28,16 +20,8 @@ const set = async (message, args) => {
 		message.channel
 			.createWebhook("Minecraft", { avatar: "https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/img/iso-grassblock.png" })
 			.then(async () => {
-				await message.channel.overwritePermissions([
-					{ 
-						id: role.first(),
-						allow: "SEND_MESSAGES",
-					},
-					{ 
-						id: message.guild.roles.everyone,
-						deny: "SEND_MESSAGES", 
-					},
-				]);
+				await message.channel.updateOverwrite(role.first(), { allow: ["SEND_MESSAGES", "VIEW_CHANNEL"] });
+				await message.channel.updateOverwrite(message.guild.roles.everyone, { deny: "SEND_MESSAGES" });
 				
 				client.socketManager.fetchWebhook();
 				
