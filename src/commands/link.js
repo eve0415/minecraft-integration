@@ -1,4 +1,6 @@
 const link = async (message, args) => {
+	if (!client.socketManager.isConnected()) return message.channel.send("現在、サーバーが起動していないかオフラインのため、このコマンドを実行することができません");
+	
 	if (!args.length) {
 		const code = client.linkManager.new(message.author.id, null);
 		message.channel.send(`今から1分以内に、マイクラに \`/link ${code}\` を送信してください`);
