@@ -48,10 +48,12 @@ module.exports = {
 		.addField("使用済みメモリ", "N/A", true)
 		.addField("空きメモリ", "N/A", true)
 		.setTimestamp(new Date),
-    
+        
 	offline: new MessageEmbed()
 		.setTitle("ステータス")
 		.setColor("BLACK")
 		.setDescription("オフライン")
 		.setTimestamp(new Date),
+        
+	disable: new MessageEmbed().setDescription("現在、サーバーが起動していないかオフラインです。\nサーバーとの接続が確立されるまで、ここでチャットをすることができません"),
 };

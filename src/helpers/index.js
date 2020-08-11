@@ -66,5 +66,5 @@ client.disableChat = () => {
 	if (!channel) return;
 	
 	channel.updateOverwrite(channel.guild.roles.everyone, { SEND_MESSAGES: false });
-	channel.send("現在は送信できません");
+	channel.send(client.embeds.disable);
 };
