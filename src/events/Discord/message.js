@@ -3,7 +3,7 @@ module.exports = async (client, message) => {
 	if (message.author.bot) return;
 	
 	const info = client.database.getFromUSE("chat");
-	if (info && message.channel.id === info.channelID) return client.socketManager.sendFromDiscord(message);
+	if (info && message.channel.id === info.channelID && !message.content.startsWith("/") && !message.content.startsWith(`${client.config.prefix}link`)) return client.socketManager.sendFromDiscord(message);
 	
 	// Does it start from prefix
 	if (!message.content.startsWith(client.config.prefix)) return;
