@@ -24,7 +24,7 @@ module.exports = class linkManager {
 			
 			if (!data[0]) return reject("入力されたコードが間違っている可能性があります。確認をして再度お試しください");
 			
-			if (data[0].time <= new Date() + 60000) {
+			if (data[0].time <= data[0].time + 60000) {
 				this.linking = this.linking.filter(json => json.code !== code);
 				return reject("制限時間を超えたため、このコードは無効になりました。再度実行してください。");
 			}
