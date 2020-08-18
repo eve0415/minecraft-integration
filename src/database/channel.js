@@ -10,11 +10,11 @@ const add = (use, chID, mesID) => {
 };
 
 exports.getFromID = id => {
-	return db.prepare("SELECT * FROM channel WHERE channelID = ?").all(id);
+	return db.prepare("SELECT * FROM channel WHERE channelID = ?").get(id);
 };
 
 exports.getFromUSE = name => {
-	return db.prepare("SELECT * FROM channel WHERE channelUse = ?").all(name);
+	return db.prepare("SELECT * FROM channel WHERE channelUse = ?").get(name);
 };
 
 exports.update = (use, chID, mesID) => {
