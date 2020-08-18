@@ -18,6 +18,7 @@ module.exports = {
 	getFromID: channel.getFromID,
 	getFromUSE: channel.getFromUSE,
 	channelUpdate: channel.update,
+	channelRemove: channel.remove,
 	
 	userAdd: player.add,
 	getFromDiscord: player.getFromDiscord,

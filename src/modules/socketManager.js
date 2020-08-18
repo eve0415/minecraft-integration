@@ -16,15 +16,17 @@ module.exports = class socketManager extends EventEmitter {
 		const info = client.database.getFromUSE("chat");
 		if (!info) return;
 		
-		const channel = client.channels.cache.get(info.channelID);
+		info.forEach(i => {
+			const channel = client.channels.cache.get(i.channelID);
 		
-		channel.fetchWebhooks()
-			.then(webhooks => {
-				this.webhook = webhooks.filter(webhook => webhook.owner === client.user).first();
-			})
-			.catch(() => {
-				return;
-			});
+			channel.fetchWebhooks()
+				.then(webhooks => {
+					this.webhook = webhooks.filter(webhook => webhook.owner === client.user).first();
+				})
+				.catch(() => {
+					return;
+				});
+		});
 	}
 	
 	async listen() {
@@ -51,9 +53,15 @@ module.exports = class socketManager extends EventEmitter {
 		const info = client.database.getFromUSE("status");
 		if (!info) return;
 		
-		const message = await client.channels.cache.get(info.channelID)?.messages.fetch(info.messageID);
+		info.forEach(async i => {
+			try {
+				const message = await client.channels.cache.get(i.channelID)?.messages.fetch(i.messageID);
+				if (message) message.edit(data);
+			} catch (e) { // Message might have deleted by someone
+				client.database.channelRemove(i.messageID);
+			}
+		});
 		
-		if (message) message.edit(data);
 	}
 	
 	linkPlayer(data) {

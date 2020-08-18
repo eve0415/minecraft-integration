@@ -10,15 +10,19 @@ const add = (use, chID, mesID) => {
 };
 
 exports.getFromID = id => {
-	return db.prepare("SELECT * FROM channel WHERE channelID = ?").get(id);
+	return db.prepare("SELECT * FROM channel WHERE channelID = ?").all(id);
 };
 
 exports.getFromUSE = name => {
-	return db.prepare("SELECT * FROM channel WHERE channelUse = ?").get(name);
+	return db.prepare("SELECT * FROM channel WHERE channelUse = ?").all(name);
 };
 
 exports.update = (use, chID, mesID) => {
 	const inDatabase = this.getFromUSE(use) ?? this.getFromID(chID);
 	
-	const data = inDatabase ? db.prepare("UPDATE channel SET channelID = ?, messageID = ? WHERE channelUse = ?").run(chID, mesID, use) : add(use, chID, mesID);
+	inDatabase ? db.prepare("UPDATE channel SET channelID = ?, messageID = ? WHERE channelUse = ?").run(chID, mesID, use) : add(use, chID, mesID);
+};
+
+exports.remove = (mesID) => {
+	db.prepare("DELETE FROM channel WHERE messageID = ?").run(mesID);
 };
