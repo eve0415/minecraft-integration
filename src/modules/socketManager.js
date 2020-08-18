@@ -42,6 +42,8 @@ module.exports = class socketManager extends EventEmitter {
 		this.ws.on("QUIT", (data) => this.sendToDiscord(data));
 		this.ws.on("DEATH", (data) => this.sendToDiscord(data));
 		
+		// this.ws.on("COMMAND", (data) => console.log(data.result));
+		
 		this.ws.on("LINK", (data) => this.emit("link", data));
 	}
 	
@@ -61,13 +63,11 @@ module.exports = class socketManager extends EventEmitter {
 	}
 	
 	sendFromDiscord(message) {
+		if (!this.connected) return;
+		
 		const user = client.database.getFromDiscord(message.author.id);
 		
-		this.sendToServer(JSON.stringify({ UUID: user?.minecraftID ?? null, name: message.author.username, message: message.content }));
-	}
-	
-	sendToServer(data) {
-		if (!this.connected) return;
+		const data = JSON.stringify({ UUID: user?.minecraftID ?? null, name: message.author.username, message: message.content });
 		this.ws.emit("message", data);
 	}
 	
@@ -85,6 +85,16 @@ module.exports = class socketManager extends EventEmitter {
 				username: data.name,
 			});
 		}
+	}
+	
+	commandController(message) {
+		const user = client.database.getFromDiscord(message.author.id);
+		
+		if (!user) return message.channel.send("先に、 Minecraft アカウントとリンクしてください");
+		if (!this.connected) return message.channel.send("サーバーが起動していないか、接続されていません。\n時間をおいてから再試行してください");
+		
+		const data = JSON.stringify({ UUID: user.minecraftID, name: message.author.username, message: message.content.slice(1) });
+		this.ws.emit("command", data);
 	}
 	
 	isConnected(status) {

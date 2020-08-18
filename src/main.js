@@ -4,7 +4,6 @@ require("./helpers/process");
 const { readdir } = require("fs");
 const readdirPromise = require("util").promisify(readdir);
 
-
 const init = async () => {
 	// Event Handler
 	client.log("Subscribing Event...");
