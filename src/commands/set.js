@@ -17,19 +17,30 @@ const set = async (message, args) => {
 	} else if (args[0] === "chat") {
 		client.database.channelUpdate("chat", message.channel.id);
 		
-		message.channel
-			.createWebhook("Minecraft", { avatar: "https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/img/iso-grassblock.png" })
-			.then(async () => {
-				await message.channel.updateOverwrite(role.first(), { allow: ["SEND_MESSAGES", "VIEW_CHANNEL"] });
-				await message.channel.updateOverwrite(message.guild.roles.everyone, { deny: "SEND_MESSAGES" });
-				
-				client.socketManager.fetchWebhook();
-				
-				message.channel.send("設定しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
-				
-				if (!client.socketManager.isConnected) client.disableChat();
-			})
-			.catch(() => message.channel.send("設定に失敗しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete())));
+		const webhooks = await message.channel.fetchWebhooks();
+		
+		const webhook = webhooks.filter((w) => w.owner === client.user);
+		
+		if (webhook) {
+			client.socketManager.fetchWebhook();
+			message.channel.send("設定しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
+			if (!client.socketManager.isConnected) client.disableChat();
+		} else {
+			message.channel
+				.createWebhook("Minecraft", { avatar: "https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/img/iso-grassblock.png" })
+				.then(async () => {
+					await message.channel.updateOverwrite(role.first(), { allow: ["SEND_MESSAGES", "VIEW_CHANNEL"] });
+					await message.channel.updateOverwrite(message.guild.roles.everyone, { deny: "SEND_MESSAGES" });
+					
+					client.socketManager.fetchWebhook();
+					
+					message.channel.send("設定しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
+					
+					if (!client.socketManager.isConnected) client.disableChat();
+				})
+				.catch(() => message.channel.send("設定に失敗しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete())));
+		}
+		
 	} else {
 		message.channel.send("不明な引数です").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
 	}
