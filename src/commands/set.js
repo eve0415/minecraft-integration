@@ -40,7 +40,6 @@ const set = async (message, args) => {
 				})
 				.catch(() => message.channel.send("設定に失敗しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete())));
 		}
-		
 	} else {
 		message.channel.send("不明な引数です").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
 	}
