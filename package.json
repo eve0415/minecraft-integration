@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/eve0415/minecraft-integration#readme",
   "dependencies": {
-    "better-sqlite3": "^7.1.0",
+    "better-sqlite3": "^7.1.1",
     "bufferutil": "^4.0.1",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
@@ -40,7 +40,7 @@
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^7.7.0",
+    "eslint": "^7.9.0",
     "nodemon": "^2.0.4"
   }
 }
