@@ -78,10 +78,8 @@ module.exports = class socketManager extends EventEmitter {
 		}
 		
 		if (message.attachments.size) {
-			message.attachments.forEach(attach => {
-				const data = JSON.stringify({ UUID: uuid, name: message.author.username, message: "添付ファイル - クリックしてください", url: message.url });
-				this.ws.emit("message", data);
-			});
+			const data = JSON.stringify({ UUID: uuid, name: message.author.username, message: "添付ファイル - クリックしてください", url: message.url });
+			this.ws.emit("message", data);
 		}
 	}
 	
