@@ -70,17 +70,17 @@ module.exports = class socketManager extends EventEmitter {
 		if (!this.connected) return;
 		
 		const user = client.database.getFromDiscord(message.author.id);
-		const uuid = user?.minecraftID ?? null;
 		
-		if (message.content) {
-			const data = JSON.stringify({ UUID: uuid, name: message.author.username, message: message.content, url: null });
-			this.ws.emit("message", data);
-		}
-		
-		if (message.attachments.size) {
-			const data = JSON.stringify({ UUID: uuid, name: message.author.username, message: "添付ファイル - クリックしてください", url: message.url });
-			this.ws.emit("message", data);
-		}
+		this.ws.emit("message", JSON.stringify({ 
+			UUID: user?.minecraftID ?? null,
+			name: message.author.username,
+			message: message.content
+				? message.attachments.size
+					? `${message.content} (添付ファイルがあります。このメッセージをクリックしてください)`
+					: message.content
+				: "添付ファイルがあります。このメッセージをクリックしてください",
+			url: message.attachments.size ? message.url : null,
+		}));
 	}
 	
 	sendToDiscord(data) {
