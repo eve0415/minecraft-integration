@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Connect to Minecraft Server via Web socket",
   "type": "commonjs",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config src/main.js",
-    "test": "nodemon --trace-warnings -r dotenv/config src/main.js"
+    "start": "node -r dotenv/config index.js",
+    "test": "nodemon --trace-warnings -r dotenv/config index.js"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,7 @@
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^7.9.0",
-    "nodemon": "^2.0.4"
+    "eslint": "^7.11.0",
+    "nodemon": "^2.0.5"
   }
 }

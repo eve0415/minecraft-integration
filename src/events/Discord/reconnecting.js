@@ -1,1 +1,1 @@
-module.exports = () => client.log("Bot is reconnecting...");
+module.exports = (instance) => instance.logger.info("Bot is reconnecting...");
