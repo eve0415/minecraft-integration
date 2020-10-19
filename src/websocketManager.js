@@ -1,6 +1,8 @@
 const { EventEmitter } = require("events");
 const io = require("socket.io")();
 
+const webhookManager = require("./webhookManager");
+
 module.exports = class socketManager extends EventEmitter {
 	constructor(instance) {
 		super();
@@ -10,29 +12,36 @@ module.exports = class socketManager extends EventEmitter {
 		this.logger = instance.logger;
 		
 		this.connected = 0;
-		this.chat = false;
-		this.webhook = null;
+		this.webhook = new Array;
 		
 		this._init();
 	}
 	
 	async fetchWebhook() {
-		const info = this.database.getFromUSE("chat");
-		if (!info) return;
+		const chatCache = this.database.getFromType("chat");
+		if (!chatCache) return;
 		
-		const channel = this.client.channels.cache.get(info.channelID);
-		
-		channel?.fetchWebhooks()
-			.then(webhooks => {
-				this.webhook = webhooks.filter(webhook => webhook.owner === client.user).first();
-			})
-			.catch(() => {
-				return;
-			});
+		chatCache.forEach(chat => {
+			const channel = this.client.channels.cache.get(chat.channelID);
+			if (channel) {
+				channel.fetchWebhooks()
+					.then(webhooks => {
+						const hook = webhooks.filter(webhook => webhook.owner === client.user).first();
+						new webhookManager(this, hook, {});
+					})
+					.catch(() => this.database.removeChannelFromMessageID(chat.channelID, "chat")); // Probably webhook was deleted. Remove from cache.
+			} else { // Maybe channel was deleted or no permission?
+				// Remove cache from database
+				this.database.removeChannelFromMessageID(chat.channelID, "chat");
+			}
+		});
 	}
 	
 	async listen() {
-		this.ws.on("disconnect", (reason) => this.emit("disconnect", reason));
+		this.ws.on("disconnect", (reason) => {
+			this.connected = this.connected--;
+			this.emit("disconnect", reason);
+		});
 		this.ws.on("error", (err) => this.emit("error", err));
 		
 		this.ws.on("STARTING", (data) => this.emit("event", "STARTING", data));
@@ -41,6 +50,8 @@ module.exports = class socketManager extends EventEmitter {
 		
 		this.ws.on("CHAT", (data) => this.emit("event", "STATUS", data));
 		this.ws.on("ACHIEVEMENT", (data) => this.emit("event", "STATUS", data));
+		
+		this.ws.on("ROOM", (roomID) => this.ws.join(roomID));
 	}
 	
 	async status(data) {
@@ -53,13 +64,6 @@ module.exports = class socketManager extends EventEmitter {
 		} catch (e) { // Message might have deleted by someone
 			client.database.channelRemove(info.messageID);
 		}
-		
-	}
-	
-	linkPlayer(data) {
-		if (!this.connected) return;
-		
-		this.ws.emit("link", data);
 	}
 	
 	sendFromDiscord(message) {
@@ -96,31 +100,7 @@ module.exports = class socketManager extends EventEmitter {
 		}
 	}
 	
-	commandController(message) {
-		const user = this.database.getFromDiscord(message.author.id);
-		
-		if (!user) return message.channel.send("先に、 Minecraft アカウントとリンクしてください");
-		if (!this.connected) return message.channel.send("サーバーが起動していないか、接続されていません。\n時間をおいてから再試行してください");
-		
-		const data = JSON.stringify({ UUID: user.minecraftID, name: message.author.username, message: message.content.slice(1) });
-		this.ws.emit("command", data);
-	}
-	
-	isConnected(status) {
-		if (status !== undefined) this.connected = status;
-		
-		return this.connected;
-	}
-	
-	isChatEnabled(status) {
-		if (status !== undefined) this.chat = status;
-		
-		return this.chat;
-	}
-	
-	async _init() {
-		this.logger.info("Loading Manager: Socket Manager");
-		
+	connectionEvent() {
 		io.on("connection", sock => {
 			this.logger.info("Succesfully connected to Minecraft Server");
 			
@@ -129,6 +109,12 @@ module.exports = class socketManager extends EventEmitter {
 			
 			this.listen();
 		});
+	}
+	
+	async _init() {
+		this.logger.info("Loading Manager: Socket Manager");
+		
+		this.connectionEvent();
 		
 		io.listen(this.instance.config.port);
 		

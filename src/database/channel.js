@@ -1,11 +1,12 @@
 const db = require("better-sqlite3")("data/minecraft.sqlite3");
 
-const add = (use, chID, mesID) => {
-	const addCh = db.prepare("INSERT INTO channel VALUES (@channelUse, @channelID, @messageID)");
+const add = (type, chID, mesID, serverID) => {
+	const addCh = db.prepare("INSERT INTO channel VALUES (@channelType, @channelID, @messageID. @serverID)");
 	addCh.run({
-		channelUse: use,
+		channelType: type,
 		channelID: chID,
 		messageID: mesID,
+		serverID: serverID,
 	});
 };
 
@@ -13,16 +14,21 @@ exports.getFromID = id => {
 	return db.prepare("SELECT * FROM channel WHERE channelID = ?").get(id);
 };
 
-exports.getFromUSE = name => {
-	return db.prepare("SELECT * FROM channel WHERE channelUse = ?").get(name);
+exports.getFromType = name => {
+	return db.prepare("SELECT * FROM channel WHERE channelType = ?").get(name);
 };
 
-exports.update = (use, chID, mesID) => {
+exports.updateChannelCache = (use, chID, mesID, serverID) => {
 	const inDatabase = this.getFromUSE(use) ?? this.getFromID(chID);
 	
-	inDatabase ? db.prepare("UPDATE channel SET channelID = ?, messageID = ? WHERE channelUse = ?").run(chID, mesID, use) : add(use, chID, mesID);
+	inDatabase ? db.prepare("UPDATE channel SET channelID = ?, messageID = ?, serverID = ? WHERE channelType = ?").run(chID, mesID, serverID, use) : add(use, chID, mesID, serverID);
 };
 
-exports.remove = (mesID) => {
+exports.removeChannelFromMessageID = mesID => {
 	db.prepare("DELETE FROM channel WHERE messageID = ?").run(mesID);
 };
+
+exports.removeChannelFromChannelIDandType = (channelID, type) => {
+	db.prepare("DELETE FROM channel WHERE channelID = ? AND channelType = ?").run(channelID, type);
+};
+

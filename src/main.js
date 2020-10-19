@@ -2,7 +2,7 @@ const { Client } = require("discord.js");
 const { readdir } = require("fs");
 const readdirPromise = require("util").promisify(readdir);
 
-const socketManager = require("./socketManager");
+const socketManager = require("./websocketManager");
 
 module.exports = class MinecraftIntegrations {
 	constructor() {
@@ -68,7 +68,7 @@ module.exports = class MinecraftIntegrations {
 		require("./helpers/process")(this);
 		this.socketManager = new socketManager(this);
 		this.loadEvents();
-		this.loadCommands();
+		// this.loadCommands();
 		
 		this._login();
 	}

@@ -1,10 +1,8 @@
 const { MessageEmbed } = require("discord.js");
 
-module.exports = (client, reason) => {
-	client.log(`Disconnected from Minecraft Server: ${reason}`);
-	client.socketManager.isConnected(false);
-	
-	client.disableChat();
+module.exports = (instance, reason) => {
+	instance.logger.info(`Disconnected from Minecraft Server: ${reason}`);
+	instance.socketManager.isConnected(false);
 	
 	setTimeout(() => {
 		const embed = new MessageEmbed()

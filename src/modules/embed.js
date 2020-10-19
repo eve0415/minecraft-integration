@@ -60,6 +60,4 @@ module.exports = {
 		.setColor("BLACK")
 		.setDescription("オフライン")
 		.setTimestamp(new Date),
-        
-	disable: new MessageEmbed().setDescription("現在、サーバーが起動していないかオフラインです。\nサーバーとの接続が確立されるまで、ここでチャットをすることができません"),
 };

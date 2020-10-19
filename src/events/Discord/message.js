@@ -1,5 +1,5 @@
 module.exports = async (instance, message) => {
-	if (message.author === instance.client.user.id) return;
+	if (message.author === instance.client.user) return;
 	if (message.author.bot) return;
 	
 	const info = instance.database.getFromUSE("chat");

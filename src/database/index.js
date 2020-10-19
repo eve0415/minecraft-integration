@@ -8,19 +8,20 @@ try {
 
 const db = require("better-sqlite3")("data/minecraft.sqlite3");
 
-db.prepare("CREATE TABLE IF NOT EXISTS channel (channelUse TEXT NOT NULL, channelID TEXT NOT NULL, messageID TEXT)").run();
-db.prepare("CREATE TABLE IF NOT EXISTS player (userId TEXT NOT NULL, minecraftID TEXT NOT NULL)").run();
+db.prepare("CREATE TABLE IF NOT EXISTS server (serverId TEXT NOT NULL, serverType TEXT NOT NULL, serverName TEXT, lastServerStatus TEXT, updateTime datetime DEFAULT CURRENT_TIMESTAMP)").run();
+db.prepare("CREATE TABLE IF NOT EXISTS channel (channelType TEXT NOT NULL, channelID TEXT NOT NULL, messageID TEXT, serverID TEXT)").run();
 
 const channel = require("./channel");
-const player = require("./player");
+const server = require("./server");
 
 module.exports = {
 	getFromID: channel.getFromID,
-	getFromUSE: channel.getFromUSE,
-	channelUpdate: channel.update,
-	channelRemove: channel.remove,
+	getFromType: channel.getFromType,
+	updateChannelCache: channel.updateChannelCache,
+	removeChannelFromMessageID: channel.removeChannelFromMessageID,
 	
-	userAdd: player.add,
-	getFromDiscord: player.getFromDiscord,
-	getFromMinecraft: player.getFromMinecraft,	
+	addServer: server.addServer,
+	getFromPort: server.getFromID,
+	updateServer: server.updateServer,
+	removeServer: server.remove,
 };
