@@ -44,12 +44,12 @@ module.exports = class socketManager extends EventEmitter {
 		});
 		this.ws.on("error", (err) => this.emit("error", err));
 		
-		this.ws.on("STARTING", (data) => this.emit("event", "STARTING", data));
-		this.ws.on("STOPPING", (data) => this.emit("event", "STOPPING", data));
-		this.ws.on("STATUS", (data) => this.emit("event", "STATUS", data));
+		this.ws.on("STARTING", (data) => this.emit("status", "start", data));
+		this.ws.on("STOPPING", (data) => this.emit("status", "stop", data));
+		this.ws.on("STATUS", (data) => this.emit("status", "online", data));
 		
-		this.ws.on("CHAT", (data) => this.emit("event", "STATUS", data));
-		this.ws.on("ACHIEVEMENT", (data) => this.emit("event", "STATUS", data));
+		this.ws.on("CHAT", (data) => this.emit("event", "chat", data));
+		this.ws.on("ADVANCEMENT", (data) => this.emit("event", "advancement", data));
 		
 		this.ws.on("ROOM", (roomID) => this.ws.join(roomID));
 	}

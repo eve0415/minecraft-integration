@@ -7,13 +7,10 @@ const commandParser = require("./modules/commandParser");
 
 module.exports = class MinecraftIntegrations {
 	constructor() {
-		this.bot = new Client();
-		this.commands = new Collection();
-		this.config = require("./config");
-		this.logger = require("./logger");
-		this.database = require("./database");
-		this.statusEmbeds = require("./modules/statusEmbeds");
-		this.parser = new commandParser({ usePrefix: true, defaultPrefix: "!" });
+		this.config			= require("./config");
+		this.logger			= require("./logger");
+		this.database		= require("./database");
+		this.statusEmbeds	= require("./modules/statusEmbeds");
 		this._init();
 	}
     
@@ -70,7 +67,12 @@ module.exports = class MinecraftIntegrations {
 		this.logger.info("-------------------------------");
 		this.logger.info("Starting...");
 		require("./helpers/process")(this);
-		this.socketManager = new socketManager(this);
+		
+		this.bot			= new Client();
+		this.commands		= new Collection();
+		this.socketManager	= new socketManager(this);
+		this.parser			= new commandParser({ usePrefix: true, defaultPrefix: "!" });
+		
 		this.loadEvents();
 		this.loadCommands();
 		

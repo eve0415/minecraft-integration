@@ -1,21 +1,25 @@
 const db = require("better-sqlite3")("data/minecraft.sqlite3");
 
-exports.addServer = (port, type, name, status) => {
-	const addCache = db.prepare("INSERT INTO server VALUES (@serverId, @serverType, @serverName, @lastServerStatus)");
+const addServer = (port, type, status) => {
+	const addCache = db.prepare("INSERT INTO server VALUES (@serverId, @serverType, @serverName, @lastServerStatus, @updateTime)");
 	addCache.run({
 		serverId: port,
 		serverType: type,
-		serverName: name,
+		serverName: null,
 		lastServerStatus: status,
+		updateTime: new Date().toLocaleString(),
 	});
 };
 
 exports.getFromID = port => {
-	return db.prepare("SELECT * FROM channel WHERE serverId = ?").get(port);
+	return db.prepare("SELECT * FROM server WHERE serverId = ?").get(port);
 };
 
-exports.updateServer = (port, type, name, status) => {
-	db.prepare("UPDATE channel SET serverType = ?, serverName = ?, lastServerStatus = ?, WHERE serverId = ?").run(type, name, status, port);
+exports.updateServer = (port, type, status) => {
+	const inDatabase = this.getFromID(port);
+	inDatabase
+		? db.prepare("UPDATE server SET serverType = ?, lastServerStatus = ?, updateTime = ? WHERE serverId = ?").run(type, status, new Date().toLocaleString(), port)
+		: addServer(port, type, status);
 };
 
 exports.remove = (port) => {

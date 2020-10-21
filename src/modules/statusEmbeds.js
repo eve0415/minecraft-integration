@@ -1,13 +1,28 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-	unknown: new MessageEmbed()
+	unknown: (id) => new MessageEmbed()
 		.setColor("BLACK")
-		.setTitle("Unknown Status")
+		.setTitle("Unknown Server")
 		.setDescription("Unknown Server\nPlease contact bot/mod administrators")
+		.setFooter(`ID: ${id}`)
 		.setTimestamp(new Date),
 		
-	status: (data) => new MessageEmbed()
+	fetching: (id) => new MessageEmbed()
+		.setColor("BLACK")
+		.setTitle("Fetching Status")
+		.setDescription("Fetching Status\nIt might take some time to refresh")
+		.setFooter(`ID: ${id}`)
+		.setTimestamp(new Date),
+		
+	no: (id) => new MessageEmbed()
+		.setColor("GLAY")
+		.setTitle("Unknown Status")
+		.setDescription("Unknown Status\nIs the server online?")
+		.setFooter(`ID: ${id}`)
+		.setTimestamp(new Date),
+		
+	online: (data) => new MessageEmbed()
 		.setTitle("ステータス")
 		.setColor("BLUE")
 		.addField("状態", "オンライン", true)
@@ -21,9 +36,10 @@ module.exports = {
 		.addField("合計メモリ", data.totalMemory, true)
 		.addField("使用済みメモリ", data.usedMemory, true)
 		.addField("空きメモリ", data.freeMemory, true)
+		.setFooter(`ID: ${data.id}`)
 		.setTimestamp(new Date),
         
-	starting: new MessageEmbed()
+	start: (data) => new MessageEmbed()
 		.setTitle("ステータス")
 		.setColor("YELLOW")
 		.addField("状態", "起動中", true)
@@ -34,12 +50,13 @@ module.exports = {
 		.addField("最大人数", "N/A", true)
 		.addField("\u200B", "\u200B", true)
 		.addField("\u200B", "\u200B")
-		.addField("合計メモリ", "N/A", true)
-		.addField("使用済みメモリ", "N/A", true)
-		.addField("空きメモリ", "N/A", true)
+		.addField("合計メモリ", data.totalMemory, true)
+		.addField("使用済みメモリ", data.usedMemory, true)
+		.addField("空きメモリ", data.freeMemory, true)
+		.setFooter(`ID: ${data.id}`)
 		.setTimestamp(new Date),
         
-	stopping: new MessageEmbed()
+	stop: (data) => new MessageEmbed()
 		.setTitle("ステータス")
 		.setColor("RED")
 		.addField("状態", "停止中", true)
@@ -50,14 +67,16 @@ module.exports = {
 		.addField("最大人数", "N/A", true)
 		.addField("\u200B", "\u200B", true)
 		.addField("\u200B", "\u200B")
-		.addField("合計メモリ", "N/A", true)
-		.addField("使用済みメモリ", "N/A", true)
-		.addField("空きメモリ", "N/A", true)
+		.addField("合計メモリ", data.totalMemory, true)
+		.addField("使用済みメモリ", data.usedMemory, true)
+		.addField("空きメモリ", data.freeMemory, true)
+		.setFooter(`ID: ${data.id}`)
 		.setTimestamp(new Date),
         
-	offline: new MessageEmbed()
+	offline: (id) => new MessageEmbed()
 		.setTitle("ステータス")
 		.setColor("BLACK")
 		.setDescription("オフライン")
+		.setFooter(`ID: ${id}`)
 		.setTimestamp(new Date),
 };
