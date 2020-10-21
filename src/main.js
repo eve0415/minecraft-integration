@@ -1,15 +1,18 @@
-const { Client } = require("discord.js");
+const { Client, Collection } = require("discord.js");
 const { readdir } = require("fs");
 const readdirPromise = require("util").promisify(readdir);
 
 const socketManager = require("./websocketManager");
+const commandParser = require("./modules/commandParser");
 
 module.exports = class MinecraftIntegrations {
 	constructor() {
 		this.bot = new Client();
+		this.commands = new Collection();
 		this.config = require("./config");
 		this.logger = require("./logger");
 		this.database = require("./database");
+		this.parser = new commandParser({ usePrefix: true, defaultPrefix: "!" });
 		this._init();
 	}
     
@@ -46,15 +49,15 @@ module.exports = class MinecraftIntegrations {
 	}
 	
 	async loadCommands() {
-		client.log("Subscribing Commands...");
+		this.logger.info("Subscribing Commands...");
 		const files = await readdirPromise("./src/commands/");
 		files.forEach(cmd => {
 			const commandName = cmd.split(".")[0];
-			console.log(cmd);
-			const props = require(`../commands/${cmd}`);
+			const props = require(`./commands/${cmd}`);
 			this.logger.info(`Loading Command: ${commandName}`);
-			this.bot.commands.set(props.name, props);
-			props.aliases.forEach(alias => this.bot.aliases.set(alias, props.name));
+			this.commands.set(props.name, props);
+			const c = this.parser.addCommand(props.name, props.cmdOptions);
+			props.options.forEach(option => c.options(option.name, option.type, option.opt));
 		});
 	}
 	
@@ -68,7 +71,7 @@ module.exports = class MinecraftIntegrations {
 		require("./helpers/process")(this);
 		this.socketManager = new socketManager(this);
 		this.loadEvents();
-		// this.loadCommands();
+		this.loadCommands();
 		
 		this._login();
 	}
