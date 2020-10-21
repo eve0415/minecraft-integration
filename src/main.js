@@ -12,6 +12,7 @@ module.exports = class MinecraftIntegrations {
 		this.config = require("./config");
 		this.logger = require("./logger");
 		this.database = require("./database");
+		this.statusEmbeds = require("./modules/statusEmbeds");
 		this.parser = new commandParser({ usePrefix: true, defaultPrefix: "!" });
 		this._init();
 	}

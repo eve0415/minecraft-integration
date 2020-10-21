@@ -1,6 +1,12 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
+	unknown: new MessageEmbed()
+		.setColor("BLACK")
+		.setTitle("Unknown Status")
+		.setDescription("Unknown Server\nPlease contact bot/mod administrators")
+		.setTimestamp(new Date),
+		
 	status: (data) => new MessageEmbed()
 		.setTitle("ステータス")
 		.setColor("BLUE")
@@ -15,12 +21,6 @@ module.exports = {
 		.addField("合計メモリ", data.totalMemory, true)
 		.addField("使用済みメモリ", data.usedMemory, true)
 		.addField("空きメモリ", data.freeMemory, true)
-		.setTimestamp(new Date),
-		
-	new: new MessageEmbed()
-		.setColor("GRAY")
-		.setTitle("ステータス")
-		.setDescription("データを取得中です...")
 		.setTimestamp(new Date),
         
 	starting: new MessageEmbed()
