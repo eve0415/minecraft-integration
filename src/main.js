@@ -17,10 +17,6 @@ module.exports = class MinecraftIntegrations {
 	get client() {
 		return this.bot;
 	}
-	
-	getSocketManager() {
-		return this.socketManager;
-	}
     
 	async loadEvents() {
 		this.logger.info("Initializing events");
@@ -60,7 +56,7 @@ module.exports = class MinecraftIntegrations {
 	}
 	
 	_login() {
-		this.bot.login(this.config.token);
+		this.bot.login();
 	}
     
 	_init() {
