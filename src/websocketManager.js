@@ -6,13 +6,13 @@ const webhookManager = require("./webhookManager");
 module.exports = class socketManager extends EventEmitter {
 	constructor(instance) {
 		super();
-		this.instance = instance;
-		this.client = instance.client;
-		this.database = instance.database;
-		this.logger = instance.logger;
+		this.instance	= instance;
+		this.client		= instance.client;
+		this.database	= instance.database;
+		this.logger		= instance.logger;
 		
-		this.connected = 0;
-		this.webhook = new Array;
+		this.connected 	= 0;
+		this.webhook	= new Array;
 		
 		this._init();
 	}
