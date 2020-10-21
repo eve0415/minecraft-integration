@@ -5,7 +5,7 @@ const set = async (instance, message, res) => {
 	if (res.type === "chat") {
 		// TODO: later
 	} else if (res.type === "status") {
-		await message.channel.updateOverwrite(message.guild.roles.everyone, { deny: "SEND_MESSAGES" });
+		await mes.channel.updateOverwrite(message.guild.roles.everyone, { deny: "SEND_MESSAGES" });
 		
 		if (res.id === "all") {
 			// TODO: later
