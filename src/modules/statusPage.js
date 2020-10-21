@@ -23,7 +23,7 @@ class statusPage {
 	}
 	
 	getPage(id) {
-		return this.pages.find(p => p.id === id) ?? statusEmbeds.no(id);
+		return this.pages.find(p => p.id === Number(id)) ?? statusEmbeds.no(id);
 	}
 	
 	getAllpages() {
@@ -36,17 +36,14 @@ class Status {
 		this.id = id;
 		this.name = null;
 		this.embed = statusEmbeds.offline(id);
-		return this;
 	}
 	
 	updateStatus(status, data) {
 		this.embed = statusEmbeds[status](status === "offline" ? this.id : data);
-		return this;
 	}
 	
 	setName(name) {
 		this.name = name;
-		return this;
 	}
 }
 

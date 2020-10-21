@@ -7,7 +7,7 @@ module.exports = async (instance, message) => {
 	if (message.channel.id === info?.channelID && !message.content.startsWith(`${instance.config.prefix}link`)) return instance.socketManager.sendFromDiscord(message);
 	
 	const result = instance.parser.parse(message.content);
-	console.log(result);
+	
 	const cmd = instance.commands.get(result.command);
 	
 	if (!cmd) return;
