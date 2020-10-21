@@ -6,16 +6,15 @@ const set = async (instance, message, res) => {
 		// TODO: later
 	} else if (res.type === "status") {
 		await message.channel.updateOverwrite(message.guild.roles.everyone, { deny: "SEND_MESSAGES" });
-		const cache = instance.database.getFromPort(res.id);
-		instance.database.addChannelCache("status", channelID, mes.id, message.guild.id);
 		
-		if (!cache) return await mes.edit("", instance.statusEmbeds.unknown(res.id));
-		if (!cache.lastServerStatus) return await mes.edit("", instance.statusEmbeds.no(res.id));
-		if (cache.lastServerStatus === "stop") {
-			await mes.edit("", instance.statusEmbeds.offline(res.id));
+		if (res.id === "all") {
+			// TODO: later
 		} else {
-			await mes.edit("", instance.statusEmbeds.fetching(res.id));
+			instance.database.addChannelCache("status", channelID, mes.id, message.guild.id);
+			
+			return await mes.edit("", instance.statusPage.getPage(res.id));
 		}
+		
 	}
 };
 
