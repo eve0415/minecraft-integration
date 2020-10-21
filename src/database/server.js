@@ -1,27 +1,32 @@
 const db = require("better-sqlite3")("data/minecraft.sqlite3");
 
-const addServer = (port, type, status) => {
-	const addCache = db.prepare("INSERT INTO server VALUES (@serverId, @serverType, @serverName, @lastServerStatus, @updateTime)");
+const addServer = (port, type, status, instance) => {
+	const addCache = db.prepare("INSERT INTO server VALUES (@ID, @type, @name, @lastStatus, @updateTime)");
 	addCache.run({
-		serverId: port,
-		serverType: type,
-		serverName: null,
-		lastServerStatus: status,
+		ID: port,
+		type: type,
+		name: null,
+		lastStatus: status,
 		updateTime: new Date().toLocaleString(),
 	});
+	instance.statusPage.addStatus(port);
 };
 
 exports.getFromID = port => {
-	return db.prepare("SELECT * FROM server WHERE serverId = ?").get(port);
+	return db.prepare("SELECT * FROM server WHERE ID = ?").get(port);
 };
 
-exports.updateServer = (port, type, status) => {
+exports.getAllServer = () => {
+	return db.prepare("SELECT * FROM server").all();
+};
+
+exports.updateServer = (port, type, status, instance) => {
 	const inDatabase = this.getFromID(port);
 	inDatabase
-		? db.prepare("UPDATE server SET serverType = ?, lastServerStatus = ?, updateTime = ? WHERE serverId = ?").run(type, status, new Date().toLocaleString(), port)
-		: addServer(port, type, status);
+		? db.prepare("UPDATE server SET type = ?, lastStatus = ?, updateTime = ? WHERE ID = ?").run(type, status, new Date().toLocaleString(), port)
+		: addServer(port, type, status, instance);
 };
 
-exports.remove = (port) => {
-	db.prepare("DELETE FROM channel WHERE serverId = ?").run(port);
+exports.remove = port => {
+	db.prepare("DELETE FROM server WHERE ID = ?").run(port);
 };

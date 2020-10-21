@@ -10,7 +10,7 @@ module.exports = class MinecraftIntegrations {
 		this.config			= require("./config");
 		this.logger			= require("./logger");
 		this.database		= require("./database");
-		this.statusEmbeds	= require("./modules/statusEmbeds");
+		this.statusPage		= require("./modules/statusPage");
 		this._init();
 	}
     
@@ -55,6 +55,14 @@ module.exports = class MinecraftIntegrations {
 		});
 	}
 	
+	async cacheStatusPage() {
+		const cache = this.database.getAllServer();
+		cache.forEach((server) => {
+			this.statusPage.addStatus(server.ID);
+			if (server.name) this.statusPage.setName(server.ID, server.name);
+		});
+	}
+	
 	_login() {
 		this.bot.login();
 	}
@@ -71,6 +79,7 @@ module.exports = class MinecraftIntegrations {
 		
 		this.loadEvents();
 		this.loadCommands();
+		this.cacheStatusPage();
 		
 		this._login();
 	}
