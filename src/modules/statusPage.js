@@ -11,7 +11,7 @@ class StatusPage {
   }
   
   updateStatus(id, status, data) {
-    const page = this.pages.find(p => p.id === id);
+    const page = this.pages.find(p => p.id === Number(id));
     if (!page) return new Error('Unknown id');
     page.updateStatus(status, data);
   }
@@ -40,7 +40,7 @@ class Status {
   }
   
   updateStatus(status, data) {
-    this.embed = statusEmbeds[status](status === 'offline' ? this.id : data);
+    this.embed = statusEmbeds[status](status === 'offline' ? data.port : data);
   }
   
   setName(name) {
