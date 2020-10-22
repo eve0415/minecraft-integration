@@ -1,9 +1,9 @@
-const { Client, Collection } = require("discord.js");
-const { readdir } = require("fs");
-const readdirPromise = require("util").promisify(readdir);
+const { Client, Collection }	= require("discord.js");
+const { readdir }				= require("fs");
+const readdirPromise			= require("util").promisify(readdir);
 
-const socketManager = require("./websocketManager");
-const commandParser = require("./modules/commandParser");
+const socketManager		= require("./websocketManager");
+const commandParser		= require("./modules/commandParser");
 
 module.exports = class MinecraftIntegrations {
 	constructor() {
@@ -31,7 +31,7 @@ module.exports = class MinecraftIntegrations {
 			this.logger.info(`Loading Discord Event: ${eventName}`);
 			this.bot.on(eventName, event.bind(null, this));
 		});
-	
+		
 		// Websocket Event
 		const WebsocketEvtFiles = await readdirPromise("./src/events/Websocket/");
 		WebsocketEvtFiles.forEach(file => {
