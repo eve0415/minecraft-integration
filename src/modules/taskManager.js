@@ -30,7 +30,8 @@ module.exports = class TaskManager {
   refreshStatus() {
     this.statusMessage.forEach(mes => {
       const data = embedParse(mes);
-      mes.edit(this.instance.statusPage.getPage(data.ID));
+      mes.edit(this.instance.statusPage.getPage(data.ID))
+        .catch(() => this.database.removeStatusMessage(mes.id));
       
     });
   }
