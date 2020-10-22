@@ -1,10 +1,10 @@
-const statusEmbeds	= require("./statusEmbeds");
+const statusEmbeds = require("./statusEmbeds");
 
 class StatusPage {
 	constructor() {
 		this.pages = new Array;
 	}
-    
+	
 	addStatus(id) {
 		if (this.pages.find(page => page.id === id)) return new Error("Conflict id, trying to add status page");
 		this.pages.push(new Status(id));
@@ -34,9 +34,9 @@ class StatusPage {
 
 class Status {
 	constructor(id) {
-		this.id = id;
-		this.name = null;
-		this.embed = statusEmbeds.offline(id);
+		this.id     = id;
+		this.name   = null;
+		this.embed  = statusEmbeds.offline(id);
 	}
 	
 	updateStatus(status, data) {

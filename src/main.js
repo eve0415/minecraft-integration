@@ -1,24 +1,24 @@
 const { Client, Collection }	= require("discord.js");
-const { readdir }				= require("fs");
-const readdirPromise			= require("util").promisify(readdir);
+const { readdir }							= require("fs");
+const readdirPromise					= require("util").promisify(readdir);
 
-const socketManager		= require("./websocketManager");
-const commandParser		= require("./modules/commandParser");
+const socketManager				= require("./websocketManager");
+const commandParser				= require("./modules/commandParser");
 
 module.exports = class MinecraftIntegrations {
 	constructor() {
 		this.config			= require("./config");
 		this.logger			= require("./logger");
 		this.database		= require("./database");
-		this.statusPage		= require("./modules/statusPage");
+		this.statusPage	= require("./modules/statusPage");
 		
 		this._init();
 	}
-    
+	
 	get client() {
 		return this.bot;
 	}
-    
+	
 	async loadEvents() {
 		this.logger.info("Initializing events");
 		
@@ -67,16 +67,16 @@ module.exports = class MinecraftIntegrations {
 	_login() {
 		this.bot.login();
 	}
-    
+	
 	_init() {
 		this.logger.info("-------------------------------");
 		this.logger.info("Starting...");
 		require("./helpers/process")(this);
 		
-		this.bot			= new Client();
-		this.commands		= new Collection();
-		this.socketManager	= new socketManager(this);
-		this.parser			= new commandParser({ usePrefix: true, defaultPrefix: "!" });
+		this.bot						= new Client();
+		this.commands				= new Collection();
+		this.socketManager 	= new socketManager(this);
+		this.parser					= new commandParser({ usePrefix: true, defaultPrefix: "!" });
 		
 		this.loadEvents();
 		this.loadCommands();

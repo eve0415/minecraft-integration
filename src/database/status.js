@@ -5,7 +5,7 @@ exports.addMessageCache = (chID, mesID, serverID) => {
 	add.run({
 		channelID: chID,
 		messageID: mesID,
-		serverID: serverID,
+		serverID : serverID,
 	});
 };
 

@@ -9,8 +9,8 @@ module.exports = class socketManager extends EventEmitter {
 		this.database	= instance.database;
 		this.logger		= instance.logger;
 		
-		this.connected 	= 0;
-		this.webhook	= new Array;
+		this.connected  = 0;
+		this.webhook	  = new Array;
 		
 		this._init();
 	}

@@ -4,7 +4,7 @@ exports.addCache = (chID, serverID) => {
 	const addCh = db.prepare("INSERT INTO channel VALUES (@channelID, @serverID)");
 	addCh.run({
 		channelID: chID,
-		serverID: serverID,
+		serverID : serverID,
 	});
 };
 

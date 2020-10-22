@@ -1,19 +1,19 @@
 module.exports = class commandParser {
 	constructor(opt = {}) {
-		this.commands = new Array;
-		this.usePrefix = opt.usePrefix ?? false;
+		this.commands   = new Array;
+		this.usePrefix 	= opt.usePrefix ?? false;
 		
 		if (this.usePrefix && !opt.defaultPrefix) return new Error("Please specify defalut prefix when usePrefix is true");
 		opt.defaultPrefix ? this.defaultPrefix = toArray(opt.defaultPrefix) : null;
 	}
-    
+	
 	addCommand(name, opt = {}) {
 		const cmd = new Command(name, this.defaultPrefix, opt);
 		if (opt.prefix) cmd.prefix(opt.prefix, opt.override ?? false);
 		this.commands.push(cmd);
 		return cmd;
 	}
-    
+	
 	parse(input) {
 		const result = parseCommand(input, this);
 		return result;
@@ -22,15 +22,15 @@ module.exports = class commandParser {
 
 class Command {
 	constructor(name, defaultPrefix, opt) {
-		this.command = name;
-		this._prefix = defaultPrefix; 
-		this._aliases = toArray(opt.alias) ?? new Array;
+		this.command 			= name;
+		this._prefix 			= defaultPrefix; 
+		this._aliases 		= toArray(opt.alias) ?? new Array;
 		this._description = opt.description ?? null;
-		this.usage = opt.usage ?? null;
-		this._options = opt.options ?? new Array;
+		this.usage 				= opt.usage ?? null;
+		this._options 		= opt.options ?? new Array;
 		return this;
 	}
-    
+	
 	prefix(prefix, override) {
 		if (this._prefix && override || !this._prefix) {
 			this._prefix = toArray(prefix);
@@ -42,17 +42,17 @@ class Command {
 		}
 		return this;
 	}
-    
+	
 	alias(alias) {
 		this._aliases = toArray(alias);
 		return this;
 	}
-    
+	
 	description(desc) {
 		this._description = desc;
 		return this;
 	}
-    
+	
 	options(name, type, opt = { standalone: false, required: false }) {
 		const option = new Option(name, type, opt);
 		if (opt.required === true) option.require();
