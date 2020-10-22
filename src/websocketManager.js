@@ -37,21 +37,32 @@ module.exports = class socketManager extends EventEmitter {
 		});
 	}
 	
-	async listen() {
-		this.ws.on("disconnect", (reason) => {
+	connectionEvent() {
+		io.on("connection", sock => {
+			this.logger.info("Succesfully connected to Minecraft Server");
+			
+			this.connected = this.connected++;
+			
+			this.listen(sock);
+		});
+	}
+	
+	async listen(sock) {
+		sock.on("disconnecting", () => this.emit("status", "offline", { port: Object.keys(sock.rooms)[0] }));
+		sock.on("disconnect", (reason) => {
 			this.connected = this.connected--;
 			this.emit("disconnect", reason);
 		});
-		this.ws.on("error", (err) => this.emit("error", err));
+		sock.on("error", (err) => this.emit("error", err));
 		
-		this.ws.on("STARTING", (data) => this.emit("status", "start", data));
-		this.ws.on("STOPPING", (data) => this.emit("status", "stop", data));
-		this.ws.on("STATUS", (data) => this.emit("status", "online", data));
+		sock.on("STARTING", (data) => this.emit("status", "start", data));
+		sock.on("STOPPING", (data) => this.emit("status", "stop", data));
+		sock.on("STATUS", (data) => this.emit("status", "online", data));
 		
-		this.ws.on("CHAT", (data) => this.emit("event", "chat", data));
-		this.ws.on("ADVANCEMENT", (data) => this.emit("event", "advancement", data));
+		sock.on("CHAT", (data) => this.emit("event", "chat", data));
+		sock.on("ADVANCEMENT", (data) => this.emit("event", "advancement", data));
 		
-		this.ws.on("ROOM", (roomID) => this.ws.join(roomID));
+		sock.on("ROOM", (roomID) => sock.join(roomID));
 	}
 	
 	async status(data) {
@@ -71,7 +82,7 @@ module.exports = class socketManager extends EventEmitter {
 		
 		const user = this.database.getFromDiscord(message.author.id);
 		
-		this.ws.emit("message", JSON.stringify({ 
+		io.emit("message", JSON.stringify({ 
 			UUID: user?.minecraftID ?? null,
 			name: message.author.username,
 			message: message.content
@@ -98,17 +109,6 @@ module.exports = class socketManager extends EventEmitter {
 				username: data.name,
 			});
 		}
-	}
-	
-	connectionEvent() {
-		io.on("connection", sock => {
-			this.logger.info("Succesfully connected to Minecraft Server");
-			
-			this.ws = sock;
-			this.connected = this.connected++;
-			
-			this.listen();
-		});
 	}
 	
 	async _init() {
