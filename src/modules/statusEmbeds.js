@@ -7,21 +7,21 @@ module.exports = {
     .setDescription('Unknown Server\nPlease contact bot/mod administrators')
     .setFooter(`ID: ${id}`)
     .setTimestamp(new Date),
-		
+    
   fetching: (id) => new MessageEmbed()
     .setColor('BLACK')
     .setTitle('Fetching Status')
     .setDescription('Fetching Status\nIt might take some time to refresh')
     .setFooter(`ID: ${id}`)
     .setTimestamp(new Date),
-		
+    
   no: (id) => new MessageEmbed()
     .setColor('GLAY')
     .setTitle('Unknown Status')
     .setDescription('Unknown Status\nIs the server online?')
     .setFooter(`ID: ${id}`)
     .setTimestamp(new Date),
-		
+    
   online: (data) => new MessageEmbed()
     .setTitle('STATUS')
     .setColor('BLUE')

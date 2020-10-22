@@ -1,13 +1,13 @@
 const set = async (instance, message, res) => {
   const channelID = res.channel ? res.channel.replace('<#').replace('>') : message.channel.id;
   const mes = await message.guild.channels.cache.get(channelID).send('Configuring...');
-	
+  
   if (res.type === 'chat') {
     // TODO: later
   } else if (res.type === 'status') {
     await mes.channel.updateOverwrite(message.guild.roles.everyone, { deny: 'SEND_MESSAGES' });
     instance.database.addStatusMesCache(channelID, mes.id, res.id);
-		
+    
     if (res.id !== 'all') return await mes.edit('', instance.statusPage.getPage(res.id));
   }
 };
@@ -31,16 +31,12 @@ module.exports = {
     { 
       name: 'channel',
       type: 'channel',
-      opt: {
-        alias: ['c'],
-      },
+      opt: { alias: ['c'] },
     },
     {
       name: 'id',
       type: 'int',
-      opt: {
-        required: true,
-      },
+      opt: { required: true },
     },
   ],
   owner: true,

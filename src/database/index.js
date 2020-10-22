@@ -20,11 +20,11 @@ module.exports = {
   addStatusMesCache: status.addMessageCache,
   getStatusMesCache: status.getMessageCache,
   removeStatusMessage: status.removeMessage,
-	
+  
   addChannelCache: chat.addCache,
   getFromChannelID: chat.getFromID,
   removeChannelCache: chat.removeCache,
-	
+  
   getFromPort: server.getFromID,
   getAllServer: server.getAllServer,
   updateServer: server.updateServer,
