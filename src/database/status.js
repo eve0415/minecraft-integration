@@ -1,11 +1,10 @@
 const db = require("better-sqlite3")("data/minecraft.sqlite3");
 
-exports.addMessageCache = (chID, mesID, guildID, serverID) => {
-	const add = db.prepare("INSERT INTO status VALUES (@channelID, @messageID, @guildID, @serverID)");
+exports.addMessageCache = (chID, mesID, serverID) => {
+	const add = db.prepare("INSERT INTO status VALUES (@channelID, @messageID, @serverID)");
 	add.run({
 		channelID: chID,
 		messageID: mesID,
-		guildID: guildID,
 		serverID: serverID,
 	});
 };
