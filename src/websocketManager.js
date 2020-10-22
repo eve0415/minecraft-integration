@@ -1,8 +1,6 @@
 const { EventEmitter } = require("events");
 const io = require("socket.io")();
 
-const webhookManager = require("./webhookManager");
-
 module.exports = class socketManager extends EventEmitter {
 	constructor(instance) {
 		super();
@@ -15,26 +13,6 @@ module.exports = class socketManager extends EventEmitter {
 		this.webhook	= new Array;
 		
 		this._init();
-	}
-	
-	async fetchWebhook() {
-		const chatCache = this.database.getFromType("chat");
-		if (!chatCache) return;
-		
-		chatCache.forEach(chat => {
-			const channel = this.client.channels.cache.get(chat.channelID);
-			if (channel) {
-				channel.fetchWebhooks()
-					.then(webhooks => {
-						const hook = webhooks.filter(webhook => webhook.owner === client.user).first();
-						new webhookManager(this, hook, {});
-					})
-					.catch(() => this.database.removeChannelFromMessageID(chat.channelID, "chat")); // Probably webhook was deleted. Remove from cache.
-			} else { // Maybe channel was deleted or no permission?
-				// Remove cache from database
-				this.database.removeChannelFromMessageID(chat.channelID, "chat");
-			}
-		});
 	}
 	
 	connectionEvent() {
@@ -63,52 +41,6 @@ module.exports = class socketManager extends EventEmitter {
 		sock.on("ADVANCEMENT", (data) => this.emit("event", "advancement", data));
 		
 		sock.on("ROOM", (roomID) => sock.join(roomID));
-	}
-	
-	async status(data) {
-		const info = this.database.getFromUSE("status");
-		if (!info) return;
-		
-		try {
-			const message = await this.client.channels.cache.get(info.channelID)?.messages.fetch(info.messageID);
-			if (message) message.edit(data);
-		} catch (e) { // Message might have deleted by someone
-			client.database.channelRemove(info.messageID);
-		}
-	}
-	
-	sendFromDiscord(message) {
-		if (!this.connected) return;
-		
-		const user = this.database.getFromDiscord(message.author.id);
-		
-		io.emit("message", JSON.stringify({ 
-			UUID: user?.minecraftID ?? null,
-			name: message.author.username,
-			message: message.content
-				? message.attachments.size
-					? `${message.content} (添付ファイルがあります。このメッセージをクリックしてください)`
-					: message.content
-				: "添付ファイルがあります。このメッセージをクリックしてください",
-			url: message.attachments.size ? message.url : null,
-		}));
-	}
-	
-	sendToDiscord(data) {
-		console.log(data);
-		if (!this.webhook) return;
-		
-		const user = this.database.getFromMinecraft(data.UUID);
-		if (user) {
-			this.webhook.send(data.message, {
-				username: client.users.cache.get(user.userId).username,
-				avatarURL: client.users.cache.get(user.userId).avatarURL({ format: "png", dynamic: true }),
-			});
-		} else {
-			this.webhook.send(data.message, {
-				username: data.name,
-			});
-		}
 	}
 	
 	async _init() {
