@@ -2,9 +2,9 @@ const { Client, Collection }  = require('discord.js');
 const { readdir }             = require('fs');
 const readdirPromise          = require('util').promisify(readdir);
 
-const socketManager       = require('./websocketManager');
-const commandParser       = require('./modules/commandParser');
-const taskManager         = require('./modules/taskManager');
+const socketManager = require('./websocketManager');
+const commandParser = require('./modules/commandParser');
+const taskManager   = require('./modules/taskManager');
 
 module.exports = class MinecraftIntegrations {
   constructor() {
