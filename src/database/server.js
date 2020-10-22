@@ -23,7 +23,9 @@ exports.getAllServer = () => {
 exports.updateServer = (port, type, status, instance) => {
 	const inDatabase = this.getFromID(port);
 	inDatabase
-		? db.prepare("UPDATE server SET type = ?, lastStatus = ?, updateTime = ? WHERE ID = ?").run(type, status, new Date().toLocaleString(), port)
+		? type
+			? db.prepare("UPDATE server SET type = ?, lastStatus = ?, updateTime = ? WHERE ID = ?").run(type, status, new Date().toLocaleString(), port)
+			: db.prepare("UPDATE server SET lastStatus = ?, updateTime = ? WHERE ID = ?").run(status, new Date().toLocaleString(), port)
 		: addServer(port, type, status, instance);
 };
 

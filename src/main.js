@@ -11,6 +11,7 @@ module.exports = class MinecraftIntegrations {
 		this.logger			= require("./logger");
 		this.database		= require("./database");
 		this.statusPage		= require("./modules/statusPage");
+		
 		this._init();
 	}
     
