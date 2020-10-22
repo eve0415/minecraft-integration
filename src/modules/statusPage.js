@@ -1,6 +1,6 @@
 const statusEmbeds	= require("./statusEmbeds");
 
-class statusPage {
+class StatusPage {
 	constructor() {
 		this.pages = new Array;
 	}
@@ -27,6 +27,7 @@ class statusPage {
 	}
 	
 	getAllpages() {
+		this.pages.sort((p1, p2) => p1.id > p2.id);
 		return this.pages;
 	}
 }
@@ -47,4 +48,4 @@ class Status {
 	}
 }
 
-module.exports = new statusPage();
+module.exports = new StatusPage();
