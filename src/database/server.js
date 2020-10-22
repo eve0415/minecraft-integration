@@ -20,7 +20,7 @@ exports.getAllServer = () => {
 
 exports.updateServer = (port, type, instance) => {
   const inDatabase = this.getFromID(port);
-  if (inDatabase?.type === type) return;
+  if (inDatabase?.type === type || !type) return;
   inDatabase
     ? db.prepare('UPDATE server SET type = ? WHERE ID = ?').run(type, port)
     : addServer(port, type, instance);
