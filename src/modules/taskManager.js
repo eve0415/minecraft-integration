@@ -1,0 +1,29 @@
+module.exports = class TaskManager {
+  constructor(instance) {
+    this.instance  = instance;
+    this.client    = instance.client;
+    this.database  = instance.database;
+    
+    this.statusMessage = new Array;
+  }
+  
+  reloadCache() {
+    if (!this.client.readyAt) throw new Error('Bot is not ready');
+    this.cacheStatusMessage();
+  }
+  
+  async cacheStatusMessage() {
+    const cache = this.database.getStatusMesCache();
+    cache.forEach(c => {
+      this.client.channels.cache.get(c.channelID).messages.fetch(c.messageID)
+        .then(mes => {
+          this.statusMessage.push(mes);
+          if (c.serverID === 'all') return;
+          mes.edit(this.instance.statusPage.getPage(c.serverID));
+        })
+      // Probably user have deleted this channel / message or have no permission to fetch anymore :(
+      // Remove from cache database
+        .catch(this.database.removeStatusMessage(c.messageID));
+    });
+  }
+};

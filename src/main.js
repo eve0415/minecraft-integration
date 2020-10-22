@@ -4,6 +4,7 @@ const readdirPromise          = require('util').promisify(readdir);
 
 const socketManager       = require('./websocketManager');
 const commandParser       = require('./modules/commandParser');
+const taskManager         = require('./modules/taskManager');
 
 module.exports = class MinecraftIntegrations {
   constructor() {
@@ -76,6 +77,7 @@ module.exports = class MinecraftIntegrations {
     this.bot            = new Client();
     this.commands       = new Collection();
     this.socketManager  = new socketManager(this);
+    this.taskManager    = new taskManager(this);
     this.parser         = new commandParser({ usePrefix: true, defaultPrefix: '!' });
     
     this.loadEvents();
