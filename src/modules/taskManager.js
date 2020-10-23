@@ -36,8 +36,8 @@ module.exports = class TaskManager {
       
       try {
         data?.Page
-          ? await mes.edit(this.instance.reactionController.getPage(data.Page.split('/')[0]))
-          : await mes.edit(this.instance.statusPage.getPage(data.ID));
+          ? mes.edit(this.instance.reactionController.getPage(data.Page.split('/')[0]))
+          : mes.edit(this.instance.statusPage.getPage(data.ID));
       } catch(e) {
         this.instance.logger.error(e);
         this.database.removeStatusMessage(mes.id);
@@ -48,6 +48,21 @@ module.exports = class TaskManager {
   
   addCache(mes) {
     this.statusMessage.push(mes);
+  }
+  
+  changePage(reaction, user) {
+    if (!(reaction.emoji.name === '◀️' || reaction.emoji.name === '▶️')) return reaction.users.remove(user);
+    
+    const [now, max] = embedParse(reaction.message).Page.split('/');
+    let page;
+    if (reaction.emoji.name === '◀️') {
+      page = Number(now) - 1 <= 0 ? Number(max) : Number(now) - 1;
+    } else {
+      page = Number(now) + 1 > Number(max) ? 1 : Number(now) + 1;
+    }
+    reaction.message
+      .edit(this.instance.reactionController.getPage(page))
+      .then(() => reaction.users.remove(user));
   }
 };
 

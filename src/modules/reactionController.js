@@ -7,7 +7,7 @@ module.exports = class ReactionController {
   
   init(msg) {
     msg.reactions.removeAll();
-    this.doReactions();
+    this.doReactions(msg);
     this.createReactionCollector(msg);
   }
   
@@ -16,7 +16,7 @@ module.exports = class ReactionController {
     // but let's say we'll block reactions from this bot.
     const filter = (reaction, user) => user !== this.client.user;
     const collector = msg.createReactionCollector(filter);
-    collector.on('collect', r => this.collected(r));
+    collector.on('collect', (reaction, user) => this.instance.taskManager.changePage(reaction, user));
   }
   
   doReactions(msg) {
@@ -27,10 +27,6 @@ module.exports = class ReactionController {
     if (!this.pages.length) return this.instance.statusPage.getNoPage();
     const p = this.pages[page - 1];
     const editedEmbed = p.embed.setFooter(`ID: ${p.id} Page: ${page}/${this.pages.length}`);
-    this.doReactions();
     return editedEmbed;
-  }
-  
-  collected(c) {
   }
 };
