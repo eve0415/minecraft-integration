@@ -6,7 +6,7 @@ const set = async (instance, message, res) => {
     // TODO: later
   } else if (res.type === 'status') {
     await mes.channel.updateOverwrite(message.guild.roles.everyone, { deny: 'SEND_MESSAGES' });
-    instance.database.addStatusMesCache(channelID, mes.id, res.id);
+    instance.database.addStatusMesCache(channelID, mes.id);
     
     if (res.id !== 'all') return await mes.edit('', instance.statusPage.getPage(res.id));
   }

@@ -17,9 +17,10 @@ module.exports = class TaskManager {
     cache.forEach(c => {
       this.client.channels.cache.get(c.channelID).messages.fetch(c.messageID)
         .then(mes => {
-          this.statusMessage.push(mes);
-          if (c.serverID === 'all') return;
-          mes.edit(this.instance.statusPage.getPage(c.serverID));
+          const data = embedParse(mes);
+          mes.edit(this.instance.statusPage.getPage(data.ID))
+            .then(() => this.statusMessage.push(mes))
+            .catch(() => this.database.removeStatusMessage(mes.id));
         })
       // Probably user have deleted this channel / message or have no permission to fetch anymore :(
       // Remove from cache database
