@@ -8,24 +8,17 @@ module.exports = {
     .setFooter(`ID: ${id}`)
     .setTimestamp(new Date),
     
-  fetching: (id) => new MessageEmbed()
+  fetching: new MessageEmbed()
     .setColor('BLACK')
     .setTitle('Fetching Status')
     .setDescription('Fetching Status\nIt might take some time to refresh')
-    .setFooter(`ID: ${id}`)
-    .setTimestamp(new Date),
-    
-  no: (id) => new MessageEmbed()
-    .setColor('GLAY')
-    .setTitle('Unknown Status')
-    .setDescription('Unknown Status\nIs the server online?')
-    .setFooter(`ID: ${id}`)
+    .setFooter('ID: 0 Page: 0/0')
     .setTimestamp(new Date),
     
   online: (data) => new MessageEmbed()
     .setTitle('STATUS')
     .setColor('BLUE')
-    .addField('status', 'Online', true)
+    .addField('Status', 'Online', true)
     .addField('\u200B', '\u200B', true)
     .addField('TPS', data.tps, true)
     .addField('\u200B', '\u200B')
@@ -36,13 +29,12 @@ module.exports = {
     .addField('Total Memory', data.totalMemory, true)
     .addField('Used Memory', data.usedMemory, true)
     .addField('Free Memory', data.freeMemory, true)
-    .setFooter(`ID: ${data.port}`)
     .setTimestamp(new Date),
         
   start: (data) => new MessageEmbed()
     .setTitle('STATUS')
     .setColor('YELLOW')
-    .addField('status', 'Preparing...', true)
+    .addField('Status', 'Preparing...', true)
     .addField('\u200B', '\u200B', true)
     .addField('TPS', 'N/A', true)
     .addField('\u200B', '\u200B')
@@ -53,13 +45,12 @@ module.exports = {
     .addField('Total Memory', data.totalMemory, true)
     .addField('Used Memory', data.usedMemory, true)
     .addField('Free Memory', data.freeMemory, true)
-    .setFooter(`ID: ${data.port}`)
     .setTimestamp(new Date),
         
   stop: (data) => new MessageEmbed()
     .setTitle('STATUS')
     .setColor('RED')
-    .addField('status', 'Shutting down...', true)
+    .addField('Status', 'Shutting down...', true)
     .addField('\u200B', '\u200B', true)
     .addField('TPS', 'N/A', true)
     .addField('\u200B', '\u200B')
@@ -70,13 +61,11 @@ module.exports = {
     .addField('Total Memory', data.totalMemory, true)
     .addField('Used Memory', data.usedMemory, true)
     .addField('Free Memory', data.freeMemory, true)
-    .setFooter(`ID: ${data.port}`)
     .setTimestamp(new Date),
         
-  offline: (id) => new MessageEmbed()
+  offline: new MessageEmbed()
     .setTitle('STATUS')
     .setColor('BLACK')
     .setDescription('Offline')
-    .setFooter(`ID: ${id}`)
     .setTimestamp(new Date),
 };

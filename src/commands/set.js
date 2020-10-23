@@ -8,7 +8,13 @@ const set = async (instance, message, res) => {
     await mes.channel.updateOverwrite(message.guild.roles.everyone, { deny: 'SEND_MESSAGES' });
     instance.database.addStatusMesCache(channelID, mes.id);
     
-    if (res.id !== 'all') return await mes.edit('', instance.statusPage.getPage(res.id));
+    if (res.id !== 'all') {
+      mes.edit('', instance.statusPage.getPage(res.id));
+    } else {
+      await mes.edit('', instance.reactionController.getPage(1));
+      instance.reactionController.init(mes);
+    }
+    instance.taskManager.addCache(mes);
   }
 };
 

@@ -2,9 +2,10 @@ const { Client, Collection }  = require('discord.js');
 const { readdir }             = require('fs');
 const readdirPromise          = require('util').promisify(readdir);
 
-const socketManager = require('./websocketManager');
-const commandParser = require('./modules/commandParser');
-const taskManager   = require('./modules/taskManager');
+const socketManager       = require('./websocketManager');
+const commandParser       = require('./modules/commandParser');
+const taskManager         = require('./modules/taskManager');
+const reactionController  = require('./modules/reactionController');
 
 module.exports = class MinecraftIntegrations {
   constructor() {
@@ -63,6 +64,8 @@ module.exports = class MinecraftIntegrations {
       this.statusPage.addStatus(server.ID);
       if (server.name) this.statusPage.setName(server.ID, server.name);
     });
+    // We have to load this after the pages for reactionController are initialized.
+    this.reactionController = new reactionController(this);
   }
   
   _login() {
