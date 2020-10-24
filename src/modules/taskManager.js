@@ -37,9 +37,13 @@ module.exports = class TaskManager {
       const data = embedParse(mes);
       
       try {
-        data?.Page
-          ? mes.edit(this.instance.reactionController.getPage(data.Page.split('/')[0]))
-          : mes.edit(this.instance.statusPage.getPage(data.ID));
+        if (data.Page) {
+          const [now, max] = data.Page.split('/');
+          mes.edit(this.instance.reactionController.getPage(now));
+          if (max !== 1 && mes.reactions.cache.size === 0) this.instance.reactionController.doReactions;
+        } else {
+          mes.edit(this.instance.statusPage.getPage(data.ID));
+        }
       } catch(e) {
         this.instance.logger.error(e);
         this.database.removeStatusMessage(mes.id);
