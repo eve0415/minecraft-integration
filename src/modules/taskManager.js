@@ -9,24 +9,26 @@ module.exports = class TaskManager {
   
   reloadCache() {
     if (!this.client.readyAt) throw new Error('Bot is not ready');
-    this.instance.logger.info('Caching necessarily message');
     this.cacheStatusMessage();
-    this.instance.logger.info('Caching complete!');
   }
   
-  cacheStatusMessage() {
+  async cacheStatusMessage() {
+    this.instance.logger.info('Caching necessarily message');
+    
     const cache = this.database.getStatusMesCache();
-    cache.forEach(c => {
-      this.client.channels.cache.get(c.channelID).messages.fetch(c.messageID)
+    for (const c of cache) {
+      await this.client.channels.cache.get(c.channelID).messages.fetch(c.messageID)
         .then(mes => {
           const data = embedParse(mes);
           if (data.Page) this.instance.reactionController.init(mes);
           this.statusMessage.push(mes);
         })
-      // Probably user have deleted this channel / message or have no permission to fetch anymore :(
-      // Remove from cache database
+        // Probably user have deleted this channel / message or have no permission to fetch anymore :(
+        // Remove from cache database
         .catch(() => this.database.removeStatusMessage(c.messageID));
-    });
+    }
+    
+    this.instance.logger.info('Caching complete!');
     this.refreshStatus();
   }
   
