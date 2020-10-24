@@ -25,7 +25,9 @@ module.exports = class ReactionController {
   
   getPage(page) {
     if (!this.pages.length) return this.instance.statusPage.getNoPage();
-    const p = this.pages[page - 1];
+    // There might be a case where there are no specific pages available,
+    // so let's just return the first page.
+    const p = this.pages[page - 1] ?? this.pages[0];
     const editedEmbed = p.embed.setFooter(`ID: ${p.id} Page: ${page}/${this.pages.length}`);
     return editedEmbed;
   }
