@@ -1,12 +1,7 @@
 module.exports = class webhookManager {
-  constructor(websocketManager, webhook, options = {}) {
-    this.socketManager = websocketManager;
-    this.webhook       = webhook;
-    this.sendType      = options.sendType;
-    this.sendID        = options.sendID;
+  constructor(webhook, serverID) {
+    this.webhook        = webhook;
+    this.id             = serverID;
   }
   
-  get sendData() {
-    return { type: this.sendType, id: this.sendID };
-  }
 };

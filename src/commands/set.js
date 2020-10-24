@@ -3,7 +3,19 @@ const set = async (instance, message, res) => {
   const mes = await message.guild.channels.cache.get(channelID).send('Configuring...');
   
   if (res.type === 'chat') {
-    // TODO: later
+    if (res.id === 'all') return mes.edit('You cannot choose all server for chatting');
+    
+    const cache = instance.database.getFromChannelID(channelID);
+    if (cache?.filter(c => c.serverID === res.id)) return mes.edit(`You have already configured for this server ID: ${res.id}`);
+    
+    const webhooks = await mes.channel.fetchWebhooks();
+    
+    if (!webhooks?.filter(w => w.owner === instance.client.user).first()) {
+      const webhook = await mes.channel.createWebhook('Minecraft');
+      instance.taskManager.addWebhook(webhook, res.id);
+    }
+    instance.database.addChannelCache(channelID, res.id);
+    mes.edit('Succesfully configured!');
   } else if (res.type === 'status') {
     await mes.channel.updateOverwrite(message.guild.roles.everyone, { deny: 'SEND_MESSAGES' });
     instance.database.addStatusMesCache(channelID, mes.id);
