@@ -4,7 +4,7 @@ const readdirPromise          = require('util').promisify(readdir);
 
 const socketManager       = require('./websocketManager');
 const commandParser       = require('./modules/commandParser');
-const taskManager         = require('./modules/taskManager');
+const taskManager         = require('./taskManager');
 const reactionController  = require('./modules/reactionController');
 
 module.exports = class MinecraftIntegrations {

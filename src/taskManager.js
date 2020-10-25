@@ -1,4 +1,4 @@
-const webhookManager = require('../webhookManager');
+const webhookManager = require('./webhookManager');
 
 module.exports = class TaskManager {
   constructor(instance) {
