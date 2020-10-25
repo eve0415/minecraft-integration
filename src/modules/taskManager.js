@@ -2,9 +2,9 @@ const webhookManager = require('../webhookManager');
 
 module.exports = class TaskManager {
   constructor(instance) {
-    this.instance           = instance;
-    this.client             = instance.client;
-    this.database           = instance.database;
+    this.instance = instance;
+    this.client   = instance.client;
+    this.database = instance.database;
     
     this.statusMessage  = new Array;
     this.webhooks       = new Array;
