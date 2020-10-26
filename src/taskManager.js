@@ -65,7 +65,8 @@ module.exports = class TaskManager {
         if (data.Page) {
           const [now, max] = data.Page.split('/');
           mes.edit(this.instance.reactionController.getPage(now));
-          if (max !== 1 && mes.reactions.cache.size === 0) this.instance.reactionController.doReactions;
+          await mes.fetch(true); // Needs to update cache
+          if (max !== 1 && mes.reactions.cache.size === 0) this.instance.reactionController.doReactions(mes);
         } else {
           mes.edit(this.instance.statusPage.getPage(data.ID));
         }
