@@ -5,7 +5,6 @@ module.exports = class webhookManager {
   }
   
   send(message, name, uuid) {
-    console.log(message);
     this.webhook.send(message, {
       username: name,
       avatarURL: uuid ? `https://crafatar.com/avatars/${uuid}` : null,
