@@ -1,1 +1,1 @@
-module.exports = (client, info) => client.warn(info);
+module.exports = (instance, info) => instance.logger.warn(info);

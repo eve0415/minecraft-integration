@@ -1,26 +1,33 @@
-const { statSync, mkdirSync } = require("fs");
+const { statSync, mkdirSync } = require('fs');
 
 try {
-	statSync("./data");
+  statSync('./data');
 } catch {
-	mkdirSync("./data");
+  mkdirSync('./data');
 }
 
-const db = require("better-sqlite3")("data/minecraft.sqlite3");
+const db = require('better-sqlite3')('data/minecraft.sqlite3');
 
-db.prepare("CREATE TABLE IF NOT EXISTS channel (channelUse TEXT NOT NULL, channelID TEXT NOT NULL, messageID TEXT)").run();
-db.prepare("CREATE TABLE IF NOT EXISTS player (userId TEXT NOT NULL, minecraftID TEXT NOT NULL)").run();
+db.prepare('CREATE TABLE IF NOT EXISTS server (ID numbers NOT NULL, type TEXT NOT NULL, name TEXT)').run();
+db.prepare('CREATE TABLE IF NOT EXISTS status (channelID TEXT NOT NULL, messageID TEXT NOT NULL)').run();
+db.prepare('CREATE TABLE IF NOT EXISTS chat (channelID TEXT NOT NULL, serverID numbers NOT NULL)').run();
 
-const channel = require("./channel");
-const player = require("./player");
+const status = require('./status');
+const chat = require('./chat');
+const server = require('./server');
 
 module.exports = {
-	getFromID: channel.getFromID,
-	getFromUSE: channel.getFromUSE,
-	channelUpdate: channel.update,
-	channelRemove: channel.remove,
-	
-	userAdd: player.add,
-	getFromDiscord: player.getFromDiscord,
-	getFromMinecraft: player.getFromMinecraft,	
+  addStatusMesCache:    status.addMessageCache,
+  getStatusMesCache:    status.getMessageCache,
+  removeStatusMessage:  status.removeMessage,
+  
+  addChannelCache:    chat.addCache,
+  getFromChannelID:   chat.getFromID,
+  getAllChannelCache: chat.getAll,
+  removeChannelCache: chat.removeCache,
+  
+  getFromPort:  server.getFromID,
+  getAllServer: server.getAllServer,
+  updateServer: server.updateServer,
+  removeServer: server.remove,
 };

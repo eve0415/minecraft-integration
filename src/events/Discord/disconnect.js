@@ -1,1 +1,1 @@
-module.exports = async () => client.warn("Bot is disconnecting...");
+module.exports = instance => instance.logger.warn('Bot is disconnecting...');

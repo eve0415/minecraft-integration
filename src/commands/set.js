@@ -1,59 +1,62 @@
-const set = async (message, args) => {
-	const role = message.guild.members.cache.get(client.user.id).roles.cache.filter(r => r.managed);
-	
-	if (args[0] === "status") {
-		const mes = await message.channel.send("設定しています...");
-		
-		await message.channel.updateOverwrite(role.first(), { allow: ["SEND_MESSAGES", "VIEW_CHANNEL"] });
-		await message.channel.updateOverwrite(message.guild.roles.everyone, { deny: "SEND_MESSAGES" });
-		
-		mes.edit("", client.embeds.new).then(() => message.delete());
-		
-		client.database.channelUpdate("status", mes.channel.id, mes.id);
-		
-		if (!client.socketManager.isConnected()) {
-			mes.edit(client.embeds.offline);
-		}
-	} else if (args[0] === "chat") {
-		client.database.channelUpdate("chat", message.channel.id);
-		
-		const webhooks = await message.channel.fetchWebhooks();
-		
-		const webhook = webhooks.filter((w) => w.owner === client.user);
-		
-		if (webhook) {
-			client.socketManager.fetchWebhook();
-			message.channel.send("設定しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
-			if (!client.socketManager.isConnected) client.disableChat();
-		} else {
-			message.channel
-				.createWebhook("Minecraft", { avatar: "https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/img/iso-grassblock.png" })
-				.then(async () => {
-					await message.channel.updateOverwrite(role.first(), { allow: ["SEND_MESSAGES", "VIEW_CHANNEL"] });
-					await message.channel.updateOverwrite(message.guild.roles.everyone, { deny: "SEND_MESSAGES" });
-					
-					client.socketManager.fetchWebhook();
-					
-					message.channel.send("設定しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
-					
-					if (!client.socketManager.isConnected) client.disableChat();
-				})
-				.catch(() => message.channel.send("設定に失敗しました").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete())));
-		}
-	} else {
-		message.channel.send("不明な引数です").then((m) => m.delete({ timeout: 10000 }).then(() => message.delete()));
-	}
+const set = async (instance, message, res) => {
+  const channelID = res.channel ? res.channel.replace('<#').replace('>') : message.channel.id;
+  const mes = await message.guild.channels.cache.get(channelID).send('Configuring...');
+  
+  if (res.type === 'chat') {
+    if (res.id === 'all') return mes.edit('You cannot choose all server for chatting');
+    
+    const cache = instance.database.getFromChannelID(channelID);
+    if (cache?.filter(c => c.serverID === res.id)) return mes.edit(`You have already configured for this server ID: ${res.id}`);
+    
+    const webhooks = await mes.channel.fetchWebhooks();
+    
+    if (!webhooks?.filter(w => w.owner === instance.client.user).first()) {
+      const webhook = await mes.channel.createWebhook('Minecraft');
+      instance.taskManager.addWebhook(webhook, res.id);
+    }
+    instance.database.addChannelCache(channelID, res.id);
+    mes.edit('Succesfully configured!');
+  } else if (res.type === 'status') {
+    await mes.channel.updateOverwrite(message.guild.roles.everyone, { deny: 'SEND_MESSAGES' });
+    instance.database.addStatusMesCache(channelID, mes.id);
+    
+    if (res.id !== 'all') {
+      mes.edit('', instance.statusPage.getPage(res.id));
+    } else {
+      await mes.edit('', instance.reactionController.getPage(1));
+      instance.reactionController.init(mes);
+    }
+    instance.taskManager.addCache(mes);
+  }
 };
 
 module.exports = {
-	name: "set",
-	aliases: ["s"],
-	description: "チャンネル設定",
-	usage: "set <status | chat>",
-	owner: true,
-	args: {
-		need: true,
-		max: 1,
-	},
-	run: set,
+  name: 'set',
+  cmdOptions: {
+    alias: ['s'],
+    description: 'チャンネル設定',
+    usage: 'set <status | chat>',
+  },
+  options: [
+    {
+      name: 'type',
+      type: 'string',
+      opt: { 
+        alias: ['t'],
+        required: true,
+      },
+    },
+    { 
+      name: 'channel',
+      type: 'channel',
+      opt: { alias: ['c'] },
+    },
+    {
+      name: 'id',
+      type: 'int',
+      opt: { required: true },
+    },
+  ],
+  owner: true,
+  run: set,
 };
