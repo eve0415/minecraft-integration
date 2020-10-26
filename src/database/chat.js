@@ -9,7 +9,7 @@ exports.addCache = (chID, serverID) => {
 };
 
 exports.getFromID = chID => {
-  return db.prepare('SELECT * FROM chat WHERE channelID = ?').get(chID);
+  return db.prepare('SELECT * FROM chat WHERE channelID = ?').all(chID);
 };
 
 exports.getAll = () => {
