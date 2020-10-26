@@ -37,7 +37,7 @@ module.exports = class socketManager extends EventEmitter {
     sock.on('STOPPING', (data) => this.emit('status', 'stop', data));
     sock.on('STATUS', (data) => this.emit('status', 'online', data));
     
-    sock.on('CHAT', (data) => this.emit('event', 'chat', data));
+    sock.on('CHAT', (data) => this.instance.taskManager.sendWebhook(data));
     sock.on('ADVANCEMENT', (data) => this.emit('event', 'advancement', data));
     
     sock.on('ROOM', (roomID) => sock.join(roomID));

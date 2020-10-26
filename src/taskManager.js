@@ -6,6 +6,8 @@ module.exports = class TaskManager {
     this.client   = instance.client;
     this.database = instance.database;
     
+    this.ready = false;
+    
     this.statusMessage  = new Array;
     this.webhooks       = new Array;
   }
@@ -52,6 +54,7 @@ module.exports = class TaskManager {
     }
     
     this.instance.logger.info('Caching webhook completed!');
+    this.ready = true;
   }
   
   refreshStatus() {
@@ -95,6 +98,15 @@ module.exports = class TaskManager {
     reaction.message
       .edit(this.instance.reactionController.getPage(page))
       .then(() => reaction.users.remove(user));
+  }
+  
+  sendWebhook(data) {
+    if (!this.ready) return;
+    
+    const filtered = this.webhooks.filter(webhook => webhook.id === data.port);
+    filtered.forEach(webhook => {
+      data.UUID.startsWith('00000000') ? webhook.send(data.message, data.name) : webhook.send(data.message, data.name, data.UUID);
+    });
   }
 };
 

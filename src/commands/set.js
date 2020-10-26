@@ -6,7 +6,7 @@ const set = async (instance, message, res) => {
     if (res.id === 'all') return mes.edit('You cannot choose all server for chatting');
     
     const cache = instance.database.getFromChannelID(channelID);
-    if (cache?.filter(c => c.serverID === res.id)) return mes.edit(`You have already configured for this server ID: ${res.id}`);
+    if (cache?.serverID === res.id) return mes.edit(`You have already configured for this server ID: ${res.id}`);
     
     const webhooks = await mes.channel.fetchWebhooks();
     
