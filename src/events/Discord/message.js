@@ -2,6 +2,9 @@ module.exports = async (instance, message) => {
   if (message.author === instance.client.user) return;
   if (message.author.bot) return;
   
+  const info = instance.database.getFromChannelID(message.channel.id);
+  if (info) return instance.socketManager.send(info.serverID, message);
+  
   const result = instance.parser.parse(message.content);
   
   const cmd = instance.commands.get(result.command);

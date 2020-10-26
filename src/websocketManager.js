@@ -15,6 +15,19 @@ module.exports = class socketManager extends EventEmitter {
     this._init();
   }
   
+  send(id, message) {
+    io.in(id).emit('chat', { 
+      name:     message.author.username,
+      UUID:     null,
+      message:  message.content
+        ? message.attachments.size
+          ? `${message.content} (Click this message to open the URL)`
+          : message.content
+        : 'Click this message to open the URL',
+      URL:      message.attachments.size ? message.url : null,
+    });
+  }
+  
   connectionEvent() {
     io.on('connection', sock => {
       this.logger.info('Succesfully connected to Minecraft Server');
