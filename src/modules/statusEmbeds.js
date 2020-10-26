@@ -15,8 +15,8 @@ module.exports = {
     .setFooter('ID: 0 Page: 0/0')
     .setTimestamp(new Date),
     
-  online: (data) => new MessageEmbed()
-    .setTitle('STATUS')
+  online: (name, data) => new MessageEmbed()
+    .setTitle(name ?? data.platform)
     .setColor('BLUE')
     .addField('Status', 'Online', true)
     .addField('\u200B', '\u200B', true)
@@ -31,8 +31,8 @@ module.exports = {
     .addField('Free Memory', data.freeMemory, true)
     .setTimestamp(new Date),
         
-  start: (data) => new MessageEmbed()
-    .setTitle('STATUS')
+  start: (name, data) => new MessageEmbed()
+    .setTitle(name ?? data.platform)
     .setColor('YELLOW')
     .addField('Status', 'Preparing...', true)
     .addField('\u200B', '\u200B', true)
@@ -47,8 +47,8 @@ module.exports = {
     .addField('Free Memory', data.freeMemory, true)
     .setTimestamp(new Date),
         
-  stop: (data) => new MessageEmbed()
-    .setTitle('STATUS')
+  stop: (name, data) => new MessageEmbed()
+    .setTitle(name ?? data.platform)
     .setColor('RED')
     .addField('Status', 'Shutting down...', true)
     .addField('\u200B', '\u200B', true)
@@ -63,8 +63,8 @@ module.exports = {
     .addField('Free Memory', data.freeMemory, true)
     .setTimestamp(new Date),
         
-  offline: new MessageEmbed()
-    .setTitle('STATUS')
+  offline: (name) => new MessageEmbed()
+    .setTitle(name)
     .setColor('BLACK')
     .setDescription('Offline')
     .setTimestamp(new Date),

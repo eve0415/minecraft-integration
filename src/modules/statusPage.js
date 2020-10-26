@@ -6,9 +6,9 @@ class StatusPage {
     this.noPage = statusEmbeds.fetching;
   }
   
-  addStatus(id) {
+  addStatus(id, type) {
     if (this.pages.find(page => page.id === id)) return new Error('Conflict id, trying to add status page');
-    this.pages.push(new Status(id));
+    this.pages.push(new Status(id, type));
     this.sortPages();
   }
   
@@ -42,14 +42,14 @@ class StatusPage {
 }
 
 class Status {
-  constructor(id) {
+  constructor(id, type) {
     this.id = id;
-    this.name = null;
-    this.embed = statusEmbeds.offline;
+    this.name = type ?? null;
+    this.embed = statusEmbeds.offline(this.name);
   }
   
   updateStatus(status, data) {
-    this.embed = status === 'offline' ? statusEmbeds[status] : statusEmbeds[status](data);
+    this.embed = status === 'offline' ? statusEmbeds[status](this.name) : statusEmbeds[status](this.name, data);
   }
   
   setName(name) {

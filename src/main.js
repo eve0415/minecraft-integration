@@ -61,7 +61,7 @@ module.exports = class MinecraftIntegrations {
   async cacheStatusPage() {
     const cache = this.database.getAllServer();
     cache.forEach((server) => {
-      this.statusPage.addStatus(server.ID);
+      this.statusPage.addStatus(server.ID, server.type);
       if (server.name) this.statusPage.setName(server.ID, server.name);
     });
     // We have to load this after the pages for reactionController are initialized.
