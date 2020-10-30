@@ -53,6 +53,8 @@ module.exports = class socketManager extends EventEmitter {
     sock.on('CHAT', (data) => this.instance.taskManager.sendWebhook(data));
     sock.on('ADVANCEMENT', (data) => this.emit('event', 'advancement', data));
     
+    sock.on('SERVERINFO', (data) => this.emit('info', data));
+    
     sock.on('ROOM', (roomID) => sock.join(roomID));
   }
   

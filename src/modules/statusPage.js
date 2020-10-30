@@ -54,6 +54,7 @@ class Status {
   
   setName(name) {
     this.name = name;
+    this.embed.setTitle(name);
   }
 }
 
