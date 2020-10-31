@@ -72,8 +72,6 @@ module.exports = class TaskManager {
         }
       } catch(e) {
         this.instance.logger.error(e);
-        this.database.removeStatusMessage(mes.id);
-        this.statusMessage = this.statusMessage.filter(m => m.id !== mes.id);
       }
     });
   }
