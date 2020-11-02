@@ -29,8 +29,10 @@ module.exports = {
     .addField('Total Memory', data.totalMemory, true)
     .addField('Used Memory', data.usedMemory, true)
     .addField('Free Memory', data.freeMemory, true)
+    .addField('\u200B', '\u200B')
+    .addField('Uptime', getReadableTime(data.uptime))
     .setTimestamp(new Date),
-        
+    
   start: (name, data) => new MessageEmbed()
     .setTitle(name ?? data.platform)
     .setColor('YELLOW')
@@ -45,8 +47,10 @@ module.exports = {
     .addField('Total Memory', data.totalMemory, true)
     .addField('Used Memory', data.usedMemory, true)
     .addField('Free Memory', data.freeMemory, true)
+    .addField('\u200B', '\u200B')
+    .addField('Uptime', getReadableTime(data.uptime))
     .setTimestamp(new Date),
-        
+    
   stop: (name, data) => new MessageEmbed()
     .setTitle(name ?? data.platform)
     .setColor('RED')
@@ -61,11 +65,18 @@ module.exports = {
     .addField('Total Memory', data.totalMemory, true)
     .addField('Used Memory', data.usedMemory, true)
     .addField('Free Memory', data.freeMemory, true)
+    .addField('\u200B', '\u200B')
+    .addField('Uptime', getReadableTime(data.uptime))
     .setTimestamp(new Date),
-        
+    
   offline: (name) => new MessageEmbed()
     .setTitle(name)
     .setColor('BLACK')
     .setDescription('Offline')
     .setTimestamp(new Date),
+};
+
+const getReadableTime = data => {
+  const [day, hour, minute, second] = data.split(':');
+  return `${day}d ${hour}h ${minute}m ${second}s`;
 };
