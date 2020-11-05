@@ -34,7 +34,7 @@ module.exports = {
   name: 'set',
   cmdOptions: {
     alias: ['s'],
-    description: 'チャンネル設定',
+    description: 'Set Channel',
     usage: 'set <status | chat>',
   },
   options: [
