@@ -77,7 +77,7 @@ module.exports = class MinecraftIntegrations {
     this.logger.info('Starting...');
     require('./helpers/process')(this);
     
-    this.bot            = new Client();
+    this.bot            = new Client({ partials: ['GUILD_MEMBER'] });
     this.commands       = new Collection();
     this.socketManager  = new socketManager(this);
     this.taskManager    = new taskManager(this);
