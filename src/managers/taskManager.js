@@ -19,9 +19,11 @@ module.exports = class TaskManager {
   }
   
   async cacheStatusMessage() {
-    this.instance.logger.info('Caching necessarily message');
+    this.instance.logger.info('Trying to cache necessarily message');
     
     const cache = this.database.getStatusMesCache();
+    if (!cache.length) return this.instance.logger.info('No message to cache!');
+    
     for (const c of cache) {
       await this.client.channels.cache.get(c.channelID).messages.fetch(c.messageID)
         .then(mes => {
@@ -34,14 +36,16 @@ module.exports = class TaskManager {
         .catch(() => this.database.removeStatusMessage(c.messageID));
     }
     
-    this.instance.logger.info('Caching message completed!');
+    this.instance.logger.info('Succesfully cached messages.');
     this.refreshStatus();
   }
   
   async cacheWebhooks() {
-    this.instance.logger.info('Caching all webhooks');
+    this.instance.logger.info('Trying to cache all webhook datas');
     
     const cache = this.database.getAllChannelCache();
+    if (!cache.length) return this.instance.logger.info('No webhook to cache!');
+    
     for (const c of cache) {
       await this.client.channels.cache.get(c.channelID).fetchWebhooks()
         .then(webhooks => {
@@ -53,7 +57,7 @@ module.exports = class TaskManager {
         .catch(() => this.database.removeChannelCache(c.channelID));
     }
     
-    this.instance.logger.info('Caching webhook completed!');
+    this.instance.logger.info('Successfully cached webhook datas.');
     this.ready = true;
   }
   
