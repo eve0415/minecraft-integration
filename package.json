@@ -27,20 +27,21 @@
   "homepage": "https://github.com/eve0415/minecraft-integration#readme",
   "dependencies": {
     "better-sqlite3": "^7.1.1",
-    "bufferutil": "^4.0.2",
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
-    "erlpack": "github:discordapp/erlpack",
     "log4js": "^6.3.0",
-    "net": "^1.0.2",
     "promisify": "0.0.3",
     "socket.io": "^3.0.0",
-    "systeminformation": "^4.28.1",
-    "utf-8-validate": "^5.0.3",
-    "zlib-sync": "^0.1.7"
+    "systeminformation": "^4.28.1"
   },
   "devDependencies": {
     "eslint": "^7.13.0",
     "nodemon": "^2.0.6"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.2",
+    "erlpack": "github:discord/erlpack",
+    "utf-8-validate": "^5.0.3",
+    "zlib-sync": "^0.1.7"
   }
 }
