@@ -27,6 +27,8 @@ const set = async (instance, message, res) => {
       instance.reactionController.init(mes);
     }
     instance.taskManager.addCache(mes);
+  } else {
+    mes.edit('Nothing to configure...');
   }
 };
 
@@ -35,7 +37,7 @@ module.exports = {
   cmdOptions: {
     alias: ['s'],
     description: 'Set Channel',
-    usage: 'set <status | chat>',
+    usage: 'set <status|chat>',
   },
   options: [
     {
