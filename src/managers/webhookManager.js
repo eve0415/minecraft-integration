@@ -1,7 +1,7 @@
 module.exports = class webhookManager {
   constructor(webhook, serverID) {
-    this.webhook        = webhook;
-    this.id             = Number(serverID);
+    this.webhook = webhook;
+    this.id      = Number(serverID);
   }
   
   send(message, name, uuid) {
