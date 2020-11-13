@@ -1,47 +1,47 @@
 {
-  "name": "minecraft-integration",
-  "version": "1.0.0",
-  "description": "Connect to Minecraft Server via Web socket",
-  "type": "commonjs",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon -r dotenv/config index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/eve0415/minecraft-integration.git"
-  },
-  "keywords": [
-    "nodejs",
-    "node.js",
-    "discord",
-    "discordjs",
-    "discord-bot",
-    "minecraft"
-  ],
-  "author": "eve0415",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/eve0415/minecraft-integration/issues"
-  },
-  "homepage": "https://github.com/eve0415/minecraft-integration#readme",
-  "dependencies": {
-    "better-sqlite3": "^7.1.1",
-    "discord.js": "^12.4.1",
-    "dotenv": "^8.2.0",
-    "log4js": "^6.3.0",
-    "promisify": "0.0.3",
-    "socket.io": "^2.3.0",
-    "systeminformation": "^4.28.1"
-  },
-  "devDependencies": {
-    "eslint": "^7.13.0",
-    "nodemon": "^2.0.6"
-  },
-  "optionalDependencies": {
-    "bufferutil": "^4.0.2",
-    "erlpack": "github:discord/erlpack",
-    "utf-8-validate": "^5.0.3",
-    "zlib-sync": "^0.1.7"
-  }
+    "name": "minecraft-integration",
+    "version": "1.0.0",
+    "description": "Connect to Minecraft Server via Web socket",
+    "type": "commonjs",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon -r dotenv/config index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/eve0415/minecraft-integration.git"
+    },
+    "keywords": [
+        "nodejs",
+        "node.js",
+        "discord",
+        "discordjs",
+        "discord-bot",
+        "minecraft"
+    ],
+    "author": "eve0415",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/eve0415/minecraft-integration/issues"
+    },
+    "homepage": "https://github.com/eve0415/minecraft-integration#readme",
+    "dependencies": {
+        "better-sqlite3": "^7.1.1",
+        "discord.js": "^12.4.1",
+        "dotenv": "^8.2.0",
+        "log4js": "^6.3.0",
+        "promisify": "0.0.3",
+        "socket.io": "^2.3.0",
+        "systeminformation": "^4.30.0"
+    },
+    "devDependencies": {
+        "eslint": "^7.13.0",
+        "nodemon": "^2.0.6"
+    },
+    "optionalDependencies": {
+        "bufferutil": "^4.0.2",
+        "erlpack": "github:discord/erlpack",
+        "utf-8-validate": "^5.0.3",
+        "zlib-sync": "^0.1.7"
+    }
 }
