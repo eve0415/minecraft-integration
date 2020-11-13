@@ -15,4 +15,3 @@ exports.getMessageCache = () => {
 exports.removeMessage = mesID => {
   db.prepare('DELETE FROM status WHERE messageID = ?').run(mesID);
 };
-
