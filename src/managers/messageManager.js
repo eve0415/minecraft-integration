@@ -1,4 +1,4 @@
-module.exports = class webhookManager {
+const webhookManager = class webhookManager {
   constructor(webhook, serverID) {
     this.webhook = webhook;
     this.id      = Number(serverID);
@@ -12,10 +12,10 @@ module.exports = class webhookManager {
   }
 };
 
-module.exports = class minecraftLogManager {
-  constructor(channel, serverID) {
-    this.channel = channel;
+const minecraftLogManager = class minecraftLogManager {
+  constructor(serverID, channel) {
     this.id      = serverID;
+    this.channel = channel;
   }
   
   send(message) {
@@ -23,3 +23,4 @@ module.exports = class minecraftLogManager {
   }
 };
 
+module.exports = { webhookManager, minecraftLogManager };
