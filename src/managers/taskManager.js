@@ -1,4 +1,4 @@
-const webhookManager = require('./webhookManager');
+const { webhookManager, minecraftLogManager } = require('./messageManager');
 
 module.exports = class TaskManager {
   constructor(instance) {

@@ -11,3 +11,15 @@ module.exports = class webhookManager {
     });
   }
 };
+
+module.exports = class minecraftLogManager {
+  constructor(channel, serverID) {
+    this.channel = channel;
+    this.id      = serverID;
+  }
+  
+  send(message) {
+    this.channel.send(message);
+  }
+};
+
