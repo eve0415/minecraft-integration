@@ -55,6 +55,8 @@ module.exports = class socketManager extends EventEmitter {
     
     sock.on('SERVERINFO', (data) => this.emit('info', data));
     
+    sock.on('LOG', (data) => this.emit('log', data));
+    
     sock.on('ROOM', (roomID) => sock.join(roomID));
   }
   
