@@ -10,12 +10,14 @@ module.exports = class TaskManager {
     
     this.statusMessage  = new Array;
     this.webhooks       = new Array;
+    this.logChannels    = new Array;
   }
   
   reloadCache() {
     if (!this.client.readyAt) throw new Error('Bot is not ready');
     this.cacheStatusMessage();
     this.cacheWebhooks();
+    this.cacheChannelsForLog();
   }
   
   async cacheStatusMessage() {
@@ -38,6 +40,25 @@ module.exports = class TaskManager {
     
     this.instance.logger.info('Succesfully cached messages.');
     this.refreshStatus();
+  }
+  
+  async cacheChannelsForLog() {
+    this.instance.logger.info('Trying to cache all channels for logging');
+    
+    const cache = this.database.getAllChannelLog();
+    if (!cache.length) return this.instance.logger.info('No message to cache!');
+    
+    for (const c of cache) {
+      const channel = await this.client.channels.cache.get(c.channelID);
+      if (!channel) {
+        // Probably user have deleted this channel or have no permission to use anymore :(
+        // Remove from cache database
+        this.database.removeChannelLog(c.channelID);
+      }
+      
+      this.logChannels.push(new minecraftLogManager(c.serverID, channel));
+    }
+    this.instance.logger.info('Succesfully cached channels to send logs.');
   }
   
   async cacheWebhooks() {
@@ -109,6 +130,13 @@ module.exports = class TaskManager {
     const filtered = this.webhooks.filter(webhook => webhook.id === data.port);
     filtered.forEach(webhook => {
       data.UUID.startsWith('00000000') ? webhook.send(data.message, data.name) : webhook.send(data.message, data.name, data.UUID);
+    });
+  }
+  
+  sendLog(id, embed) {
+    const filtered = this.logChannels.filter(data => data.id === id || data.id === 0);
+    filtered.forEach(data => {
+      data.channel.send(embed);
     });
   }
 };
