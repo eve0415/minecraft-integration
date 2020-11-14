@@ -37,6 +37,8 @@ const set = async (instance, message, res) => {
       } else {
         instance.database.removeChannelLog(channelID);
         instance.database.addChannelLog(channelID, res.id === 'all' ? 0 : res.id);
+        instance.taskManager.removeLogChannel(channelID);
+        instance.taskManager.addLogChannel(mes.channel, res.id === 'all' ? 0 : res.id);
       }
     } else {
       if (res.id === 'all') instance.database.removeChannelLog(channelID);

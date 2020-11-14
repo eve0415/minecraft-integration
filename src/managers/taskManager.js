@@ -109,6 +109,14 @@ module.exports = class TaskManager {
     this.webhooks.push(new webhookManager(webhook, port));
   }
   
+  addLogChannel(channel, port) {
+    this.logChannels.push(new minecraftLogManager(port, channel));
+  }
+  
+  removeLogChannel(channelID) {
+    this.logChannels = this.logChannels.filter(data => data.id !== channelID);
+  }
+  
   changePage(reaction, user) {
     if (!(reaction.emoji.name === '◀️' || reaction.emoji.name === '▶️')) return reaction.users.remove(user);
     
