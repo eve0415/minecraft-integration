@@ -31,6 +31,7 @@ module.exports = {
   getFromPort : server.getFromID,
   getAllServer: server.getAllServer,
   updateServer: server.updateServer,
+  setName     : server.setName,
   removeServer: server.remove,
   
   addChannelLog       : log.addCache,

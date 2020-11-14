@@ -26,6 +26,10 @@ exports.updateServer = (port, type, instance) => {
     : addServer(port, type, instance);
 };
 
+exports.setName = (port, name) => {
+  db.prepare('UPDATE server SET name = ? WHERE ID = ?').run(name, port);
+};
+
 exports.remove = port => {
   db.prepare('DELETE FROM server WHERE ID = ?').run(port);
 };
