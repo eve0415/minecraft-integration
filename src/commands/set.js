@@ -42,6 +42,7 @@ const set = async (instance, message, res) => {
       if (res.id === 'all') instance.database.removeChannelLog(channelID);
       instance.database.addChannelLog(channelID, res.id === 'all' ? 0 : res.id);
       mes.edit('Succesfully configured!');
+      mes.channel.send('Please note that the logs may contains *vulnerable* infomations.');
     }
     
   } else {
