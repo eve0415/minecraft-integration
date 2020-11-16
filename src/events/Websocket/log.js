@@ -38,8 +38,25 @@ module.exports = async (instance, data) => {
       embed
         .setColor('RED')
         .setTitle(`${data.name} was kicked from server ${serverName}`)
-        .setDescription(`\`${data.name}(${data.ip})\` was kicked from server because of \`${data.reason}\`.`)
+        .setDescription(`\`${data.name}(${data.ip})\` was kicked from server because of \`${data.reason}\``)
         .addField('Reason', data.reason);
+      break;
+      
+    case 'KICKEDFROM':
+      // eslint-disable-next-line no-case-declarations
+      let desc = `Failed to forward \`${data.name}(${data.ip})\` to server because of \`${data.reason}\``;
+      if (data.fulfill === 'DisconnectPlayer') {
+        desc += '\nDisconnecting from server.';
+      } else if (data.fulfill === 'RedirectPlayer') {
+        desc += '\nForwarding to another server.';
+      }
+      
+      embed
+        .setColor('RED')
+        .setTitle(`Failed to forward ${data.name} to server ${data.fromServer}`)
+        .setDescription(desc)
+        .addField('Reason', data.reason)
+        .addField('Fulfill', data.fulfill);
       break;
       
     case 'PRECONNECT':
