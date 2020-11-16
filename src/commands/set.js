@@ -14,7 +14,7 @@ const set = async (instance, message, res) => {
     }
     instance.taskManager.addCache(mes);
   } else if (res.type === 'chat') {
-    if (res.id === 'all') return mes.edit('You cannot choose all server for chatting');
+    if (res.id === 'all') return mes.edit('You cannot choose `all` server for chatting');
     
     const cache = instance.database.getFromChannelID(channelID);
     if (cache?.filter(c => c.serverID === res.id).length) return mes.edit(`You have already configured for this server ID: ${res.id}`);
@@ -23,13 +23,16 @@ const set = async (instance, message, res) => {
     
     if (!webhooks?.filter(w => w.owner === instance.client.user).first()) {
       const webhook = await mes.channel.createWebhook('Minecraft');
-      instance.taskManager.addWebhook(webhook, res.id);
+      instance.taskManager.addWebhookForChat(res.id, webhook);
     }
     instance.database.addChannelCache(channelID, res.id);
     mes.edit('Succesfully configured!');
   } else if (res.type === 'log') {
     const cache = instance.database.getChannelLogFromID(channelID);
     const tmp = cache?.filter(c => c.serverID == res.id);
+    const webhooks = await mes.channel.fetchWebhooks();
+    
+    const webhook = webhooks?.filter(w => w.owner === instance.client.user).first() ?? await mes.channel.createWebhook('Minecraft');
     
     if (tmp.length || cache?.filter(c => c.serverID === 0).length) {
       if (!(tmp.length && res.id === 'all')) {
@@ -38,15 +41,16 @@ const set = async (instance, message, res) => {
         instance.database.removeChannelLog(channelID);
         instance.database.addChannelLog(channelID, res.id === 'all' ? 0 : res.id);
         instance.taskManager.removeLogChannel(channelID);
-        instance.taskManager.addLogChannel(mes.channel, res.id === 'all' ? 0 : res.id);
+        instance.taskManager.addWebhookForLog(mes.channel, res.id === 'all' ? 0 : res.id, webhook);
       }
     } else {
       if (res.id === 'all') instance.database.removeChannelLog(channelID);
       instance.database.addChannelLog(channelID, res.id === 'all' ? 0 : res.id);
+      instance.taskManager.removeLogChannel(channelID);
+      instance.taskManager.addWebhookForLog(mes.channel, res.id === 'all' ? 0 : res.id, webhook);
       mes.edit('Succesfully configured!');
       mes.channel.send('Please note that the logs may contains *vulnerable* infomations.');
     }
-    
   } else {
     mes.edit('Nothing to configure...');
   }

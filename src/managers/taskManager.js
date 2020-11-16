@@ -1,4 +1,4 @@
-const { webhookManager, minecraftLogManager } = require('./messageManager');
+const webhookManager = require('./webhookManager');
 
 module.exports = class TaskManager {
   constructor(instance) {
@@ -16,18 +16,18 @@ module.exports = class TaskManager {
   reloadCache() {
     if (!this.client.readyAt) throw new Error('Bot is not ready');
     this.cacheStatusMessage();
-    this.cacheWebhooks();
-    this.cacheChannelsForLog();
+    this.cacheWebhooksForChat();
+    this.cacheWebhooksForLog();
   }
   
-  async cacheStatusMessage() {
+  cacheStatusMessage() {
     this.instance.logger.info('Trying to cache necessarily message');
     
     const cache = this.database.getStatusMesCache();
     if (!cache.length) return this.instance.logger.info('No message to cache!');
     
     for (const c of cache) {
-      await this.client.channels.cache.get(c.channelID).messages.fetch(c.messageID)
+      this.client.channels.cache.get(c.channelID).messages.fetch(c.messageID)
         .then(mes => {
           const data = embedParse(mes);
           if (data.Page) this.instance.reactionController.init(mes);
@@ -42,43 +42,43 @@ module.exports = class TaskManager {
     this.refreshStatus();
   }
   
-  async cacheChannelsForLog() {
-    this.instance.logger.info('Trying to cache all channels for logging');
+  cacheWebhooksForLog() {
+    this.instance.logger.info('Trying to cache all webhooks for logging');
     
     const cache = this.database.getAllChannelLog();
-    if (!cache.length) return this.instance.logger.info('No message to cache!');
+    if (!cache.length) return this.instance.logger.info('No webhooks to cache for logging!');
     
     for (const c of cache) {
-      const channel = await this.client.channels.cache.get(c.channelID);
-      if (!channel) {
-        // Probably user have deleted this channel or have no permission to use anymore :(
-        // Remove from cache database
-        this.database.removeChannelLog(c.channelID);
-      }
-      
-      this.logChannels.push(new minecraftLogManager(c.serverID, channel));
-    }
-    this.instance.logger.info('Succesfully cached channels to send logs.');
-  }
-  
-  async cacheWebhooks() {
-    this.instance.logger.info('Trying to cache all webhook datas');
-    
-    const cache = this.database.getAllChannelCache();
-    if (!cache.length) return this.instance.logger.info('No webhook to cache!');
-    
-    for (const c of cache) {
-      await this.client.channels.cache.get(c.channelID).fetchWebhooks()
+      this.client.channels.cache.get(c.channelID).fetchWebhooks()
         .then(webhooks => {
           const webhook = webhooks.filter(w => w.owner === this.instance.client.user).first();
-          this.webhooks.push(new webhookManager(webhook, c.serverID));
+          this.logChannels.push(new webhookManager(c.serverID, webhook));
+        })
+        // Probably user have deleted this channel / webhooks or have no permission to fetch anymore :(
+        // Remove from cache database
+        .catch(() => this.database.removeChannelCache(c.channelID));
+    }
+    this.instance.logger.info('Succesfully cached webhook to send logs.');
+  }
+  
+  cacheWebhooksForChat() {
+    this.instance.logger.info('Trying to cache all webhook for chatting');
+    
+    const cache = this.database.getAllChannelCache();
+    if (!cache.length) return this.instance.logger.info('No webhooks to cache for chatting!');
+    
+    for (const c of cache) {
+      this.client.channels.cache.get(c.channelID).fetchWebhooks()
+        .then(webhooks => {
+          const webhook = webhooks.filter(w => w.owner === this.instance.client.user).first();
+          this.webhooks.push(new webhookManager(c.serverID, webhook));
         })
         // Probably user have deleted this channel / webhooks or have no permission to fetch anymore :(
         // Remove from cache database
         .catch(() => this.database.removeChannelCache(c.channelID));
     }
     
-    this.instance.logger.info('Successfully cached webhook datas.');
+    this.instance.logger.info('Successfully cached webhook for chatting.');
     this.ready = true;
   }
   
@@ -105,12 +105,12 @@ module.exports = class TaskManager {
     this.statusMessage.push(mes);
   }
   
-  addWebhook(webhook, port) {
-    this.webhooks.push(new webhookManager(webhook, port));
+  addWebhookForChat(port, webhook) {
+    this.webhooks.push(new webhookManager(port, webhook));
   }
   
-  addLogChannel(channel, port) {
-    this.logChannels.push(new minecraftLogManager(port, channel));
+  addWebhookForLog(port, webhook) {
+    this.logChannels.push(new webhookManager(port, webhook));
   }
   
   removeLogChannel(channelID) {
@@ -137,14 +137,14 @@ module.exports = class TaskManager {
     
     const filtered = this.webhooks.filter(webhook => webhook.id === data.port);
     filtered.forEach(webhook => {
-      data.UUID.startsWith('00000000') ? webhook.send(data.message, data.name) : webhook.send(data.message, data.name, data.UUID);
+      data.UUID.startsWith('00000000') ? webhook.sendChat(data.message, data.name) : webhook.sendChat(data.message, data.name, data.UUID);
     });
   }
   
   sendLog(id, embed) {
     const filtered = this.logChannels.filter(data => data.id === id || data.id === 0);
     filtered.forEach(data => {
-      data.channel.send(embed);
+      data.sendLog(embed);
     });
   }
 };
