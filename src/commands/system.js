@@ -39,7 +39,7 @@ module.exports = {
   name: 'system',
   cmdOptions: {
     alias: ['sys'],
-    description: 'Sho system infomation',
+    description: 'Show system infomation',
     usage: 'system',
   },
   options: [],

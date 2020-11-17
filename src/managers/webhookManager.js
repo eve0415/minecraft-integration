@@ -1,13 +1,17 @@
 module.exports = class webhookManager {
-  constructor(webhook, serverID) {
-    this.webhook        = webhook;
-    this.id             = Number(serverID);
+  constructor(id, webhook) {
+    this.id      = Number(id);
+    this.webhook = webhook;
   }
   
-  send(message, name, uuid) {
+  sendChat(message, name, uuid) {
     this.webhook.send(message, {
       username: name,
       avatarURL: uuid ? `https://crafatar.com/avatars/${uuid}` : null,
     });
+  }
+  
+  sendLog(message) {
+    this.webhook.send(message);
   }
 };
