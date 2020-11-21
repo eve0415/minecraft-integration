@@ -1,4 +1,4 @@
-module.exports = async (instance, message) => {
+module.exports = (instance, message) => {
   if (message.author === instance.client.user) return;
   if (message.author.bot) return;
   
@@ -12,7 +12,7 @@ module.exports = async (instance, message) => {
   }
   
   // Identify
-  if (cmd.author && message.author.id !== instance.config.owner) return message.channer.send('あなたはこのコマンドを実行する権限がありません').then((mes) => mes.delete({ timeout: 10000 }).then(() => message.delete()));
+  if (cmd.author && message.author.id !== instance.config.owner) return message.channer.send('あなたはこのコマンドを実行する権限がありません').then(mes => mes.delete({ timeout: 10000 }).then(() => message.delete()));
   
   // If there was as a command and also argument was appropriate
   instance.logger.info(`${message.author.username} (${message.author.id}) has execute ${cmd.name}`);
