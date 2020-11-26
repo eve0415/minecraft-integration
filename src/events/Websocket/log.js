@@ -12,7 +12,8 @@ module.exports = async (instance, data) => {
     .setAuthor(data.name, data.UUID.startsWith('00000000') ? null : `https://crafatar.com/avatars/${data.UUID}`)
     .setFooter(`ID: ${server.ID}`)
     .setTimestamp(new Date);
-  
+    
+  let reason = data.reason;
   switch (data.event) {
     case 'AUTH':
       embed
@@ -44,8 +45,6 @@ module.exports = async (instance, data) => {
       break;
       
     case 'KICKEDFROM':
-      // eslint-disable-next-line no-case-declarations
-      let reason;
       switch (data.reason) {
         case 'multiplayer.disconnect.authservers_down':
           reason = 'Authentication servers are down. Please try again later, sorry!';
@@ -101,10 +100,6 @@ module.exports = async (instance, data) => {
           
         case 'multiplayer.disconnect.unverified_username':
           reason = 'Failed to verify username!';
-          break;
-          
-        default:
-          reason = data.reason;
           break;
       }
       // eslint-disable-next-line no-case-declarations
