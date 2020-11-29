@@ -21,5 +21,6 @@ jobs:
           script_stop: true
           script: |
             cd $SSH_DIR
+            git checkout .
             git pull
             npm install
