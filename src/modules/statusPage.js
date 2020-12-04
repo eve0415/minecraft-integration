@@ -7,8 +7,8 @@ class StatusPage {
   }
   
   addStatus(id, type) {
-    if (this.pages.find(page => page.id === id)) return new Error('Conflict id, trying to add status page');
-    this.pages.push(new Status(id, type));
+    if (this.pages.find(page => page.id === Number(id))) return new Error('Conflict id, trying to add status page');
+    this.pages.push(new Status(Number(id), type));
     this.sortPages();
   }
   
@@ -19,7 +19,7 @@ class StatusPage {
   }
   
   setName(id, name) {
-    const page = this.pages.find(p => p.id === id);
+    const page = this.pages.find(p => p.id === Number(id));
     if (!page) return new Error('Unknown id');
     page.setName(name);
   }
