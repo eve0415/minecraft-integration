@@ -1,5 +1,5 @@
 const set = async (instance, message, res) => {
-  const channelID = res.channel ? res.channel.replace('<#').replace('>') : message.channel.id;
+  const channelID = res.channel?.replace('<#').replace('>') ?? message.channel.id;
   const mes = await message.guild.channels.cache.get(channelID).send('Configuring...');
 
   if (res.type === 'status') {

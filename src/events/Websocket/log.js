@@ -4,11 +4,11 @@ module.exports = async (instance, data) => {
   const server = instance.database.getFromPort(data.port);
   if (!server) throw new Error(`No valid server infomation found for port: ${data.port}`); // This shouldn't happen
   
-  const serverName = server.name ? server.name : server.type;
+  const serverName = server.name ?? server.type;
   
   const embed = new MessageEmbed()
     .addField('Username', data.name)
-    .addField('UUID', data.UUID ? data.UUID : 'N/A')
+    .addField('UUID', data.UUID ?? 'N/A')
     .setAuthor(data.name, data.UUID?.startsWith('00000000') ? null : `https://crafatar.com/avatars/${data.UUID}`)
     .setFooter(`ID: ${server.ID}`)
     .setTimestamp(new Date);
@@ -45,7 +45,7 @@ module.exports = async (instance, data) => {
       break;
       
     case 'KICKEDFROM':
-      switch (data.reason) {
+      switch (reason) {
         case 'multiplayer.disconnect.authservers_down':
           reason = 'Authentication servers are down. Please try again later, sorry!';
           break;
