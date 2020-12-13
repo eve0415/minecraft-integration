@@ -5,23 +5,23 @@ module.exports = class TaskManager {
     this.instance = instance;
     this.client   = instance.client;
     this.database = instance.database;
-    
+
     this.ready = false;
-    
+
     this.statusMessage  = new Array;
     this.webhooks       = new Array;
     this.logChannels    = new Array;
   }
-  
+
   async reloadCache() {
     if (!this.client.readyAt) throw new Error('Bot is not ready');
     await Promise.all([this.cacheStatusMessage(), this.cacheWebhooksForChat(), this.cacheWebhooksForLog()]);
     this.ready = true;
   }
-  
+
   cacheStatusMessage() {
     this.instance.logger.info('Trying to cache necessarily message');
-    
+
     const cache = this.database.getStatusMesCache();
     if (!cache.length) {
       this.instance.logger.info('No message to cache!');
@@ -35,16 +35,16 @@ module.exports = class TaskManager {
           })
           .catch(() => this.database.removeStatusMessage(c.messageID));
       }
-      
+
       this.instance.logger.info('Succesfully cached messages.');
       this.refreshStatus();
     }
     return Promise.resolve;
   }
-  
+
   cacheWebhooksForLog() {
     this.instance.logger.info('Trying to cache all webhooks for logging');
-    
+
     const cache = this.database.getAllChannelLog();
     if (!cache.length) {
       this.instance.logger.info('No webhooks to cache for logging!');
@@ -61,10 +61,10 @@ module.exports = class TaskManager {
     }
     return Promise.resolve;
   }
-  
+
   cacheWebhooksForChat() {
     this.instance.logger.info('Trying to cache all webhook for chatting');
-    
+
     const cache = this.database.getAllChannelCache();
     if (!cache.length) {
       this.instance.logger.info('No webhooks to cache for chatting!');
@@ -77,16 +77,16 @@ module.exports = class TaskManager {
           })
           .catch(() => this.database.removeChannelCache(c.channelID));
       }
-      
+
       this.instance.logger.info('Successfully cached webhook for chatting.');
     }
     return Promise.resolve;
   }
-  
+
   refreshStatus() {
     this.statusMessage.forEach(async mes => {
       const data = embedParse(mes);
-      
+
       try {
         if (data.Page) {
           const [now, max] = data.Page.split('/');
@@ -101,26 +101,26 @@ module.exports = class TaskManager {
       }
     });
   }
-  
+
   addCache(mes) {
     this.statusMessage.push(mes);
   }
-  
+
   addWebhookForChat(port, webhook) {
     this.webhooks.push(new webhookManager(port, webhook));
   }
-  
+
   addWebhookForLog(port, webhook) {
     this.logChannels.push(new webhookManager(port, webhook));
   }
-  
+
   removeLogChannel(channelID) {
     this.logChannels = this.logChannels.filter(data => data.id !== channelID);
   }
-  
+
   changePage(reaction, user) {
     if (!(reaction.emoji.name === '◀️' || reaction.emoji.name === '▶️')) return reaction.users.remove(user);
-    
+
     const [now, max] = embedParse(reaction.message).Page.split('/');
     let page;
     if (reaction.emoji.name === '◀️') {
@@ -132,19 +132,19 @@ module.exports = class TaskManager {
       .edit(this.instance.reactionController.getPage(page))
       .then(() => reaction.users.remove(user));
   }
-  
+
   sendWebhook(data) {
     if (!this.ready) return;
-    
+
     const filtered = this.webhooks.filter(webhook => webhook.id === data.port);
     filtered.forEach(webhook => {
       data.UUID.startsWith('00000000') ? webhook.sendChat(data.message, data.name) : webhook.sendChat(data.message, data.name, data.UUID);
     });
   }
-  
+
   sendLog(id, embed) {
     if (!this.ready) return;
-    
+
     const filtered = this.logChannels.filter(data => data.id === id || data.id === 0);
     filtered.forEach(data => {
       data.sendLog(embed);
@@ -154,7 +154,7 @@ module.exports = class TaskManager {
 
 const embedParse = mes => {
   if (!mes.embeds.length) return null;
-  
+
   const args = mes.embeds[0].footer?.text?.split(' ');
   return { ID: args[1], Page: args[3] };
 };

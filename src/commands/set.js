@@ -5,7 +5,7 @@ const set = async (instance, message, res) => {
   if (res.type === 'status') {
     await mes.channel.updateOverwrite(message.guild.roles.everyone, { deny: 'SEND_MESSAGES' });
     instance.database.addStatusMesCache(channelID, mes.id);
-    
+
     if (res.id !== 'all') {
       mes.edit('', instance.statusPage.getPage(res.id));
     } else {
@@ -15,12 +15,12 @@ const set = async (instance, message, res) => {
     instance.taskManager.addCache(mes);
   } else if (res.type === 'chat') {
     if (res.id === 'all') return mes.edit('You cannot choose `all` server for chatting');
-    
+
     const cache = instance.database.getFromChannelID(channelID);
     if (cache?.filter(c => c.serverID === res.id).length) return mes.edit(`You have already configured for this server ID: ${res.id}`);
-    
+
     const webhooks = await mes.channel.fetchWebhooks();
-    
+
     if (!webhooks?.filter(w => w.owner === instance.client.user).first()) {
       const webhook = await mes.channel.createWebhook('Minecraft');
       instance.taskManager.addWebhookForChat(res.id, webhook);
@@ -31,9 +31,9 @@ const set = async (instance, message, res) => {
     const cache = instance.database.getChannelLogFromID(channelID);
     const tmp = cache?.filter(c => c.serverID == res.id);
     const webhooks = await mes.channel.fetchWebhooks();
-    
+
     const webhook = webhooks?.filter(w => w.owner === instance.client.user).first() ?? await mes.channel.createWebhook('Minecraft');
-    
+
     if (tmp.length || cache?.filter(c => c.serverID === 0).length) {
       if (!(tmp.length && res.id === 'all')) {
         mes.edit(`You have already configured for this server ID: ${res.id}`);
@@ -67,12 +67,12 @@ module.exports = {
     {
       name: 'type',
       type: 'string',
-      opt: { 
+      opt: {
         alias: ['t'],
         required: true,
       },
     },
-    { 
+    {
       name: 'channel',
       type: 'channel',
       opt: { alias: ['c'] },

@@ -7,14 +7,14 @@ module.exports = {
     .setDescription('Unknown Server\nPlease contact bot/mod administrators')
     .setFooter(`ID: ${id}`)
     .setTimestamp(new Date),
-    
+
   fetching: new MessageEmbed()
     .setColor('BLACK')
     .setTitle('Fetching Status')
     .setDescription('Fetching Status\nIt might take some time to refresh')
     .setFooter('ID: 0 Page: 0/0')
     .setTimestamp(new Date),
-    
+
   online: (name, data) => new MessageEmbed()
     .setTitle(name ?? data.platform)
     .setColor('BLUE')
@@ -32,7 +32,7 @@ module.exports = {
     .addField('\u200B', '\u200B')
     .addField('Uptime', getReadableTime(data.uptime))
     .setTimestamp(new Date),
-    
+
   start: (name, data) => new MessageEmbed()
     .setTitle(name ?? data.platform)
     .setColor('YELLOW')
@@ -50,7 +50,7 @@ module.exports = {
     .addField('\u200B', '\u200B')
     .addField('Uptime', getReadableTime(data.uptime))
     .setTimestamp(new Date),
-    
+
   stop: (name, data) => new MessageEmbed()
     .setTitle(name ?? data.platform)
     .setColor('RED')
@@ -68,7 +68,7 @@ module.exports = {
     .addField('\u200B', '\u200B')
     .addField('Uptime', getReadableTime(data.uptime))
     .setTimestamp(new Date),
-    
+
   offline: (name) => new MessageEmbed()
     .setTitle(name)
     .setColor('BLACK')

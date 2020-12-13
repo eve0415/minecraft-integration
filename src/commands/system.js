@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 const set = async (instance, message) => {
   const mes = await message.channel.send('Calculating...');
   const [os, cpu, load, mem, time] =  [await si.osInfo(), await si.cpu(), await si.currentLoad(), await si.mem(), si.time()];
-  
+
   await mes.edit('', new MessageEmbed()
     .setColor('BLUE')
     .setTitle('System Infomation')
