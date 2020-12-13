@@ -14,6 +14,68 @@ module.exports = async (instance, data) => {
     .setTimestamp(new Date);
     
   let reason = data.reason;
+  switch (reason) {
+    case 'multiplayer.disconnect.authservers_down':
+      reason = 'Authentication servers are down. Please try again later, sorry!';
+      break;
+          
+    case 'multiplayer.disconnect.banned':
+      reason = 'You are banned from this server.';
+      break;
+          
+    case 'multiplayer.disconnect.duplicate_login':
+      reason = 'You logged in from another location';
+      break;
+          
+    case 'multiplayer.disconnect.flying':
+      reason = 'Flying is not enabled on this server';
+      break;
+          
+    case 'multiplayer.disconnect.idling':
+      reason = 'You have been idle for too long!';
+      break;
+          
+    case 'multiplayer.disconnect.illegal_characters':
+      reason = 'Illegal characters in chat';
+      break;
+          
+    case 'multiplayer.disconnect.invalid_entity_attacked':
+      reason = 'Attempting to attack an invalid entity';
+      break;
+          
+    case 'multiplayer.disconnect.invalid_player_movement':
+      reason = 'Invalid move player packet received';
+      break;
+          
+    case 'multiplayer.disconnect.invalid_vehicle_movement':
+      reason = 'Invalid move player packet received';
+      break;
+          
+    case 'multiplayer.disconnect.ip_banned':
+      reason = 'You have been IP banned.';
+      break;
+          
+    case 'multiplayer.disconnect.kicked':
+      reason = 'Kicked by an operator.';
+      break;
+          
+    case 'multiplayer.disconnect.server_shutdown':
+      reason = 'Server closed';
+      break;
+          
+    case 'multiplayer.disconnect.slow_login':
+      reason = 'Took too long to log in';
+      break;
+          
+    case 'multiplayer.disconnect.unverified_username':
+      reason = 'Failed to verify username!';
+      break;
+    
+    case 'disconnect.timeout':
+      reason = 'Timed out';
+      break;
+  }
+  
   switch (data.event) {
     case 'AUTH':
       embed
@@ -45,63 +107,6 @@ module.exports = async (instance, data) => {
       break;
       
     case 'KICKEDFROM':
-      switch (reason) {
-        case 'multiplayer.disconnect.authservers_down':
-          reason = 'Authentication servers are down. Please try again later, sorry!';
-          break;
-          
-        case 'multiplayer.disconnect.banned':
-          reason = 'You are banned from this server.';
-          break;
-          
-        case 'multiplayer.disconnect.duplicate_login':
-          reason = 'You logged in from another location';
-          break;
-          
-        case 'multiplayer.disconnect.flying':
-          reason = 'Flying is not enabled on this server';
-          break;
-          
-        case 'multiplayer.disconnect.idling':
-          reason = 'You have been idle for too long!';
-          break;
-          
-        case 'multiplayer.disconnect.illegal_characters':
-          reason = 'Illegal characters in chat';
-          break;
-          
-        case 'multiplayer.disconnect.invalid_entity_attacked':
-          reason = 'Attempting to attack an invalid entity';
-          break;
-          
-        case 'multiplayer.disconnect.invalid_player_movement':
-          reason = 'Invalid move player packet received';
-          break;
-          
-        case 'multiplayer.disconnect.invalid_vehicle_movement':
-          reason = 'Invalid move player packet received';
-          break;
-          
-        case 'multiplayer.disconnect.ip_banned':
-          reason = 'You have been IP banned.';
-          break;
-          
-        case 'multiplayer.disconnect.kicked':
-          reason = 'Kicked by an operator.';
-          break;
-          
-        case 'multiplayer.disconnect.server_shutdown':
-          reason = 'Server closed';
-          break;
-          
-        case 'multiplayer.disconnect.slow_login':
-          reason = 'Took too long to log in';
-          break;
-          
-        case 'multiplayer.disconnect.unverified_username':
-          reason = 'Failed to verify username!';
-          break;
-      }
       // eslint-disable-next-line no-case-declarations
       let desc = `Failed to forward \`${data.name}(${data.ip})\` to server because of \`${reason}\``;
       if (data.fulfill === 'DisconnectPlayer') {
