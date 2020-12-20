@@ -11,7 +11,7 @@ module.exports = async (instance, status, data) => {
   if (status === 'online') return;
 
   const server = instance.database.getFromPort(data.port);
-  const serverName = server.name ?? server.type;
+  const serverName = server?.name ?? server.type;
   const embed = new MessageEmbed()
     .setFooter(`ID: ${data.port}`)
     .setTimestamp(new Date);
