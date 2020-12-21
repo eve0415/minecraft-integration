@@ -7,9 +7,9 @@ module.exports = async (instance, data) => {
   const serverName = server.name ?? server.type;
 
   const embed = new MessageEmbed()
-    .addField('Username', data.name)
-    .addField('UUID', data.UUID ?? 'N/A')
     .setAuthor(data.name, data.UUID?.startsWith('00000000') ? null : `https://crafatar.com/avatars/${data.UUID}`)
+    .addField('Username', data.name, true)
+    .addField('UUID', data.UUID ?? 'N/A', true)
     .setFooter(`ID: ${server.ID}`)
     .setTimestamp(new Date);
 
