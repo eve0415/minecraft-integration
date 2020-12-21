@@ -39,11 +39,8 @@ module.exports = class socketManager extends EventEmitter {
   }
 
   async listen(sock) {
-    sock.on('disconnecting', () => this.emit('status', 'offline', { port: Object.keys(sock.rooms)[0] }));
-    sock.on('disconnect', (reason) => {
-      this.connected = this.connected--;
-      this.emit('disconnect', reason);
-    });
+    sock.on('disconnecting', () => this.emit('status', 'offline', { port: Array.from(sock.rooms)[1] }));
+    sock.on('disconnect', (reason) => this.connected = this.connected-- && this.emit('disconnect', reason));
     sock.on('error', (err) => this.emit('error', err));
 
     sock.on('STARTING', (data) => this.emit('status', 'start', data));
