@@ -4,6 +4,9 @@
     "description": "Connect to Minecraft Server via Web socket",
     "type": "commonjs",
     "main": "index.js",
+    "engines": {
+        "node": ">=14"
+    },
     "scripts": {
         "start": "nodemon -r dotenv/config index.js"
     },
