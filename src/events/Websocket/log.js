@@ -60,8 +60,9 @@ module.exports = async (instance, data) => {
         .setColor('RED')
         .setTitle(`Failed to forward ${data.name} to server ${data.fromServer}`)
         .setDescription(desc)
-        .addField('Reason', reason)
-        .addField('Fulfill', data.fulfill);
+        .addField('Reason', reason, true)
+        .addField('\u200B', '\u200B', true)
+        .addField('Fulfill', data.fulfill, true);
       break;
 
     case 'PRECONNECT':
