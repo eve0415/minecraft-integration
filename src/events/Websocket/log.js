@@ -19,7 +19,15 @@ module.exports = async (instance, data) => {
     .setFooter(`ID: ${server.ID}`)
     .setTimestamp(new Date);
 
-  if (data.version) {
+  if (data.mods) {
+    embed.addFields(
+      [
+        { name: 'client', value: data.type ?? 'Unknown', inline: true },
+        { name: 'version', value: data.version, inline: true },
+        { name: 'mods', value: data.mods, inline: true },
+      ],
+    );
+  } else if (data.version) {
     embed.addFields(
       [
         { name: 'client', value: data.type ?? 'Unknown', inline: true },
@@ -27,7 +35,6 @@ module.exports = async (instance, data) => {
       ],
     );
   }
-  if (data.mods) embed.addField('mods', data.mods ?? 'N/A', true);
 
   switch (data.event) {
     case 'AUTH':
