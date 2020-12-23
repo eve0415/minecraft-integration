@@ -11,9 +11,9 @@ module.exports = async (instance, data) => {
     .setAuthor(data.name, data.UUID?.startsWith('00000000') ? null : `https://crafatar.com/avatars/${data.UUID}`)
     .addFields(
       [
-        // eslint-disable-next-line array-element-newline
         { name: 'Username', value: data.name, inline: true },
         { name: 'version', value: data.UUID ?? 'N/A', inline: true },
+        { name: '\u200B', value: '\u200B', inline: true },
       ],
     )
     .setFooter(`ID: ${server.ID}`)
@@ -22,7 +22,6 @@ module.exports = async (instance, data) => {
   if (data.version) {
     embed.addFields(
       [
-        // eslint-disable-next-line array-element-newline
         { name: 'client', value: data.type ?? 'Unknown', inline: true },
         { name: 'version', value: data.version, inline: true },
       ],
