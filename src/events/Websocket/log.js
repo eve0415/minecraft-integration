@@ -11,6 +11,10 @@ module.exports = async (instance, data) => {
     .setAuthor(data.name, data.UUID?.startsWith('00000000') ? null : `https://crafatar.com/avatars/${data.UUID}`)
     .addField('Username', data.name, true)
     .addField('UUID', data.UUID ?? 'N/A', true)
+    .addField('\u200B', '\u200B', true)
+    .addField('client', data.type, true)
+    .addField('version', data.version, true)
+    .addField('mods', data.mods, true)
     .setFooter(`ID: ${server.ID}`)
     .setTimestamp(new Date);
 
