@@ -10,13 +10,21 @@ module.exports = async (instance, data) => {
   const embed = new MessageEmbed()
     .setAuthor(data.name, data.UUID?.startsWith('00000000') ? null : `https://crafatar.com/avatars/${data.UUID}`)
     .addField('Username', data.name, true)
-    .addField('\u200B', '\u200B', true)
     .addField('UUID', data.UUID ?? 'N/A', true)
-    .addField('client', data.type ?? 'Unknown', true)
-    .addField('version', data.version ?? 'Unknown', true)
-    .addField('mods', data.mods ?? 'N/A', true)
+    .addField('\u200B', '\u200B', true)
     .setFooter(`ID: ${server.ID}`)
     .setTimestamp(new Date);
+
+  if (data.version) {
+    embed.addFields(
+      [
+        // eslint-disable-next-line array-element-newline
+        { name: 'client', value: data.type ?? 'Unknown', inline: true },
+        { name: 'version', value: data.version, inline: true },
+      ],
+    );
+  }
+  if (data.mods) embed.addField('mods', data.mods ?? 'N/A', true);
 
   switch (data.event) {
     case 'AUTH':
