@@ -5,3 +5,6 @@ node_modules
 .env
 data/*
 *.test
+
+#build
+dist
