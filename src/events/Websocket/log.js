@@ -10,11 +10,11 @@ module.exports = async (instance, data) => {
   const embed = new MessageEmbed()
     .setAuthor(data.name, data.UUID?.startsWith('00000000') ? null : `https://crafatar.com/avatars/${data.UUID}`)
     .addField('Username', data.name, true)
-    .addField('UUID', data.UUID ?? 'N/A', true)
     .addField('\u200B', '\u200B', true)
-    .addField('client', data.type, true)
-    .addField('version', data.version, true)
-    .addField('mods', data.mods, true)
+    .addField('UUID', data.UUID ?? 'N/A', true)
+    .addField('client', data.type ?? 'Unknown', true)
+    .addField('version', data.version ?? 'Unknown', true)
+    .addField('mods', data.mods ?? 'N/A', true)
     .setFooter(`ID: ${server.ID}`)
     .setTimestamp(new Date);
 
