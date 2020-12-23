@@ -9,9 +9,13 @@ module.exports = async (instance, data) => {
 
   const embed = new MessageEmbed()
     .setAuthor(data.name, data.UUID?.startsWith('00000000') ? null : `https://crafatar.com/avatars/${data.UUID}`)
-    .addField('Username', data.name, true)
-    .addField('UUID', data.UUID ?? 'N/A', true)
-    .addField('\u200B', '\u200B', true)
+    .addFields(
+      [
+        // eslint-disable-next-line array-element-newline
+        { name: 'Username', value: data.name, inline: true },
+        { name: 'version', value: data.UUID ?? 'N/A', inline: true },
+      ],
+    )
     .setFooter(`ID: ${server.ID}`)
     .setTimestamp(new Date);
 
