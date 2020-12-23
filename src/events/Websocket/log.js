@@ -12,7 +12,7 @@ module.exports = async (instance, data) => {
     .addFields(
       [
         { name: 'Username', value: data.name, inline: true },
-        { name: 'version', value: data.UUID ?? 'N/A', inline: true },
+        { name: 'UUID', value: data.UUID ?? 'N/A', inline: true },
         { name: '\u200B', value: '\u200B', inline: true },
       ],
     )
@@ -32,6 +32,7 @@ module.exports = async (instance, data) => {
       [
         { name: 'client', value: data.type ?? 'Unknown', inline: true },
         { name: 'version', value: data.version, inline: true },
+        { name: '\u200B', value: '\u200B', inline: true },
       ],
     );
   }
