@@ -7,8 +7,8 @@
         "node": ">=14"
     },
     "scripts": {
-        "start": "tsc && node -r dotenv/config dist/main.js",
-        "test": "nodemon --config nodemon.json -r dotenv/config src/main.ts",
+        "start": "tsc && node -r dotenv/config dist/index.js",
+        "test": "nodemon --config nodemon.json -r dotenv/config src/index.ts",
         "build": "tsc",
         "build:watch": "tsc --watch"
     },
@@ -44,7 +44,7 @@
         "zlib-sync": "^0.1.7"
     },
     "devDependencies": {
-        "@types/node": "^14.14.14",
+        "@types/node": "^14.14.16",
         "@typescript-eslint/eslint-plugin": "^4.11.0",
         "@typescript-eslint/parser": "^4.11.0",
         "eslint": "^7.16.0",
