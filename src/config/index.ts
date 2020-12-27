@@ -1,10 +1,10 @@
 import { logger } from '../logger';
 
-export type ConfigInterface = {
+export interface ConfigInterface {
   prefix: string;
   owner: string;
   port: number;
-};
+}
 
 class Config implements ConfigInterface {
   public readonly prefix: string;
