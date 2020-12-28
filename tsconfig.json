@@ -25,9 +25,6 @@
         "skipLibCheck": true,
         "sourceMap": true,
         "strict": true,
-        "target": "esnext",
-        "types": [
-            "node"
-        ]
+        "target": "esnext"
     }
 }

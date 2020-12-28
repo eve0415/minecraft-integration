@@ -53,7 +53,7 @@
         ],
         "@typescript-eslint/consistent-type-definitions": [
             "error",
-            "type"
+            "interface"
         ],
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/no-misused-promises": [
