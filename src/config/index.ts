@@ -1,10 +1,12 @@
-import { logger } from '../logger';
+import { logger } from '..';
 
-export interface ConfigInterface {
+interface configInterface {
   prefix: string;
   owner: string;
   port: number;
 }
+
+export type ConfigInterface = Readonly<configInterface>;
 
 class Config implements ConfigInterface {
   public readonly prefix: string;
@@ -26,4 +28,4 @@ class Config implements ConfigInterface {
   }
 }
 
-export default new Config;
+export default new Config();

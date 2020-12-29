@@ -18,7 +18,7 @@ configure({
     },
 });
 
-type baseLogger = (message?: unknown, ...optionalParams: unknown[]) => void;
+type baseLogger = (message?: unknown, ...args: unknown[]) => void;
 
 export class logger {
     public static debug: baseLogger = log => getLogger('debug').debug(log);
@@ -27,7 +27,7 @@ export class logger {
     public static error: baseLogger = log => getLogger('error').error(log);
     public static fatal: baseLogger = log => getLogger('fatal').fatal(log);
     public static shutdown: baseLogger = () => {
-        getLogger('default').info('Shutting down logger');
+        logger.info('Shutting down logger');
         shutdown();
     };
 }
