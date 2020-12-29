@@ -37,3 +37,36 @@ export class DJSEventManager extends ModuleManager<string, DiscordEvent> {
     }
 }
 
+export class wsEventManager extends ModuleManager<string, WebsocketEvent> {
+    public register(data: ModuleData<string, WebsocketEvent>): WebsocketEvent {
+        const event = data.value;
+        logger.info(`Registering event: ${event.name}`);
+        event.client.on(event.name, event.bind);
+        return super.register(data);
+    }
+
+    public unregister(key: string): WebsocketEvent {
+        const event = super.unregister(key);
+        logger.info(`Unregistering event: ${event.name}`);
+        event.client.removeListener(event.name, event.bind);
+        return event;
+    }
+
+    public async registerAll(): Promise<void> {
+        logger.info('Trying to register all Discord events');
+        const dir = resolve('./src/events/Websocket');
+        const modules = this.scanFiles(dir, /.js|.ts/);
+        const result = (await Promise.all(modules.map(file => this.loadModule(resolve(dir, file)))))
+            .filter<WebsocketEvent>((value): value is WebsocketEvent => value instanceof WebsocketEvent)
+            .map<ModuleData<string, WebsocketEvent>>(event => this.toModuleData(event));
+        await super.registerAll(result);
+        return logger.info(`Successfully registered ${result.length} Websocket events`);
+    }
+
+    protected toModuleData(event: WebsocketEvent): ModuleData<string, WebsocketEvent> {
+        return {
+            key: event.name,
+            value: event,
+        };
+    }
+}
