@@ -13,7 +13,6 @@ declare module 'events' {
 
 declare module 'socket.io' {
     interface Socket {
-        connectedTime: Date
         serverID: string
     }
 }
@@ -37,6 +36,7 @@ export class websocketClient extends eventEmitter {
 
     public close(): void {
         logger.info(`Closing port ${this.config.port} and cleaning up`);
+        this.server.sockets.sockets.forEach(socket => socket.disconnect(true));
         this.server.close();
     }
 
@@ -49,7 +49,7 @@ export class websocketClient extends eventEmitter {
 
     private register(): void {
         this.server.on('connection', (socket: sock) => {
-            socket.connectedTime = new Date;
+            this.checkIfValid(socket);
             socket.on('disconnect', reason => this.emit('disconnect', reason));
             socket.on('error', err => this.emit('error', err));
 
@@ -58,11 +58,11 @@ export class websocketClient extends eventEmitter {
 
             socket.on('LOG', (log: LogData) => this.emit('log', log));
 
-            socket.on('STARTING', (data: StatusData) => this.emit('statusUpdate', 'OFFLINE', data));
+            socket.on('STARTING', (data: StatusData) => this.emit('statusUpdate', 'START', data));
             socket.on('STOPPING', (data: StatusData) => this.emit('statusUpdate', 'STOP', data));
             socket.on('STATUS', (data: StatusData) => this.emit('statusUpdate', 'UPDATE', data));
             socket.on('SERVERINFO', (data: StatusData) => this.emit('serverInfo', data));
-            socket.on('disconnecting', () => this.emit('statusUpdate', 'OFFLINE', { port: Array.from(socket.rooms)[1] } as StatusData));
+            socket.on('disconnecting', () => this.emit('statusUpdate', 'OFFLINE', { port: socket.serverID } as StatusData));
 
             socket.on('ROOM', (roomID: string) => {
                 socket.join(roomID);
@@ -71,5 +71,11 @@ export class websocketClient extends eventEmitter {
                 this.emit('statusUpdate', 'CONNECT', { port: roomID } as StatusData);
             });
         });
+    }
+
+    private checkIfValid(socket: sock): void {
+        setTimeout(() => {
+            if (!socket.serverID) socket.disconnect(true);
+        }, 10000);
     }
 }
