@@ -8,11 +8,7 @@
         "experimentalDecorators": true,
         "incremental": true,
         "lib": [
-            "esnext",
-            "esnext.array",
-            "esnext.asynciterable",
-            "esnext.intl",
-            "esnext.symbol"
+            "esnext"
         ],
         "module": "commonjs",
         "moduleResolution": "node",
