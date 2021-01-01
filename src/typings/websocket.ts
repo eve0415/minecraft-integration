@@ -1,6 +1,9 @@
 type LogEventType = 'AUTH' | 'LOGIN' | 'KICK' | 'KICKEDFROM' | 'DISCONNECT' | 'PRECONNECT' | 'POSTCONNECT';
 
-export type StatusType= 'OFFLINE' | 'CONNECT' | 'START' | 'STOP' | 'UPDATE';
+export type StatusType = 'OFFLINE' | 'CONNECT' | 'START' | 'STOP' | 'UPDATE';
+
+export type port = string | null;
+
 export type RecieveEventName = '';
 
 interface basicData {
@@ -12,15 +15,16 @@ interface websocketEvents {
     'log': [LogData]
     'serverInfo': [unknown]
     'advancementAchieve': [unknown]
-    'disconnect': [string]
-    'error': [Error]
+    'connect': [port]
+    'disconnect': [port, string]
+    'error': [port, Error]
 }
 
 export interface StatusData extends basicData {
     platform: string
     totalMemory: string
     usedMemory: string
-    freeMermory: string
+    freeMemory: string
     uptime: string
     onlinePlayers?: string
     maxPlayers?: string

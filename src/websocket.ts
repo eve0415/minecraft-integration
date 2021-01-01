@@ -13,7 +13,7 @@ declare module 'events' {
 
 declare module 'socket.io' {
     interface Socket {
-        serverID: string
+        serverID: string | undefined
     }
 }
 
@@ -50,24 +50,30 @@ export class websocketClient extends eventEmitter {
     private register(): void {
         this.server.on('connection', (socket: sock) => {
             this.checkIfValid(socket);
-            socket.on('disconnect', reason => this.emit('disconnect', reason));
-            socket.on('error', err => this.emit('error', err));
+            this.emit('connect', null);
+
+            socket.on('error', err => this.emit('error', socket.serverID ?? null, err));
 
             // socket.on('CHAT', data => this.instance.taskManager.sendWebhook(data));
-            socket.on('ADVANCEMENT', data => this.emit('advancementAchieve', data));
+            // socket.on('ADVANCEMENT', data => this.emit('advancementAchieve', data));
 
             socket.on('LOG', (log: LogData) => this.emit('log', log));
+
+            socket.on('SERVERINFO', (data: StatusData) => this.emit('serverInfo', data));
 
             socket.on('STARTING', (data: StatusData) => this.emit('statusUpdate', 'START', data));
             socket.on('STOPPING', (data: StatusData) => this.emit('statusUpdate', 'STOP', data));
             socket.on('STATUS', (data: StatusData) => this.emit('statusUpdate', 'UPDATE', data));
-            socket.on('SERVERINFO', (data: StatusData) => this.emit('serverInfo', data));
-            socket.on('disconnecting', () => this.emit('statusUpdate', 'OFFLINE', { port: socket.serverID } as StatusData));
+
+            socket.on('disconnect', reason => {
+                this.emit('statusUpdate', 'OFFLINE', { port: socket.serverID } as StatusData);
+                this.emit('disconnect', socket.serverID ?? null, reason);
+            });
 
             socket.on('ROOM', (roomID: string) => {
                 socket.join(roomID);
                 socket.serverID = roomID;
-                // this.emit('statusUpdate', 'CONNECT', { port: roomID } as StatusData);
+                this.emit('connect', roomID);
                 this.emit('statusUpdate', 'CONNECT', { port: roomID } as StatusData);
             });
         });
