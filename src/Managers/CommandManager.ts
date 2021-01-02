@@ -1,9 +1,18 @@
 import { resolve } from 'path';
+import { Collection } from 'discord.js';
 import { ModuleData, ModuleManager } from './ModuleManager';
-import { logger } from '..';
-import { Command } from '../typings';
+import { SubCommandManager } from './SubCommandManager';
+import { DJSClient, logger, websocketClient } from '..';
+import { Command, SubCommand } from '../typings';
 
 export class CommandManager extends ModuleManager<string, Command> {
+    private readonly subCommands: Collection<string, SubCommandManager>;
+
+    public constructor(client: DJSClient | websocketClient) {
+        super(client);
+        this.subCommands = new Collection();
+    }
+
     public register(data: ModuleData<string, Command>): Command {
         logger.info(`Registering command: ${data.key}`);
         return super.register(data);
@@ -16,13 +25,28 @@ export class CommandManager extends ModuleManager<string, Command> {
 
     public async registerAll(): Promise<void> {
         logger.info('Trying to register all commands');
-        const dir = resolve('./src/commands/');
-        const modules = this.scanFiles(dir, /.js|.ts/);
-        const result = (await Promise.all(modules.map(file => this.loadModule(resolve(dir, file)))))
-            .filter<Command>((value): value is Command => value instanceof Command)
+        const dir = resolve(`${__dirname}/../commands/`);
+        const modules = this.scanModule(dir, /.js|.ts/);
+        const result = await Promise.all(modules.map(file => this.loadModule(file)));
+
+        const commands = result.filter<Command>((value): value is Command => value instanceof Command)
             .map<ModuleData<string, Command>>(command => this.toModuleData(command));
-        await super.registerAll(result);
-        return logger.info(`Successfully registered ${result.length} commands`);
+        const subCommands = result.filter<SubCommand>((value): value is SubCommand => value instanceof SubCommand);
+
+        await super.registerAll(commands);
+
+        const needsSubcommands = this.filter(c => c.hasSubcom).map(({ name }) => name);
+        for (const c of needsSubcommands) {
+            const sub = subCommands.filter(s => s.parent === c);
+            if (!sub.length) {
+                logger.warn(`Command: ${c} has a subcommands but could not register because of cannot find module`);
+            } else {
+                const subManager = new SubCommandManager(this.client);
+                await subManager.registerSubCommands(sub);
+                this.subCommands.set(c, subManager);
+            }
+        }
+        return logger.info(`Successfully registered ${this.size} commands`);
     }
 
     protected toModuleData(command: Command): ModuleData<string, Command> {

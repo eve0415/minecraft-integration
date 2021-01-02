@@ -20,13 +20,13 @@ export class DJSEventManager extends ModuleManager<string, DiscordEvent> {
 
     public async registerAll(): Promise<void> {
         logger.info('Trying to register all Discord events');
-        const dir = resolve('./src/events/Discord');
-        const modules = this.scanFiles(dir, /.js|.ts/);
-        const result = (await Promise.all(modules.map(file => this.loadModule(resolve(dir, file)))))
+        const dir = resolve(`${__dirname}/../events/Discord`);
+        const modules = this.scanModule(dir, /.js|.ts/);
+        const result = (await Promise.all(modules.map(file => this.loadModule(file))))
             .filter<DiscordEvent>((value): value is DiscordEvent => value instanceof DiscordEvent)
             .map<ModuleData<string, DiscordEvent>>(event => this.toModuleData(event));
         await super.registerAll(result);
-        return logger.info(`Successfully registered ${result.length} Discord events`);
+        return logger.info(`Successfully registered ${this.size} Discord events`);
     }
 
     protected toModuleData(event: DiscordEvent): ModuleData<string, DiscordEvent> {
@@ -54,13 +54,13 @@ export class wsEventManager extends ModuleManager<string, WebsocketEvent> {
 
     public async registerAll(): Promise<void> {
         logger.info('Trying to register all Discord events');
-        const dir = resolve('./src/events/Websocket');
-        const modules = this.scanFiles(dir, /.js|.ts/);
-        const result = (await Promise.all(modules.map(file => this.loadModule(resolve(dir, file)))))
+        const dir = resolve(`${__dirname}/../events/Websocket`);
+        const modules = this.scanModule(dir, /.js|.ts/);
+        const result = (await Promise.all(modules.map(file => this.loadModule(file))))
             .filter<WebsocketEvent>((value): value is WebsocketEvent => value instanceof WebsocketEvent)
             .map<ModuleData<string, WebsocketEvent>>(event => this.toModuleData(event));
         await super.registerAll(result);
-        return logger.info(`Successfully registered ${result.length} Websocket events`);
+        return logger.info(`Successfully registered ${this.size} Websocket events`);
     }
 
     protected toModuleData(event: WebsocketEvent): ModuleData<string, WebsocketEvent> {

@@ -1,4 +1,5 @@
-import { PathLike, readdirSync } from 'fs';
+import { readdirSync } from 'fs';
+import { resolve } from 'path';
 import { Collection } from 'discord.js';
 import { DJSClient, websocketClient, logger } from '..';
 
@@ -8,7 +9,7 @@ export type ModuleData<K, V> = Readonly<{
 }>;
 
 export abstract class ModuleManager<K, V> extends Collection<K, V> {
-    private readonly client: DJSClient | websocketClient;
+    protected readonly client: DJSClient | websocketClient;
 
     public constructor(client: DJSClient | websocketClient) {
         super();
@@ -37,9 +38,13 @@ export abstract class ModuleManager<K, V> extends Collection<K, V> {
         return Promise.all(this.keyArray().map(key => this.unregister(key)));
     }
 
-    protected scanFiles(dir: PathLike, pattern: RegExp): string[] {
-        const dirCont = readdirSync(dir);
-        return dirCont.filter(file => pattern.exec(file));
+    protected scanModule(dir: string, pattern: RegExp): string[] {
+        const files: string[] = [];
+        const dirents = readdirSync(dir, { withFileTypes: true });
+        dirents.filter(d => d.isFile()).map(({ name }) => files.push(resolve(dir, name)));
+        const filesInFolders = dirents.filter(d => d.isDirectory()).map(({ name }) => this.scanModule(resolve(dir, name), pattern));
+        filesInFolders.map(folders => folders.map(f => files.push(f)));
+        return files.filter(file => pattern.exec(file));
     }
 
     protected async loadModule(absolutePath: string): Promise<unknown> {
