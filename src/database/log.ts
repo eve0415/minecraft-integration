@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import Database = require('better-sqlite3');
 import { DBdata } from '../typings';
 
 const db = Database('data/minecraft.sqlite3');
