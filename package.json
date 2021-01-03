@@ -17,8 +17,6 @@
         "url": "git+https://github.com/eve0415/minecraft-integration.git"
     },
     "keywords": [
-        "nodejs",
-        "node.js",
         "discord",
         "discordjs",
         "discord-bot",
@@ -32,23 +30,23 @@
     "homepage": "https://github.com/eve0415/minecraft-integration#readme",
     "dependencies": {
         "better-sqlite3": "^7.1.2",
-        "bufferutil": "^4.0.2",
+        "bufferutil": "^4.0.3",
         "discord.js": "^12.5.1",
         "dotenv": "^8.2.0",
         "erlpack": "github:discord/erlpack",
         "log4js": "^6.3.0",
         "promisify": "0.0.3",
         "socket.io": "^3.0.4",
-        "systeminformation": "^4.33.5",
+        "systeminformation": "^4.33.6",
         "utf-8-validate": "^5.0.3",
         "zlib-sync": "^0.1.7"
     },
     "devDependencies": {
         "@types/better-sqlite3": "^5.4.1",
-        "@types/node": "^14.14.17",
+        "@types/node": "^14.14.19",
         "@typescript-eslint/eslint-plugin": "^4.11.1",
         "@typescript-eslint/parser": "^4.11.1",
-        "eslint": "^7.16.0",
+        "eslint": "^7.17.0",
         "eslint-plugin-import": "^2.22.1",
         "nodemon": "^2.0.6",
         "ts-node": "^9.1.1",
