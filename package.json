@@ -30,7 +30,7 @@
     "homepage": "https://github.com/eve0415/minecraft-integration#readme",
     "dependencies": {
         "better-sqlite3": "^7.1.2",
-        "bufferutil": "^4.0.2",
+        "bufferutil": "^4.0.3",
         "discord.js": "^12.5.1",
         "dotenv": "^8.2.0",
         "erlpack": "github:discord/erlpack",
