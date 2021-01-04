@@ -1,33 +1,58 @@
 import { DJSClient, logger, websocketClient } from '.';
-import Config from './config';
+import Config, { ConfigInterface } from './config';
+import { database } from './database';
 
-const bot = new DJSClient(Config);
-const ws = new websocketClient(Config);
+export class Instance {
+    public readonly config: ConfigInterface;
+    public readonly bot: DJSClient;
+    private readonly ws: websocketClient;
 
-const start = async () => {
-    logger.info('Starting Discord bot and Websocket Integrations');
+    public constructor(config: ConfigInterface) {
+        logger.info('Starting Discord bot and Websocket Integrations');
+        this.config = config;
 
-    await bot.init().catch(e => {
-        logger.error(e);
-    });
+        this.bot = new DJSClient(this);
+        this.ws = new websocketClient(this);
 
-    await ws.init().catch(e => {
-        logger.error(e);
-    });
+        this.start();
+    }
 
-    await bot.login().catch(e => {
-        logger.error(e);
+    private async start() {
+        await this.init();
+
+        await this.bot.login().catch(e => {
+            logger.error(e);
+            logger.shutdown();
+            process.exit(1);
+        });
+
+        // Ready to serve
+        this.ws.open();
+    }
+
+    private async init() {
+        logger.info('Initializing...');
+        database.init();
+
+        await this.bot.init().catch(e => {
+            logger.error(e);
+        });
+
+        await this.ws.init().catch(e => {
+            logger.error(e);
+        });
+    }
+    public shutdown(): void {
+        logger.info('Shutting down');
+        this.ws.close();
+        this.bot.close();
         logger.shutdown();
-        process.exit(1);
-    });
-    ws.open();
-};
+        process.exit();
+    }
+}
+
+const p = new Instance(Config);
 
 process.on('SIGINT', () => {
-    logger.info('Shutting down');
-    ws.close();
-    bot.close();
-    logger.shutdown();
+    p.shutdown();
 });
-
-start();
