@@ -2,7 +2,7 @@ import { EventEmitter as eventEmitter } from 'events';
 import { Server, Socket as sock } from 'socket.io';
 import { Instance, logger } from '.';
 import { wsEventManager } from './Managers';
-import { LogData, StatusData, WebsocketEvents } from './typings';
+import { ChatData, LogData, StatusData, WebsocketEvents } from './typings';
 
 declare module 'events' {
     interface EventEmitter {
@@ -17,12 +17,14 @@ declare module 'socket.io' {
 }
 
 export class websocketClient extends eventEmitter {
+    public readonly instance: Instance;
     private readonly wsPort: number;
     private readonly server: Server;
     private readonly events: wsEventManager;
 
     public constructor(instance: Instance) {
         super();
+        this.instance = instance;
         this.wsPort = instance.config.port;
         this.server = new Server();
         this.events = new wsEventManager(this);
@@ -53,7 +55,7 @@ export class websocketClient extends eventEmitter {
 
             socket.on('error', err => this.emit('error', socket.serverID ?? null, err));
 
-            // socket.on('CHAT', data => this.instance.taskManager.sendWebhook(data));
+            socket.on('CHAT', (data: ChatData) => this.emit('chat', data));
             // socket.on('ADVANCEMENT', data => this.emit('advancementAchieve', data));
 
             socket.on('LOG', (log: LogData) => this.emit('log', log));
@@ -65,7 +67,7 @@ export class websocketClient extends eventEmitter {
             socket.on('STATUS', (data: StatusData) => this.emit('statusUpdate', 'UPDATE', data));
 
             socket.on('disconnect', reason => {
-                this.emit('statusUpdate', 'OFFLINE', { port: socket.serverID } as StatusData);
+                this.emit('statusUpdate', 'OFFLINE', { port: Number(socket.serverID) } as StatusData);
                 this.emit('disconnect', socket.serverID ?? null, reason);
             });
 
@@ -73,7 +75,7 @@ export class websocketClient extends eventEmitter {
                 socket.join(roomID);
                 socket.serverID = roomID;
                 this.emit('connect', roomID);
-                this.emit('statusUpdate', 'CONNECT', { port: roomID } as StatusData);
+                this.emit('statusUpdate', 'CONNECT', { port: Number(roomID) } as StatusData);
             });
         });
     }

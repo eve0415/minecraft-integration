@@ -6,6 +6,7 @@ export class Instance {
     public readonly config: ConfigInterface;
     public readonly bot: DJSClient;
     private readonly ws: websocketClient;
+    public readonly chatManager: MinecraftChatManager;
 
     public constructor(config: ConfigInterface) {
         logger.info('Starting Discord bot and Websocket Integrations');
@@ -13,6 +14,7 @@ export class Instance {
 
         this.bot = new DJSClient(this);
         this.ws = new websocketClient(this);
+        this.chatManager = new MinecraftChatManager(this);
 
         this.start();
     }
@@ -25,6 +27,8 @@ export class Instance {
             logger.shutdown();
             process.exit(1);
         });
+
+        await this.postInit();
 
         // Ready to serve
         this.ws.open();
@@ -42,6 +46,15 @@ export class Instance {
             logger.error(e);
         });
     }
+
+    // This initialization should be executed after bot has logged in
+    // or else it won't work.
+    private async postInit() {
+        logger.info('Post initialization started!');
+        await this.chatManager.init();
+        logger.info('Initialize complete...');
+    }
+
     public shutdown(): void {
         logger.info('Shutting down');
         this.ws.close();
@@ -53,6 +66,4 @@ export class Instance {
 
 const p = new Instance(Config);
 
-process.on('SIGINT', () => {
-    p.shutdown();
-});
+process.on('SIGINT', () => p.shutdown());

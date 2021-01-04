@@ -7,13 +7,14 @@ export type port = string | null;
 export type RecieveEventName = '';
 
 interface basicData {
-    port: string
+    port: number
 }
 
 interface websocketEvents {
     'statusUpdate': [StatusType, StatusData]
     'log': [LogData]
     'serverInfo': [unknown]
+    'chat': [ChatData]
     'advancementAchieve': [unknown]
     'connect': [port]
     'disconnect': [port, string]
@@ -26,9 +27,9 @@ export interface StatusData extends basicData {
     usedMemory: string
     freeMemory: string
     uptime: string
-    onlinePlayers?: string
-    maxPlayers?: string
-    tps?: string
+    onlinePlayers?: number
+    maxPlayers?: number
+    tps?: number
 }
 
 export interface LogData extends basicData {
@@ -44,6 +45,12 @@ export interface LogData extends basicData {
     currentServer?: string
     toServer?: string
     fromServer?: string
+}
+
+export interface ChatData extends basicData {
+    name: string
+    UUID: string
+    message: string
 }
 
 export type WebsocketEvents = websocketEvents;
