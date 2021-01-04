@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { Collection } from 'discord.js';
-import { ModuleData, ModuleManager } from './ModuleManager';
 import { SubCommandManager } from './SubCommandManager';
+import { ModuleData, ModuleManager } from './structures';
 import { DJSClient, logger, websocketClient } from '..';
 import { Command, SubCommand } from '../typings';
 

@@ -1,8 +1,7 @@
 import { EventEmitter as eventEmitter } from 'events';
 import { Server, Socket as sock } from 'socket.io';
-import { logger } from '.';
+import { Instance, logger } from '.';
 import { wsEventManager } from './Managers';
-import { ConfigInterface } from './config';
 import { LogData, StatusData, WebsocketEvents } from './typings';
 
 declare module 'events' {
@@ -18,24 +17,24 @@ declare module 'socket.io' {
 }
 
 export class websocketClient extends eventEmitter {
-    private readonly config: ConfigInterface;
+    private readonly wsPort: number;
     private readonly server: Server;
     private readonly events: wsEventManager;
 
-    constructor(config: ConfigInterface) {
+    public constructor(instance: Instance) {
         super();
-        this.config = config;
+        this.wsPort = instance.config.port;
         this.server = new Server();
         this.events = new wsEventManager(this);
     }
 
     public open(): void {
-        logger.info(`Opening port ${this.config.port} for websocket client to connect`);
-        this.server.listen(this.config.port);
+        logger.info(`Opening port ${this.wsPort} for websocket client to connect`);
+        this.server.listen(this.wsPort);
     }
 
     public close(): void {
-        logger.info(`Closing port ${this.config.port} and cleaning up`);
+        logger.info(`Closing port ${this.wsPort} and cleaning up`);
         this.server.sockets.sockets.forEach(socket => socket.disconnect(true));
         this.server.close();
     }

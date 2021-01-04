@@ -1,4 +1,4 @@
-import { ModuleData, ModuleManager } from './ModuleManager';
+import { ModuleData, ModuleManager } from './structures';
 import { SubCommand } from '../typings';
 
 export class SubCommandManager extends ModuleManager<string, SubCommand> {

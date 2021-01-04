@@ -1,16 +1,15 @@
 import { Client } from 'discord.js';
-import { logger } from '.';
+import { logger, Instance } from '.';
 import { CommandManager, DJSEventManager } from './Managers';
-import { ConfigInterface } from './config';
 
 export class DJSClient extends Client {
-  protected readonly config: ConfigInterface;
+  public readonly instance: Instance;
   private readonly commands: CommandManager;
   private readonly events: DJSEventManager;
 
-  public constructor(config: ConfigInterface) {
+  public constructor(instance: Instance) {
       super({ restTimeOffset: 5, partials: ['GUILD_MEMBER'] });
-      this.config = config;
+      this.instance = instance;
       this.commands = new CommandManager(this);
       this.events = new DJSEventManager(this);
   }

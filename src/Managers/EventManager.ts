@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { ModuleData, ModuleManager } from './ModuleManager';
+import { ModuleData, ModuleManager } from './structures';
 import { logger } from '..';
 import { DiscordEvent, WebsocketEvent } from '../typings';
 
@@ -53,7 +53,7 @@ export class wsEventManager extends ModuleManager<string, WebsocketEvent> {
     }
 
     public async registerAll(): Promise<void> {
-        logger.info('Trying to register all Discord events');
+        logger.info('Trying to register all Websocket events');
         const dir = resolve(`${__dirname}/../events/Websocket`);
         const modules = this.scanModule(dir, /.js|.ts/);
         const result = (await Promise.all(modules.map(file => this.loadModule(file))))
