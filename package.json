@@ -38,7 +38,7 @@
         "promisify": "0.0.3",
         "socket.io": "^3.0.4",
         "systeminformation": "^4.33.6",
-        "utf-8-validate": "^5.0.3",
+        "utf-8-validate": "^5.0.4",
         "zlib-sync": "^0.1.7"
     },
     "devDependencies": {
