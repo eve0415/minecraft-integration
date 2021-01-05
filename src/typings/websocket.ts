@@ -37,6 +37,7 @@ export interface LogData extends basicData {
     name: string
     UUID?: string
     ip: string
+    address: string
     type?: string
     version?: string
     mods?: string

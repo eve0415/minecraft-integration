@@ -1,4 +1,4 @@
-import { Webhook, WebhookMessageOptions } from 'discord.js';
+import { MessageEmbed, Webhook, WebhookMessageOptions } from 'discord.js';
 
 export abstract class WebhookManager extends Array<WebhookBase> {
     public abstract init(): Promise<void>;
@@ -17,7 +17,7 @@ class WebhookBase {
         this.webhook = webhook;
     }
 
-    public send(message: string, options?: WebhookMessageOptions) {
+    public send(message: string | MessageEmbed, options?: WebhookMessageOptions) {
         this.webhook.send(message, options ?? {});
     }
 }
