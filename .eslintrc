@@ -55,6 +55,13 @@
             "error",
             "interface"
         ],
+        "@typescript-eslint/indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/no-misused-promises": [
             "error",

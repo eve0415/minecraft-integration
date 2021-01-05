@@ -4,8 +4,8 @@ import { Collection } from 'discord.js';
 import { DJSClient, websocketClient, logger } from '../..';
 
 export type ModuleData<K, V> = Readonly<{
-  key: K,
-  value: V
+    key: K,
+    value: V
 }>;
 
 export abstract class ModuleManager<K, V> extends Collection<K, V> {
