@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import Base from './Base';
+import { DBase } from './Base';
 import { DJSClient } from '..';
 
 type CommandOptions = Readonly<{
@@ -9,7 +9,7 @@ type CommandOptions = Readonly<{
     usedInDM: boolean
 }>;
 
-export abstract class Command extends Base {
+export abstract class Command extends DBase {
     public readonly alias: string[];
     public readonly hasSubcom: boolean;
     public readonly ownerOnly: boolean;
