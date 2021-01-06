@@ -46,7 +46,7 @@ export class CommandManager extends ModuleManager<string, Command> {
                 this.subCommands.set(c, subManager);
             }
         }
-        return logger.info(`Successfully registered ${this.size} commands`);
+        logger.info(`Successfully registered ${this.size} commands`);
     }
 
     protected toModuleData(command: Command): ModuleData<string, Command> {

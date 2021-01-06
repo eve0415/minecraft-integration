@@ -26,7 +26,7 @@ export class DJSEventManager extends ModuleManager<string, DiscordEvent> {
             .filter<DiscordEvent>((value): value is DiscordEvent => value instanceof DiscordEvent)
             .map<ModuleData<string, DiscordEvent>>(event => this.toModuleData(event));
         await super.registerAll(result);
-        return logger.info(`Successfully registered ${this.size} Discord events`);
+        logger.info(`Successfully registered ${this.size} Discord events`);
     }
 
     protected toModuleData(event: DiscordEvent): ModuleData<string, DiscordEvent> {
