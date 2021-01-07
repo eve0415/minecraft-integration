@@ -18,6 +18,8 @@ const getAllServer = (): DBserver[] => db.prepare('SELECT * FROM server').all() 
 
 const updateServer = (port: number, type: string): void => {
     const inDatabase = getFromID(port);
+    const test = { ID: port, type: type } as DBserver;
+    if (test.ID === inDatabase.ID && test.type === inDatabase.type) return;
     if (inDatabase) {
         db.prepare('UPDATE server SET type = ? WHERE ID = ?').run(type, port);
     } else {

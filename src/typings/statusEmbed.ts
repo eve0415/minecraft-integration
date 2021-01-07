@@ -1,3 +1,3 @@
 import { StatusType } from '.';
 
-export type statusEmbedType = Exclude<StatusType, 'CONNECT' | 'UPDATE'> | 'ONLINE' | 'UNKNOWN';
+export type StatusEmbedType = Exclude<StatusType, 'CONNECT' | 'UPDATE'> | 'ONLINE' | 'UNKNOWN';

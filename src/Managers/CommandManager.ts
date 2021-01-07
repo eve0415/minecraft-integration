@@ -6,7 +6,7 @@ import { DJSClient, logger, websocketClient } from '..';
 import { Command, SubCommand } from '../typings';
 
 export class CommandManager extends ModuleManager<string, Command> {
-    private readonly subCommands: Collection<string, SubCommandManager>;
+    public readonly subCommands: Collection<string, SubCommandManager>;
 
     public constructor(client: DJSClient | websocketClient) {
         super(client);

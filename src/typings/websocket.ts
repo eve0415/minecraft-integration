@@ -4,8 +4,6 @@ export type StatusType = 'OFFLINE' | 'CONNECT' | 'START' | 'STOP' | 'UPDATE';
 
 export type port = string | null;
 
-export type RecieveEventName = '';
-
 interface basicData {
     port: number
 }

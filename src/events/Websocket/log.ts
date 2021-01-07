@@ -10,7 +10,6 @@ export default class extends WebsocketEvent {
 
     public run(log: LogData): void {
         const server = database.server.getFromID(log.port);
-
         const serverName = server.name ?? server.type;
 
         const embed = new MessageEmbed()
@@ -73,26 +72,27 @@ export default class extends WebsocketEvent {
                     .addField('Reason', log.reason);
                 break;
 
-                // case 'KICKEDFROM':
-                //     /* eslint-disable no-case-declarations */
-                //     const r = log.reason?.split(': ').pop();
-                //     const reason = localization.reason[r] ?? r;
-                //     let desc = `Failed to forward \`${log.name}(${log.ip})\` to server because of \`${reason}\``;
-                //     /* eslint-enable no-case-declarations */
-                //     if (log.fulfill === 'DisconnectPlayer') {
-                //         desc += '\nDisconnecting from server.';
-                //     } else if (log.fulfill === 'RedirectPlayer') {
-                //         desc += '\nForwarding to another server.';
-                //     }
+            case 'KICKEDFROM':
+                /* eslint-disable no-case-declarations */
+                const r = log.reason?.split(': ').pop() ?? '';
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const reason = this.client.instance.localizations?.strings.reasons[r] ?? r;
+                let desc = `Failed to forward \`${log.name}(${log.ip})\` to server because of \`${reason}\``;
+                /* eslint-enable no-case-declarations */
+                if (log.fulfill === 'DisconnectPlayer') {
+                    desc += '\nDisconnecting from server.';
+                } else if (log.fulfill === 'RedirectPlayer') {
+                    desc += '\nForwarding to another server.';
+                }
 
-                //     embed
-                //         .setColor('RED')
-                //         .setTitle(`Failed to forward ${log.name} to server ${log.fromServer}`)
-                //         .setDescription(desc)
-                //         .addField('Reason', reason, true)
-                //         .addField('\u200B', '\u200B', true)
-                //         .addField('Fulfill', log.fulfill, true);
-                //     break;
+                embed
+                    .setColor('RED')
+                    .setTitle(`Failed to forward ${log.name} to server ${log.fromServer}`)
+                    .setDescription(desc)
+                    .addField('Reason', reason, true)
+                    .addField('\u200B', '\u200B', true)
+                    .addField('Fulfill', log.fulfill, true);
+                break;
 
             case 'PRECONNECT':
                 embed

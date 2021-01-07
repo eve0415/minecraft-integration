@@ -1,13 +1,13 @@
 import { statSync, mkdirSync } from 'fs';
 import Database = require('better-sqlite3');
 
-export const init = (): void => {
-    try {
-        statSync('./data');
-    } catch {
-        mkdirSync('./data');
-    }
+try {
+    statSync('./data');
+} catch {
+    mkdirSync('./data');
+}
 
+export const init = (): void => {
     const db = new Database('data/minecraft.sqlite3');
 
     db.prepare('CREATE TABLE IF NOT EXISTS server (ID numbers NOT NULL, type TEXT NOT NULL, name TEXT)').run();

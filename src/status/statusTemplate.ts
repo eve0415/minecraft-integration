@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { StatusData, statusEmbedType } from '../typings';
+import { StatusData, StatusEmbedType } from '../typings';
 
 interface statusEmbedData {
     id: number
@@ -7,7 +7,7 @@ interface statusEmbedData {
     data: StatusData
 }
 
-export const getStatusEmbed = (s: statusEmbedType, info: Partial<statusEmbedData>): MessageEmbed => {
+export const getStatusEmbed = (s: StatusEmbedType, info: Partial<statusEmbedData>): MessageEmbed => {
     const data = info?.data;
     const embed = new MessageEmbed().setTimestamp(new Date);
 

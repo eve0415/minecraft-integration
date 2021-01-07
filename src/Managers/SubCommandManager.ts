@@ -6,10 +6,10 @@ export class SubCommandManager extends ModuleManager<string, SubCommand> {
         await this.registerAll(data.map<ModuleData<string, SubCommand>>(command => this.toModuleData(command)));
     }
 
-    protected toModuleData(command: SubCommand): ModuleData<string, SubCommand> {
+    protected toModuleData(subCommand: SubCommand): ModuleData<string, SubCommand> {
         return {
-            key: command.name,
-            value: command,
+            key: subCommand.name,
+            value: subCommand,
         };
     }
 }

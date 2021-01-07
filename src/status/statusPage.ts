@@ -2,7 +2,7 @@ import { Collection, MessageEmbed } from 'discord.js';
 import { getStatusEmbed } from './statusTemplate';
 import { database } from '../database';
 import { logger } from '../logger';
-import { StatusData, statusEmbedType } from '../typings';
+import { StatusData, StatusEmbedType } from '../typings';
 
 export class StatusPage extends Collection<number, Status> {
     public init(): Promise<void> {
@@ -34,7 +34,7 @@ export class StatusPage extends Collection<number, Status> {
         return status;
     }
 
-    public updateStatus(id: number, status: statusEmbedType, data: StatusData): void {
+    public updateStatus(id: number, status: StatusEmbedType, data: StatusData): void {
         const page = this.get(id);
         if (!page) return logger.error(`Cannot update status ID ${id} because of unknown status`);
         page.updateStatus(status, data);
@@ -45,11 +45,6 @@ export class StatusPage extends Collection<number, Status> {
         if (!page) return logger.error(`Cannot set name for status ID ${id} because of unknown status`);
         page.setName(name);
     }
-/*
-    public getPage(id: number): MessageEmbed {
-        return this.get(id)?.embed.setFooter(`ID: ${id}`) ?? getStatusEmbed('UNKNOWN', { id: id });
-    }
-    */
 }
 
 class Status {
@@ -63,7 +58,7 @@ class Status {
         this.embed = getStatusEmbed('OFFLINE', { name: this.name });
     }
 
-    public updateStatus(st: statusEmbedType, data: StatusData): void {
+    public updateStatus(st: StatusEmbedType, data: StatusData): void {
         this.embed = getStatusEmbed(st, { data: data, name: this.name });
     }
 

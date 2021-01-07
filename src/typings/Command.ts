@@ -9,6 +9,10 @@ type CommandOptions = Readonly<{
     usedInDM: boolean
 }>;
 
+type SubCommandOptions = Readonly<{
+    alias: string[]
+}>;
+
 export abstract class Command extends DBase {
     public readonly alias: string[];
     public readonly hasSubcom: boolean;
@@ -22,6 +26,20 @@ export abstract class Command extends DBase {
         this.hasSubcom = options?.hasSubcom ?? false;
         this.ownerOnly = options?.ownerOnly ?? false;
         this.usedInDM = options?.usedInDM ?? false;
+    }
+
+    public abstract run(message: Message, args: string[]): void;
+}
+
+export abstract class SubCommand extends DBase {
+    public readonly parent: string;
+    public readonly alias: string[];
+
+    public constructor(client: DJSClient, name: string, parent: string, options?: Partial<SubCommandOptions>) {
+        super(client, name);
+
+        this.parent = parent;
+        this.alias = options?.alias ?? [];
     }
 
     public abstract run(message: Message, args: string[]): void;
