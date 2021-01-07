@@ -7,14 +7,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Install Node v14
         uses: actions/setup-node@v2
         with:
           node-version: 14
+          
+      - name: Pre-install dependencies
+        run: git config --global url."https://${{ secrets.PAT }}@github.com/".insteadOf ssh://git@github.com/
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run ESLint
         run: npm run lint
