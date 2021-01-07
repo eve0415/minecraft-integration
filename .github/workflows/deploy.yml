@@ -1,26 +1,20 @@
-name: Deploy
-on:
-  push:
-    branches:
-      - master
-
+name: Test
+on: [push, pull_request]
 jobs:
-  deploy:
+  lint:
+    name: ESLint
     runs-on: ubuntu-latest
     steps:
-      - name: Push to server
-        uses: appleboy/ssh-action@master
-        env:
-          SSH_DIR: ${{ secrets.SSH_DIR }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node v14
+        uses: actions/setup-node@v2
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SECRET_KEY }}
-          envs: SSH_DIR
-          script_stop: true
-          script: |
-            cd $SSH_DIR
-            git checkout .
-            git pull
-            npm install
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        uses: npm run lint
