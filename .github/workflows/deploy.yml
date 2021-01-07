@@ -16,6 +16,7 @@ jobs:
           node-version: 14
 
       - name: Install dependencies
+      run: git config --global url."https://${{ secrets.PAT }}@github.com/".insteadOf ssh://git@github.com/
         run: npm ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
