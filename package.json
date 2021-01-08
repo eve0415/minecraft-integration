@@ -7,7 +7,7 @@
         "node": ">=14"
     },
     "scripts": {
-        "lint": "npx eslint --ext ts src/ --fix",
+        "lint": "npx eslint --ext ts --fix src/**",
         "start": "node -r dotenv/config dist/main.js",
         "test": "nodemon --config nodemon.json -r dotenv/config src/main.ts",
         "build": "tsc -p .",
@@ -38,7 +38,7 @@
         "log4js": "^6.3.0",
         "promisify": "0.0.3",
         "socket.io": "^3.0.5",
-        "systeminformation": "^4.34.4",
+        "systeminformation": "^4.34.5",
         "utf-8-validate": "^5.0.4",
         "zlib-sync": "^0.1.7"
     },

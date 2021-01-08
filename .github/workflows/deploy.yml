@@ -10,7 +10,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install Node v14
+      - name: Install Node v15
         uses: actions/setup-node@v2
         with:
           node-version: 15
