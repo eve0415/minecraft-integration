@@ -1,7 +1,7 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { WebhookManager } from './structures';
-import { DJSClient, Instance } from '..';
-import { database } from '../database';
+import { DJSClient, Instance } from '../..';
+import { database } from '../../database';
+import { WebhookManager } from '../structures';
 
 export class MinecraftLogManager extends WebhookManager {
     private readonly client: DJSClient;

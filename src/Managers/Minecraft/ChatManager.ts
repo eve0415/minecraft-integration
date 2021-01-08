@@ -1,8 +1,8 @@
-import { TextChannel, WebhookMessageOptions } from 'discord.js';
-import { WebhookManager } from './structures';
-import { DJSClient, Instance } from '..';
-import { database } from '../database';
-import { ChatData } from '../typings';
+import { TextChannel, Webhook, WebhookMessageOptions } from 'discord.js';
+import { DJSClient, Instance } from '../..';
+import { database } from '../../database';
+import { ChatData } from '../../typings';
+import { WebhookManager } from '../structures';
 
 export class MinecraftChatManager extends WebhookManager {
     private readonly client: DJSClient;
@@ -22,6 +22,10 @@ export class MinecraftChatManager extends WebhookManager {
             if (!webhook) return database.chat.removeCache(c.channelID);
             this.addCache(Number(c.serverID), webhook);
         }
+    }
+
+    public add(id: number, webhook: Webhook): void {
+        this.addCache(id, webhook);
     }
 
     public sendWebhook(data: ChatData): void {

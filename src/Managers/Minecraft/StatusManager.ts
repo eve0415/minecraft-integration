@@ -1,9 +1,9 @@
 import { Message, MessageReaction, TextChannel, User } from 'discord.js';
-import { DJSClient, Instance, logger } from '..';
-import { database } from '../database';
-import { StatusPage } from '../status';
+import { DJSClient, Instance, logger } from '../..';
+import { database } from '../../database';
+import { StatusPage } from '../../status';
 
-export class StatusManager extends StatusPage {
+export class MinecraftStatusManager extends StatusPage {
     private readonly client: DJSClient;
     private one: Message[];
     private multiple: Message[];

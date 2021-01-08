@@ -1,23 +1,23 @@
 import { MessageEmbed } from 'discord.js';
 import { websocketClient } from '../..';
-import { StatusManager } from '../../Managers';
+import { MinecraftStatusManager } from '../../Managers';
 import { database } from '../../database';
 import { StatusData, StatusEmbedType, StatusType, WebsocketEvent } from '../../typings';
 
 export default class extends WebsocketEvent {
-    private readonly statusManager: StatusManager;
+    private readonly MinecraftStatusManager: MinecraftStatusManager;
 
     public constructor(client: websocketClient) {
         super(client, 'statusUpdate');
-        this.statusManager = this.client.instance.statusManager;
+        this.MinecraftStatusManager = this.client.instance.MinecraftStatusManager;
     }
 
     public run(status: StatusType, data: StatusData): void {
         database.server.updateServer(data.port, data.platform);
 
         if (status !== 'CONNECT') {
-            this.statusManager.updateStatus(data.port, status as StatusEmbedType, data);
-            this.statusManager.refreshStatus();
+            this.MinecraftStatusManager.updateStatus(data.port, status as StatusEmbedType, data);
+            this.MinecraftStatusManager.refreshStatus();
         }
 
         if (status === 'UPDATE') return;
