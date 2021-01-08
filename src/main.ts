@@ -1,11 +1,14 @@
 import { DJSClient, logger, websocketClient } from '.';
+import { MinecraftChatManager, MinecraftLogManager, StatusManager } from './Managers';
 import Config, { ConfigInterface } from './config';
 import { database } from './database';
+import { Language } from './typings';
 
 export class Instance {
     public readonly config: ConfigInterface;
     public readonly bot: DJSClient;
     private readonly ws: websocketClient;
+    public readonly statusManager: StatusManager;
     public readonly logManager: MinecraftLogManager;
     public readonly chatManager: MinecraftChatManager;
 
@@ -15,6 +18,7 @@ export class Instance {
 
         this.bot = new DJSClient(this);
         this.ws = new websocketClient(this);
+        this.statusManager = new StatusManager(this);
         this.logManager = new MinecraftLogManager(this);
         this.chatManager = new MinecraftChatManager(this);
 
@@ -53,9 +57,14 @@ export class Instance {
     // or else it won't work.
     private async postInit() {
         logger.info('Post initialization started!');
+        await this.statusManager.init();
         await this.logManager.init();
         await this.chatManager.init();
         logger.info('Initialize complete...');
+    }
+
+    public get localizations(): Language | undefined {
+        return this.bot.localizations.getLocalization();
     }
 
     public shutdown(): void {

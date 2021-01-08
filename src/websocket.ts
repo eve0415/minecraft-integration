@@ -1,7 +1,7 @@
 import { EventEmitter as eventEmitter } from 'events';
 import { Server, Socket as sock } from 'socket.io';
 import { Instance, logger } from '.';
-import { wsEventManager } from './Managers';
+import { StatusManager, wsEventManager } from './Managers';
 import { ChatData, LogData, StatusData, WebsocketEvents } from './typings';
 
 declare module 'events' {
@@ -28,6 +28,10 @@ export class websocketClient extends eventEmitter {
         this.wsPort = instance.config.port;
         this.server = new Server();
         this.events = new wsEventManager(this);
+    }
+
+    get statusManager(): StatusManager {
+        return this.instance.statusManager;
     }
 
     public open(): void {
