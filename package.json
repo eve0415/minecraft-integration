@@ -7,7 +7,7 @@
         "node": ">=14"
     },
     "scripts": {
-        "lint": "npx eslint --ext ts --fix src/**",
+        "lint": "npx eslint --ext ts --fix",
         "start": "node -r dotenv/config dist/main.js",
         "test": "nodemon --config nodemon.json -r dotenv/config src/main.ts",
         "build": "tsc -p .",
