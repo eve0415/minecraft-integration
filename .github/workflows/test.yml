@@ -1,7 +1,7 @@
 name: Test
 on: [push]
 jobs:
-  lint:
+  test:
     name: ESLint
     runs-on: ubuntu-latest
     steps:
@@ -23,3 +23,6 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
+        
+      - name: Build
+        run: npm run build
