@@ -8,7 +8,7 @@ export class Instance {
     public readonly config: ConfigInterface;
     public readonly bot: DJSClient;
     private readonly ws: websocketClient;
-    public readonly MinecraftStatusManager: MinecraftStatusManager;
+    public readonly statusManager: MinecraftStatusManager;
     public readonly logManager: MinecraftLogManager;
     public readonly chatManager: MinecraftChatManager;
 
@@ -18,7 +18,7 @@ export class Instance {
 
         this.bot = new DJSClient(this);
         this.ws = new websocketClient(this);
-        this.MinecraftStatusManager = new MinecraftStatusManager(this);
+        this.statusManager = new MinecraftStatusManager(this);
         this.logManager = new MinecraftLogManager(this);
         this.chatManager = new MinecraftChatManager(this);
 
@@ -57,7 +57,7 @@ export class Instance {
     // or else it won't work.
     private async postInit() {
         logger.info('Post initialization started!');
-        await this.MinecraftStatusManager.init();
+        await this.statusManager.init();
         await this.logManager.init();
         await this.chatManager.init();
         logger.info('Initialize complete...');
