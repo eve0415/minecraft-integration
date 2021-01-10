@@ -5,19 +5,19 @@ import { database } from '../../database';
 import { StatusData, StatusEmbedType, StatusType, WebsocketEvent } from '../../typings';
 
 export default class extends WebsocketEvent {
-    private readonly MinecraftStatusManager: MinecraftStatusManager;
+    private readonly statusManager: MinecraftStatusManager;
 
     public constructor(client: websocketClient) {
         super(client, 'statusUpdate');
-        this.MinecraftStatusManager = this.client.instance.MinecraftStatusManager;
+        this.statusManager = this.client.instance.statusManager;
     }
 
     public run(status: StatusType, data: StatusData): void {
         database.server.updateServer(data.port, data.platform);
 
         if (status !== 'CONNECT') {
-            this.MinecraftStatusManager.updateStatus(data.port, status as StatusEmbedType, data);
-            this.MinecraftStatusManager.refreshStatus();
+            this.statusManager.updateStatus(data.port, status as StatusEmbedType, data);
+            this.statusManager.refreshStatus();
         }
 
         if (status === 'UPDATE') return;
