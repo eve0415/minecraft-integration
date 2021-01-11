@@ -1,4 +1,4 @@
-import { Message, MessageReaction, TextChannel, User } from 'discord.js';
+import { Message, MessageEmbed, MessageReaction, TextChannel, User } from 'discord.js';
 import { DJSClient, Instance, logger } from '../..';
 import { database } from '../../database';
 import { StatusPage } from '../../status';
@@ -24,13 +24,17 @@ export class MinecraftStatusManager extends StatusPage {
             if (!ch) return database.status.removeMessage(c.messageID);
             const mes = await ch.messages.fetch(c.messageID);
             if (!mes || !this.isValidMessage(mes)) return database.status.removeMessage(c.messageID);
-            await this.addMessage(mes);
+            const footer = mes.embeds[0].footer?.text as unknown as statusEmbedFooter;
+            if (footer.Page) {
+                await this.addMessage(mes, true);
+            } else {
+                await this.addMessage(mes);
+            }
         }
     }
 
-    public async addMessage(msg: Message): Promise<void> {
-        const footer = msg.embeds[0].footer?.text as unknown as statusEmbedFooter;
-        if (footer.Page) {
+    public async addMessage(msg: Message, multiple = false): Promise<void> {
+        if (multiple) {
             this.multiple.push(msg);
             await msg.reactions.removeAll();
             if (this.size > 1) await msg.react('◀️').then(() => msg.react('▶️'));
@@ -75,7 +79,6 @@ export class MinecraftStatusManager extends StatusPage {
             }
             const data = mes.embeds[0].footer?.text as unknown as statusEmbedFooter;
 
-            this.get(Number(data.ID));
             await mes.edit(this.get(Number(data.ID))?.embed ?? '').catch(logger.error);
         });
 
@@ -87,12 +90,30 @@ export class MinecraftStatusManager extends StatusPage {
             const data = mes.embeds[0].footer?.text as unknown as statusEmbedFooter;
 
             const now = data.Page?.split('/').shift();
-            await mes.edit(this.array()[Number(now) - 1].embed).catch(logger.error);
+            await mes.edit(this.getPage({ page: Number(now) - 1 })).catch(logger.error);
         });
     }
+
+    public getPage(d: AtLeastOne<PageOrID>): MessageEmbed {
+        if (d.id) return this.get(d.id)?.embed ?? this.getUnknown(d.id);
+        if (d.page) {
+            const status = this.array()[d.page];
+            const fallback = this.first();
+            return status.embed.setFooter(`ID: ${status.id} Page: ${d.page}/${this.size}`) ?? fallback?.embed.setFooter(`ID: ${fallback.id} Page: 1/${this.size}`);
+        }
+        // This should never happen
+        return new MessageEmbed().setTitle('Error while fetching status').setColor('RED');
+    }
 }
+
+type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
 
 interface statusEmbedFooter {
     ID: string
     Page?: string
+}
+
+interface PageOrID {
+    page: number,
+    id: number
 }

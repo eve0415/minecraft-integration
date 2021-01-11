@@ -45,6 +45,10 @@ export class StatusPage extends Collection<number, Status> {
         if (!page) return logger.error(`Cannot set name for status ID ${id} because of unknown status`);
         page.setName(name);
     }
+
+    public getUnknown(id: number): MessageEmbed {
+        return getStatusEmbed('UNKNOWN', { id: id });
+    }
 }
 
 class Status {
