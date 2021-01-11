@@ -38,14 +38,17 @@ export abstract class Command extends DBase {
 }
 
 export abstract class SubCommand extends DBase {
-    public readonly parent: {name: string, command: Command};
+    public readonly parent: {name: string, command: Command | null};
     public readonly alias: string[];
 
     public constructor(client: DJSClient, name: string, parent: string, options?: Partial<SubCommandOptions>) {
         super(client, name);
-
-        this.parent = { name: parent, command: this.client.commands.get(parent) as Command };
+        this.parent = { name: parent, command: null };
         this.alias = options?.alias ?? [];
+    }
+
+    public subscribeParent(parentName: string): void {
+        this.parent.command = this.client.commands.get(parentName) as Command;
     }
 
     public abstract run(message: Message, args: string[]): void;

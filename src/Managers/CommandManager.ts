@@ -42,7 +42,7 @@ export class CommandManager extends ModuleManager<string, Command> {
                 logger.warn(`Command: ${c} has a subcommands but could not register because of cannot find child module`);
             } else {
                 const subManager = new SubCommandManager(this.client);
-                await subManager.registerSubCommands(sub);
+                await subManager.registerSubCommands(sub, c);
                 this.subCommands.set(c, subManager);
             }
         }

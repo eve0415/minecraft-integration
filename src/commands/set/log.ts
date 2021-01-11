@@ -12,8 +12,8 @@ export default class extends SubCommand {
         this.logManager = client.instance.logManager;
     }
 
-    public async run(message: Message, args: string[]): Promise<void|Message> {
-        if (!args.length) return message.channel.send(this.parent.command.usage as string);
+    public async run(message: Message, args: string[]): Promise<void | Message> {
+        if (!args.length) return message.channel.send(this.parent.command?.usage as string);
 
         const channelID = args[1].replace('<#', '').replace('>', '') ?? message.channel.id;
         const channel = message.guild?.channels.cache.get(channelID) as TextChannel;
