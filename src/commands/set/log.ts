@@ -1,5 +1,5 @@
 import { Message, TextChannel } from 'discord.js';
-import { DJSClient } from '../..';
+import { DJSClient, logger } from '../..';
 import { MinecraftLogManager } from '../../Managers';
 import { database } from '../../database';
 import { SubCommand } from '../../typings';
@@ -17,7 +17,8 @@ export default class extends SubCommand {
 
         const channelID = args[1]?.replace('<#', '').replace('>', '') ?? message.channel.id;
         const channel = message.guild?.channels.cache.get(channelID) as TextChannel;
-        const mes = await channel.send('Configuring...');
+        const mes = await channel.send('Configuring...').catch(logger.error);
+        if (!mes) return logger.error(`There was an error trying to set channel for log integrations. User: ${message.author.username}(${message.author.id})`);
         const cache = database.log.getFromID(channelID);
         const id = args[0] === 'all' ? 0 : Number(args[0]);
         const tmp = cache?.filter(c => c.serverID === id);
