@@ -37,9 +37,9 @@ export class CommandManager extends ModuleManager<string, Command> {
 
         const needsSubcommands = this.filter(c => c.hasSubcom).map(({ name }) => name);
         for (const c of needsSubcommands) {
-            const sub = subCommands.filter(s => s.parent === c);
+            const sub = subCommands.filter(s => s.parent.name === c);
             if (!sub.length) {
-                logger.warn(`Command: ${c} has a subcommands but could not register because of cannot find module`);
+                logger.warn(`Command: ${c} has a subcommands but could not register because of cannot find child module`);
             } else {
                 const subManager = new SubCommandManager(this.client);
                 await subManager.registerSubCommands(sub);
