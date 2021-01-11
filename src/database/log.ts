@@ -16,7 +16,7 @@ const getFromID = (chID: string): DBdata[] => db.prepare('SELECT * FROM log WHER
 const getAll = (): DBdata[] => db.prepare('SELECT * FROM log').all() as DBdata[];
 
 const removeCache = (chID: string): void => {
-    db.prepare('DELETE FROM log WHERE channelID = ?').run(chID);
+    db.prepare('DELETE FROM log WHERE channelID = ?').all(chID);
 };
 
 export { addCache, getFromID, getAll, removeCache };

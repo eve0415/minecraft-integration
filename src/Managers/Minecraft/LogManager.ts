@@ -1,4 +1,4 @@
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { MessageEmbed, TextChannel, Webhook } from 'discord.js';
 import { DJSClient, Instance } from '../..';
 import { database } from '../../database';
 import { WebhookManager } from '../structures';
@@ -21,6 +21,15 @@ export class MinecraftLogManager extends WebhookManager {
             if (!webhook) return database.log.removeCache(c.channelID);
             this.addCache(Number(c.serverID), webhook);
         }
+    }
+
+    public addWebhook(id: number, webhook: Webhook): void {
+        this.addCache(id, webhook);
+    }
+
+    public replaceWebhook(channelID: string, id: number, webhook: Webhook): void {
+        this.filter(w => w.webhook.channelID !== channelID);
+        this.addCache(id, webhook);
     }
 
     public sendWebhook(id: number, embed: MessageEmbed): void {
