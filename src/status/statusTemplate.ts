@@ -9,17 +9,16 @@ interface statusEmbedData {
 
 export const getStatusEmbed = (s: StatusEmbedType, info: Partial<statusEmbedData>): MessageEmbed => {
     const data = info?.data;
-    const embed = new MessageEmbed().setTimestamp(new Date);
+    const embed = new MessageEmbed().setTimestamp(new Date).setFooter(`ID: ${info.id}`);
 
     switch (s) {
         case 'UNKNOWN':
             embed.setColor('BLACK')
                 .setTitle('Unknown Server')
-                .setDescription('Unknown Server\nPlease contact bot/mod administrators')
-                .setFooter(`ID: ${info.id}`);
+                .setDescription('Unknown Server\nPlease contact bot/mod administrators');
             break;
 
-        case 'ONLINE':
+        case 'UPDATE':
             embed.setTitle(info.name ?? data?.platform)
                 .setColor('BLUE')
                 .addField('Status', 'Online', true)

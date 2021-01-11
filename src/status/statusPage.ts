@@ -59,11 +59,11 @@ class Status {
     constructor(id: number, type: string) {
         this.id = id;
         this.name = type;
-        this.embed = getStatusEmbed('OFFLINE', { name: this.name });
+        this.embed = getStatusEmbed('OFFLINE', { name: this.name, id: this.id });
     }
 
     public updateStatus(st: StatusEmbedType, data: StatusData): void {
-        this.embed = getStatusEmbed(st, { data: data, name: this.name });
+        this.embed = getStatusEmbed(st, { data: data, name: this.name, id: this.id });
     }
 
     public setName(name: string): void {

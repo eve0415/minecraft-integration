@@ -17,14 +17,7 @@ const getFromID = (port: number): DBserver => db.prepare('SELECT * FROM server W
 const getAllServer = (): DBserver[] => db.prepare('SELECT * FROM server').all() as DBserver[];
 
 const updateServer = (port: number, type: string): void => {
-    const inDatabase = getFromID(port);
-    const test = { ID: port, type: type } as DBserver;
-    if (test.ID === inDatabase.ID && test.type === inDatabase.type) return;
-    if (inDatabase) {
-        db.prepare('UPDATE server SET type = ? WHERE ID = ?').run(type, port);
-    } else {
-        addServer(port, type);
-    }
+    db.prepare('UPDATE server SET type = ? WHERE ID = ?').run(type, port);
 };
 
 const setName = (port: number, name: string): void => {
@@ -35,4 +28,4 @@ const remove = (port: number): void => {
     db.prepare('DELETE FROM server WHERE ID = ?').run(port);
 };
 
-export { getFromID, getAllServer, updateServer, setName, remove };
+export { addServer, getFromID, getAllServer, updateServer, setName, remove };

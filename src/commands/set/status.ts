@@ -29,7 +29,7 @@ export default class extends SubCommand {
         } else {
             const embed = this.statusManager.getPage({ page: 1 });
             if (!embed) return mes.edit('No status found! Try to start and connect to minecraft server and retry the command');
-            await mes.edit('', this.statusManager.getPage({ page: 1 }));
+            await mes.edit('', embed);
             this.statusManager.addMessage(mes, true);
         }
     }

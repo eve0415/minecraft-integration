@@ -13,11 +13,18 @@ export default class extends WebsocketEvent {
     }
 
     public run(status: StatusType, data: StatusData): void {
-        database.server.updateServer(data.port, data.platform);
+        const inDatabase = database.server.getFromID(data.port);
+        if (!(data.port === inDatabase?.ID && data.platform === inDatabase?.type) && data.platform) {
+            database.server.updateServer(data.port, data.platform);
+            if (!inDatabase?.name) this.statusManager.setName(data.port, data.platform);
+        } else if (!inDatabase) {
+            database.server.addServer(data.port, data.platform ?? 'UNKNOWN');
+            this.statusManager.addStatus(data.port, data.platform ?? 'UNKNOWN');
+        }
 
         if (status !== 'CONNECT') {
             this.statusManager.updateStatus(data.port, status as StatusEmbedType, data);
-            this.statusManager.refreshStatus();
+            this.statusManager.refreshStatus(data.port);
         }
 
         if (status === 'UPDATE') return;
