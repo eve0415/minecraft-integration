@@ -15,7 +15,7 @@ export default class extends SubCommand {
     public async run(message: Message, args: string[]): Promise<void | Message> {
         if (!args.length) return message.channel.send(this.parent.command?.usage as string);
 
-        const channelID = args[1].replace('<#', '').replace('>', '') ?? message.channel.id;
+        const channelID = args[1]?.replace('<#', '').replace('>', '') ?? message.channel.id;
         const channel = message.guild?.channels.cache.get(channelID) as TextChannel;
         const mes = await channel.send('Configuring...');
 
