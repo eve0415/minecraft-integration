@@ -33,7 +33,7 @@ export class MinecraftLogManager extends WebhookManager {
     }
 
     public sendWebhook(id: number, embed: MessageEmbed): void {
-        const filtered = this.filter(webhook => webhook.id === id);
+        const filtered = this.filter(webhook => webhook.id === id || webhook.id === 0);
         filtered.forEach(w => {
             w.send(embed);
         });

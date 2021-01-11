@@ -18,6 +18,7 @@ class WebhookBase {
     }
 
     public send(message: string | MessageEmbed, options?: WebhookMessageOptions) {
-        this.webhook.send(message, options ?? {});
+        if (options) return this.webhook.send(message, options);
+        this.webhook.send(message);
     }
 }
