@@ -58,16 +58,11 @@ export class MinecraftStatusManager extends StatusPage {
         if (!(reaction.emoji.name === '◀️' || reaction.emoji.name === '▶️')) return reaction.users.remove(user);
 
         const footer = toStatusFooter(reaction.message.embeds[0].footer?.text);
-        const page = footer.Page?.split('/')[0] ?? 0;
-        let nextPage: number;
-        if (reaction.emoji.name === '◀️') {
-            nextPage = Number(page) - 1 <= 0 ? this.size : Number(page) - 1;
-        } else {
-            nextPage = Number(page) + 1 > this.size ? 1 : Number(page) + 1;
-        }
+        const page = Number(footer.Page?.split('/')[0] ?? '0');
+        const nextPage = reaction.emoji.name === '◀️' ? page - 1 <= 0 ? this.size : page - 1 : page + 1 > this.size ? 1 : page + 1;
 
         await reaction.message
-            .edit(this.array()[nextPage])
+            .edit(this.getPage({ page: nextPage }))
             .then(() => reaction.users.remove(user));
     }
 
