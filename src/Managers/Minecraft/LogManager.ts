@@ -21,6 +21,7 @@ export class MinecraftLogManager extends WebhookManager {
             if (!webhook) return database.log.removeCache(c.channelID);
             this.addCache(Number(c.serverID), webhook);
         }
+        await this.start();
     }
 
     public addWebhook(id: number, webhook: Webhook): void {
@@ -37,6 +38,12 @@ export class MinecraftLogManager extends WebhookManager {
         filtered.forEach(w => {
             w.send(embed);
         });
+    }
+
+    private async start(): Promise<void> {
+        const embed = new MessageEmbed().setTitle('Waking up bot...').setColor('GREEN');
+        const toDo = this.map(w => w.send(embed));
+        await Promise.all(toDo);
     }
 
     public shutdown(): Promise<(Message | Message[] | undefined)[]> {
