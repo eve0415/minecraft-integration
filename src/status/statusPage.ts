@@ -22,7 +22,7 @@ export class StatusPage extends Collection<number, Status> {
         });
     }
 
-    public addStatus(id: number, type: string): Status | null {
+    public addStatus(id: number, type: string): Status {
         if (this.has(id)) {
             logger.error(`Cannot add new status page because of conflict ID ${id}`);
             logger.warn('Status will be over written');
@@ -51,7 +51,7 @@ export class StatusPage extends Collection<number, Status> {
     }
 }
 
-class Status {
+export class Status {
     public readonly id: number;
     private name: string;
     public embed: MessageEmbed;

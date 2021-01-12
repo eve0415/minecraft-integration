@@ -11,7 +11,7 @@ interface basicData {
 interface websocketEvents {
     'statusUpdate': [StatusType, StatusData]
     'log': [LogData]
-    'serverInfo': [unknown]
+    'serverInfo': [ServerInfo]
     'chat': [ChatData]
     'advancementAchieve': [unknown]
     'connect': [port]
@@ -50,6 +50,10 @@ export interface ChatData extends basicData {
     name: string
     UUID: string
     message: string
+}
+
+export interface ServerInfo {
+    [key: number]: string
 }
 
 export type WebsocketEvents = websocketEvents;

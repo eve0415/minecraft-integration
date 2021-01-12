@@ -2,7 +2,7 @@ import { EventEmitter as eventEmitter } from 'events';
 import { Server, Socket as sock } from 'socket.io';
 import { Instance, logger } from '.';
 import { wsEventManager } from './Managers';
-import { ChatData, LogData, StatusData, WebsocketEvents } from './typings';
+import { ChatData, LogData, ServerInfo, StatusData, WebsocketEvents } from './typings';
 
 declare module 'events' {
     interface EventEmitter {
@@ -60,7 +60,7 @@ export class websocketClient extends eventEmitter {
 
             socket.on('LOG', (log: LogData) => this.emit('log', log));
 
-            socket.on('SERVERINFO', (data: StatusData) => this.emit('serverInfo', data));
+            socket.on('SERVERINFO', (data: ServerInfo) => this.emit('serverInfo', data));
 
             socket.on('STARTING', (data: StatusData) => this.emit('statusUpdate', 'START', data));
             socket.on('STOPPING', (data: StatusData) => this.emit('statusUpdate', 'STOP', data));

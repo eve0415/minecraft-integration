@@ -1,18 +1,21 @@
 import { Message, MessageEmbed, MessageReaction, TextChannel, User } from 'discord.js';
 import { DJSClient, Instance, logger } from '../..';
 import { database } from '../../database';
-import { StatusPage } from '../../status';
+import { Status, StatusPage } from '../../status';
+import { ServerInfo } from '../../typings';
 
 export class MinecraftStatusManager extends StatusPage {
     private readonly client: DJSClient;
     private one: Message[];
     private multiple: Message[];
+    private cache: ServerInfo;
 
     public constructor(instance: Instance) {
         super();
         this.client = instance.bot;
         this.one = [];
         this.multiple = [];
+        this.cache = {};
     }
 
     public async init(): Promise<void> {
@@ -130,6 +133,19 @@ export class MinecraftStatusManager extends StatusPage {
         }
         // This should never happen
         return new MessageEmbed().setTitle('Error while fetching status').setColor('RED');
+    }
+
+    public addStatus(id: number, type: string): Status {
+        const result = super.addStatus(id, type);
+        if (!result) return result;
+        Object.keys(this.cache).forEach(port => {
+            if (Number(port) === result?.id) result.setName(this.cache[port]);
+        });
+        return result;
+    }
+
+    public cacheUnknownServer(data: ServerInfo): void {
+        this.cache = data;
     }
 }
 
