@@ -77,6 +77,12 @@ export const getStatusEmbed = (s: StatusEmbedType, info: Partial<statusEmbedData
                 .setColor('BLACK')
                 .setDescription('Offline');
             break;
+
+        case 'CONNECT':
+            embed.setTitle(info.name)
+                .setColor('GREEN')
+                .setDescription('Connected. Waiting for status update');
+            break;
     }
 
     return embed;

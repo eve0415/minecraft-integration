@@ -22,10 +22,8 @@ export default class extends WebsocketEvent {
             this.statusManager.addStatus(data.port, data.platform ?? 'UNKNOWN');
         }
 
-        if (status !== 'CONNECT') {
-            this.statusManager.updateStatus(data.port, status as StatusEmbedType, data);
-            this.statusManager.refreshStatus(data.port);
-        }
+        this.statusManager.updateStatus(data.port, status as StatusEmbedType, data);
+        this.statusManager.refreshStatus(data.port);
 
         if (status === 'UPDATE') return;
 

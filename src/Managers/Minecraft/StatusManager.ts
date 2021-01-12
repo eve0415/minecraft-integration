@@ -151,7 +151,7 @@ export class MinecraftStatusManager extends StatusPage {
                 await mes.reactions.removeAll();
                 await mes.react('◀️').then(() => mes.react('▶️'));
             });
-            Promise.all(multiple);
+            Promise.all([multiple, this.refreshAll()]);
         }
 
         return result;
