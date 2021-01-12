@@ -82,7 +82,7 @@ export class websocketClient extends eventEmitter {
         });
     }
 
-    private checkIfValid(socket: sock): void {
+    private checkIfValid(socket: sock) {
         setTimeout(() => {
             if (!socket.serverID) socket.disconnect(true);
         }, 10000);

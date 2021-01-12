@@ -66,7 +66,7 @@ export class MinecraftStatusManager extends StatusPage {
             .then(() => reaction.users.remove(user));
     }
 
-    private isValidMessage(msg: Message): boolean {
+    private isValidMessage(msg: Message) {
         return msg.embeds.length === 1;
     }
 
@@ -96,7 +96,7 @@ export class MinecraftStatusManager extends StatusPage {
         await Promise.all([one, multiple]);
     }
 
-    private async refreshAll(): Promise<void> {
+    private async refreshAll() {
         const one = this.one.map(async mes => {
             if (!this.isValidMessage(mes)) {
                 this.one = this.one.filter(m => m.id !== mes.id);

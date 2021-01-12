@@ -40,7 +40,7 @@ export class MinecraftLogManager extends WebhookManager {
         });
     }
 
-    private async start(): Promise<void> {
+    private async start() {
         const embed = new MessageEmbed().setTitle('Waking up bot...').setColor('GREEN');
         const toDo = this.map(w => w.send(embed));
         await Promise.all(toDo);
