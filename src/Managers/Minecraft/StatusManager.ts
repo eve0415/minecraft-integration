@@ -141,6 +141,19 @@ export class MinecraftStatusManager extends StatusPage {
         Object.keys(this.cache).forEach(port => {
             if (Number(port) === result?.id) result.setName(this.cache[port]);
         });
+
+        if (this.size === 2) {
+            const multiple = this.multiple.map(async mes => {
+                if (!this.isValidMessage(mes)) {
+                    this.multiple = this.multiple.filter(m => m.id !== mes.id);
+                    return database.status.removeMessage(mes.id);
+                }
+                await mes.reactions.removeAll();
+                await mes.react('◀️').then(() => mes.react('▶️'));
+            });
+            Promise.all(multiple);
+        }
+
         return result;
     }
 
