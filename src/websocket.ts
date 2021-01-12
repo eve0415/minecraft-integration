@@ -2,7 +2,7 @@ import { EventEmitter as eventEmitter } from 'events';
 import { Server, Socket as sock } from 'socket.io';
 import { Instance, logger } from '.';
 import { wsEventManager } from './Managers';
-import { ChatData, LogData, ServerInfo, StatusData, WebsocketEvents } from './typings';
+import { ChatData, LogData, SendChat, ServerInfo, StatusData, WebsocketEvents } from './typings';
 
 declare module 'events' {
     interface EventEmitter {
@@ -80,6 +80,10 @@ export class websocketClient extends eventEmitter {
                 this.emit('statusUpdate', 'CONNECT', { port: Number(roomID) } as StatusData);
             });
         });
+    }
+
+    public send(id: number, message: SendChat): void {
+        this.server.in(id.toString()).emit('chat', message);
     }
 
     private checkIfValid(socket: sock) {

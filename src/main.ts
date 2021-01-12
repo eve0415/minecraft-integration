@@ -7,7 +7,7 @@ import { Language } from './typings';
 export class Instance {
     public readonly config: ConfigInterface;
     public readonly bot: DJSClient;
-    private readonly ws: websocketClient;
+    public readonly ws: websocketClient;
     public readonly statusManager: MinecraftStatusManager;
     public readonly logManager: MinecraftLogManager;
     public readonly chatManager: MinecraftChatManager;

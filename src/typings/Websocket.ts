@@ -4,6 +4,8 @@ export type StatusType = 'OFFLINE' | 'CONNECT' | 'START' | 'STOP' | 'UPDATE';
 
 export type port = string | null;
 
+export type WebsocketEvents = websocketEvents;
+
 interface basicData {
     port: number
 }
@@ -12,7 +14,7 @@ interface websocketEvents {
     'statusUpdate': [StatusType, StatusData]
     'log': [LogData]
     'serverInfo': [ServerInfo]
-    'chat': [ChatData]
+    'chat': [ChatData | SendChat]
     'advancementAchieve': [ChatData]
     'connect': [port]
     'disconnect': [port, string]
@@ -56,4 +58,9 @@ export interface ServerInfo {
     [key: number]: string
 }
 
-export type WebsocketEvents = websocketEvents;
+export interface SendChat {
+    name: string
+    UUID: string | null
+    message: string
+    URL: string
+}
