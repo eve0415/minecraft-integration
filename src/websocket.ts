@@ -58,7 +58,7 @@ export class websocketClient extends eventEmitter {
             socket.on('error', err => this.emit('error', socket.serverID ?? null, err));
 
             socket.on('CHAT', (data: ChatData) => this.emit('chat', data));
-            // socket.on('ADVANCEMENT', data => this.emit('advancementAchieve', data));
+            socket.on('ADVANCEMENT', data => this.emit('advancementAchieve', data));
 
             socket.on('LOG', (log: LogData) => this.emit('log', log));
 

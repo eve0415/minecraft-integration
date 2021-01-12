@@ -13,7 +13,7 @@ interface websocketEvents {
     'log': [LogData]
     'serverInfo': [ServerInfo]
     'chat': [ChatData]
-    'advancementAchieve': [unknown]
+    'advancementAchieve': [ChatData]
     'connect': [port]
     'disconnect': [port, string]
     'error': [port, Error]
