@@ -1,4 +1,4 @@
-import { MessageEmbed, TextChannel, Webhook } from 'discord.js';
+import { Message, MessageEmbed, TextChannel, Webhook } from 'discord.js';
 import { DJSClient, Instance } from '../..';
 import { database } from '../../database';
 import { WebhookManager } from '../structures';
@@ -37,5 +37,11 @@ export class MinecraftLogManager extends WebhookManager {
         filtered.forEach(w => {
             w.send(embed);
         });
+    }
+
+    public shutdown(): Promise<(Message | Message[] | undefined)[]> {
+        const embed = new MessageEmbed().setTitle('Bot shutting down...').setColor('BLACK');
+        const toDo = this.map(w => w.send(embed));
+        return Promise.all(toDo);
     }
 }

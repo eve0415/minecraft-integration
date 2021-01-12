@@ -67,10 +67,15 @@ export class Instance {
         return this.bot.localizations.getLocalization();
     }
 
-    public shutdown(): void {
+    public async shutdown(): Promise<void> {
         logger.info('Shutting down');
-        this.ws.close();
-        this.bot.close();
+        await Promise.all([
+            this.bot.preShutdown(),
+            this.ws.close(),
+            this.logManager.shutdown(),
+            this.statusManager.shutdown(),
+        ]);
+        this.bot.shutdown();
         logger.shutdown();
         process.exit();
     }
@@ -80,7 +85,9 @@ const p = new Instance(Config);
 
 ['SIGINT', 'uncaughtException', 'unhandledRejection']
     .forEach(signal => process.on(signal, e => {
-        logger.error('Unexpected error occured');
-        logger.error(e);
+        if (e !== 'SIGINT') {
+            logger.error('Unexpected error occured');
+            logger.error(e);
+        }
         p.shutdown();
     }));

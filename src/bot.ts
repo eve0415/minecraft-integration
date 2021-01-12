@@ -31,7 +31,11 @@ export class DJSClient extends Client {
         return super.login();
     }
 
-    public close(): void {
+    public async preShutdown(): Promise<void> {
+        await this.events.unregisterAll();
+    }
+
+    public shutdown(): void {
         logger.info('Shutting down bot');
         this.destroy();
     }

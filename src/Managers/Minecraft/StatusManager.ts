@@ -160,6 +160,35 @@ export class MinecraftStatusManager extends StatusPage {
     public cacheUnknownServer(data: ServerInfo): void {
         this.cache = data;
     }
+
+    public shutdown(): Promise<[Promise<void>[], Promise<void>[]]> {
+        const one = this.one.map(async mes => {
+            if (!this.isValidMessage(mes)) {
+                this.one = this.one.filter(m => m.id !== mes.id);
+                return database.status.removeMessage(mes.id);
+            }
+            const embed = new MessageEmbed()
+                .setTitle(`${this.client.user?.toString()} is offline`)
+                .setColor('BLACK')
+                .setFooter(mes.embeds[0].footer?.text);
+            await mes.edit(embed);
+        });
+
+        const multiple = this.multiple.map(async mes => {
+            if (!this.isValidMessage(mes)) {
+                this.multiple = this.multiple.filter(m => m.id !== mes.id);
+                return database.status.removeMessage(mes.id);
+            }
+            const embed = new MessageEmbed()
+                .setDescription(`${this.client.user?.toString()} is offline`)
+                .setColor('BLACK')
+                .setFooter(mes.embeds[0].footer?.text);
+            await mes.reactions.removeAll();
+            await mes.edit(embed);
+        });
+
+        return Promise.all([one, multiple]);
+    }
 }
 
 const toStatusFooter = (str?: string): statusEmbedFooter => {

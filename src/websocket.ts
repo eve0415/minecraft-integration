@@ -35,10 +35,12 @@ export class websocketClient extends eventEmitter {
         this.server.listen(this.wsPort);
     }
 
-    public close(): void {
+    public close(): Promise<void> {
         logger.info(`Closing port ${this.wsPort} and cleaning up`);
         this.server.sockets.sockets.forEach(socket => socket.disconnect(true));
         this.server.close();
+        // Wait 1 second to fire and finish off disconnect events
+        return new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     public async init(): Promise<void> {

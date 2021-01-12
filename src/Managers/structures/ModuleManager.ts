@@ -25,7 +25,7 @@ export abstract class ModuleManager<K, V> extends Collection<K, V> {
 
     public unregister(key: K): V {
         const value = this.get(key) as V;
-        if (!value || this.has(key)) logger.error(`Failed to unregister ${key} `, `${key} does not exist.`);
+        if (!value || !this.has(key)) logger.error(`Failed to unregister ${key} `, `${key} does not exist.`);
         this.delete(key);
         return value;
     }
@@ -34,7 +34,7 @@ export abstract class ModuleManager<K, V> extends Collection<K, V> {
         return Promise.all(data.map(value => this.register(value)));
     }
 
-    public unregisterAll(): Promise<V[]> {
+    public unregisterAll(): Promise<unknown> {
         return Promise.all(this.keyArray().map(key => this.unregister(key)));
     }
 

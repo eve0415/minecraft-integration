@@ -29,6 +29,11 @@ export class DJSEventManager extends ModuleManager<string, DiscordEvent> {
         logger.info(`Successfully registered ${this.size} Discord events`);
     }
 
+    public async unregisterAll(): Promise<void> {
+        logger.info('Trying to unregister all Discord events');
+        await super.unregisterAll();
+    }
+
     protected toModuleData(event: DiscordEvent): ModuleData<string, DiscordEvent> {
         return {
             key: event.name,
