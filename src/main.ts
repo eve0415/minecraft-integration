@@ -78,4 +78,9 @@ export class Instance {
 
 const p = new Instance(Config);
 
-process.on('SIGINT', () => p.shutdown());
+['SIGINT', 'uncaughtException', 'unhandledRejection']
+    .forEach(signal => process.on(signal, e => {
+        logger.error('Unexpected error occured');
+        logger.error(e);
+        p.shutdown();
+    }));
