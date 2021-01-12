@@ -8,7 +8,7 @@
     },
     "scripts": {
         "lint": "npx eslint --ext ts --fix src/**/*",
-        "start": "node -r dotenv/config dist/main.js",
+        "start": "node dist/main.js",
         "test": "nodemon --config nodemon.json -r dotenv/config src/main.ts",
         "build": "tsc -p .",
         "watch": "tsc --watch"
@@ -33,7 +33,6 @@
         "better-sqlite3": "^7.1.2",
         "bufferutil": "^4.0.3",
         "discord.js": "^12.5.1",
-        "dotenv": "^8.2.0",
         "erlpack": "github:discord/erlpack",
         "log4js": "^6.3.0",
         "promisify": "0.0.3",
@@ -47,6 +46,7 @@
         "@types/node": "^14.14.20",
         "@typescript-eslint/eslint-plugin": "^4.13.0",
         "@typescript-eslint/parser": "^4.13.0",
+        "dotenv": "^8.2.0",
         "eslint": "^7.17.0",
         "eslint-plugin-import": "^2.22.1",
         "nodemon": "^2.0.7",
