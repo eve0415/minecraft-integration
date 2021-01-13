@@ -55,6 +55,6 @@ jobs:
           script_stop: true
           script: |
             cd $SSH_DIR
-            docker pull eve0415/minecraft-integration:latest
+            docker pull eve0415/minecraft-integration:latest 2>/dev/null
             docker stop MI 2>/dev/null
             docker run -v $PWD/data:/app/data/ --env-file .env --name MI -itd --rm eve0415/minecraft-integration
