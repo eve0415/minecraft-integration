@@ -1,7 +1,7 @@
 name: Deploy
 on: 
   push:
-    branch: docker
+    branch: master
 jobs:
   build:
     name: Build Docker
