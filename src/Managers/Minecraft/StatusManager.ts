@@ -156,14 +156,14 @@ export class MinecraftStatusManager extends StatusPage {
         this.cache = data;
     }
 
-    public shutdown(): Promise<[Promise<void>[], Promise<void>[]]> {
+    public async shutdown(): Promise<void> {
         const one = this.one.map(async mes => {
             if (!this.isValidMessage(mes)) {
                 this.one = this.one.filter(m => m.id !== mes.id);
                 return database.status.removeMessage(mes.id);
             }
             const embed = new MessageEmbed()
-                .setTitle(`${this.client.user?.toString()} is offline`)
+                .setDescription(`${this.client.user?.toString()} is offline`)
                 .setColor('BLACK')
                 .setFooter(mes.embeds[0].footer?.text);
             await mes.edit(embed);
@@ -181,8 +181,7 @@ export class MinecraftStatusManager extends StatusPage {
             await mes.reactions.removeAll();
             await mes.edit(embed);
         });
-
-        return Promise.all([one, multiple]);
+        await Promise.all([one, multiple]);
     }
 }
 
