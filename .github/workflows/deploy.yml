@@ -52,7 +52,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SECRET_KEY }}
-          source: "./deploy.sh"
+          source: ".github/workflows/deploy.sh"
           target: ${{ secrets.SSH_DIR }}
           strip_components: 2
       
