@@ -24,7 +24,7 @@ export default class extends SubCommand {
         database.status.addMessageCache(channelID, mes.id);
 
         if (args[0] !== 'all') {
-            mes.edit('', this.statusManager.getPage({ page: Number(args[0]) }));
+            mes.edit('', this.statusManager.getPage({ id: Number(args[0]) }));
             this.statusManager.addMessage(mes);
         } else {
             const embed = this.statusManager.getPage({ page: 1 });
