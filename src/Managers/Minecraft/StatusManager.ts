@@ -74,23 +74,25 @@ export class MinecraftStatusManager extends StatusPage {
         if (!id) await this.refreshAll();
 
         const one = this.one
-            .map(async mes => {
+            .map(mes => {
                 if (!this.isValidMessage(mes)) {
                     this.one = this.one.filter(m => m.id !== mes.id);
                     return database.status.removeMessage(mes.id);
                 }
                 const data = toStatusFooter(mes.embeds[0].footer?.text);
-                if (data.ID === id?.toString()) await mes.edit(this.get(Number(data.ID))?.embed ?? '').catch(logger.error);
+                if (data.ID === id?.toString()) return mes.edit(this.get(Number(data.ID))?.embed ?? '').catch(logger.error);
+                return 0;
             });
 
-        const multiple = this.multiple.map(async mes => {
+        const multiple = this.multiple.map(mes => {
             if (!this.isValidMessage(mes)) {
                 this.multiple = this.multiple.filter(m => m.id !== mes.id);
                 return database.status.removeMessage(mes.id);
             }
             const data = toStatusFooter(mes.embeds[0].footer?.text);
             const now = data.Page?.split('/').shift();
-            if (data.ID === id?.toString()) await mes.edit(this.getPage({ page: Number(now) })).catch(logger.error);
+            if (data.ID === id?.toString()) return mes.edit(this.getPage({ page: Number(now) })).catch(logger.error);
+            return 0;
         });
 
         await Promise.all([one, multiple]);
