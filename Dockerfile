@@ -1,6 +1,6 @@
 FROM node:current-alpine AS builder-base
 RUN apk add python make gcc g++ --no-cache
-RUN npm install -g npm@latest
+RUN npm install -g npm@7.4.0
 
 FROM builder-base AS builder
 WORKDIR /app
