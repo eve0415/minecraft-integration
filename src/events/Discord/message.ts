@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import { DJSClient } from '../..';
 import { database } from '../../database';
-import { DiscordEvent, SendChat } from '../../typings';
+import { Command, DiscordEvent, SendChat } from '../../typings';
 
 export default class extends DiscordEvent {
     private readonly prefix: string;
@@ -14,9 +14,9 @@ export default class extends DiscordEvent {
     public run(message: Message): void | Promise<Message> {
         if (message.system || message.author.bot) return;
 
-        const [command, ...args] = message.content.toLowerCase().slice(this.prefix.length).split(' ');
-        const cmd = this.client.commands.get(command) ?? this.client.commands.find(c => c.alias.includes(command));
-        if (!cmd) {
+        const isCommand = this.isCommand(message.content);
+        console.log(isCommand);
+        if (!isCommand) {
             const info = database.chat.getFromID(message.channel.id);
             if (!info.length) return;
             if (message.content) {
@@ -51,6 +51,9 @@ export default class extends DiscordEvent {
             return;
         }
 
+        const [command, ...args] = message.content.toLowerCase().slice(this.prefix.length).split(' ');
+        const cmd = this.client.commands.get(command) ?? this.client.commands.find(c => c.alias.includes(command)) as Command;
+
         if (cmd.ownerOnly && message.author.id !== this.client.config.owner) return message.channel.send('You do not have a permission to execute this command');
 
         if (cmd.hasSubcom) {
@@ -60,5 +63,16 @@ export default class extends DiscordEvent {
         }
 
         cmd.run(message, args);
+    }
+
+    private isCommand(string: string) {
+        if (!string.startsWith(this.prefix)) return false;
+        const command = string.toLowerCase()
+            .slice(this.prefix.length)
+            .split(' ')
+            .shift();
+        if (!command) return false;
+        const cmd = this.client.commands.get(command) ?? this.client.commands.find(c => c.alias.includes(command));
+        return !!cmd;
     }
 }
