@@ -1,4 +1,4 @@
-name: Test
+name: Deploy
 on: 
   push:
     branch: docker
@@ -28,8 +28,7 @@ jobs:
           username: eve0415
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
-      -
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v2
         with:
           push: true
