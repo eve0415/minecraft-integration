@@ -14,8 +14,7 @@ do
     if [ "$RUNNING" != "$LATEST" ];then
         echo "upgrading $IMAGE"
         docker stop $NAME
-        docker rm -f $NAME
-        docker run -v $PWD/data:/app/data/ --env-file .env --name MI -itd --rm eve0415/minecraft-integration
+        docker run -v $PWD/data:/app/data/ --env-file .env -p 25500:25500 --name MI -itd --rm eve0415/minecraft-integration
     else
         echo "$IMAGE is up to date"
     fi
