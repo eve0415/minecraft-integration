@@ -82,9 +82,12 @@ export class Instance {
 }
 
 const p = new Instance(Config);
+let looped = false;
 
 ['SIGTERM', 'SIGINT', 'uncaughtException', 'unhandledRejection']
     .forEach(signal => process.on(signal, e => {
+        if (looped) process.exit(1);
+        looped = true;
         if (!(e === 'SIGINT' || e === 'SIGTERM')) {
             logger.error('Unexpected error occured');
             logger.error(e);
