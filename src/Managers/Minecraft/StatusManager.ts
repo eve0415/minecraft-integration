@@ -120,7 +120,7 @@ export class MinecraftStatusManager extends StatusPage {
     }
 
     public getPage(d: AtLeastOne<PageOrID>): MessageEmbed {
-        if (d.id) return this.get(d.id)?.embed ?? this.getUnknown(d.id);
+        if (d.id) return this.get(d.id)?.embed.setFooter(`ID: ${d.id}`) ?? this.getUnknown(d.id);
         if (d.page) {
             const status = this.array()[d.page - 1];
             const fallback = this.first();
