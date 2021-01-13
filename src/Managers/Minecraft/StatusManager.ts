@@ -103,7 +103,7 @@ export class MinecraftStatusManager extends StatusPage {
                 return database.status.removeMessage(mes.id);
             }
             const data = toStatusFooter(mes.embeds[0].footer?.text);
-            await mes.edit(this.get(Number(data.ID))?.embed ?? '').catch(logger.error);
+            await mes.edit(this.getPage({ page: Number(data.ID) })).catch(logger.error);
         });
 
         const multiple = this.multiple.map(async mes => {
