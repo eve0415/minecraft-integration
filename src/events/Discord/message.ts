@@ -15,7 +15,7 @@ export default class extends DiscordEvent {
         if (message.system || message.author.bot) return;
 
         const isCommand = this.isCommand(message.content);
-        console.log(isCommand);
+
         if (!isCommand) {
             const info = database.chat.getFromID(message.channel.id);
             if (!info.length) return;
