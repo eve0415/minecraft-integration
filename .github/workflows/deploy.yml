@@ -41,19 +41,18 @@ jobs:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    steps:
-        uses: appleboy/ssh-action@master
-        env:
-          SSH_DIR: ${{ secrets.SSH_DIR }}
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SECRET_KEY }}
-          envs: SSH_DIR
-          script_stop: true
-          script: |
-            cd $SSH_DIR
-            docker pull eve0415/minecraft-integration:latest
-            docker stop MI
-            docker run -v $PWD/data:/app/data/ --env-file .env --name MI -itd --rm eve0415/minecraft-integration
+      uses: appleboy/ssh-action@master
+      env:
+        SSH_DIR: ${{ secrets.SSH_DIR }}
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SECRET_KEY }}
+        envs: SSH_DIR
+        script_stop: true
+        script: |
+          cd $SSH_DIR
+          docker pull eve0415/minecraft-integration:latest
+          docker stop MI
+          docker run -v $PWD/data:/app/data/ --env-file .env --name MI -itd --rm eve0415/minecraft-integration
