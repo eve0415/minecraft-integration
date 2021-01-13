@@ -1,16 +1,16 @@
-FROM node:current-alpine
+FROM node:current-alpine AS builder-base
+RUN apk add python make gcc g++ --no-cache
+
+FROM builder-base AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN apk add python make gcc g++ --no-cache
 RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM node:current-alpine
+FROM builder-base AS runner
 WORKDIR /app
 COPY package*.json ./
-RUN apk add python make gcc g++ --no-cache
-RUN npm install --only=production
-COPY --from=0 /app/dist ./dist
-EXPOSE ${port}
+RUN npm install --only=production && npm cache clean --force
+COPY --from=builder /app/dist ./dist
 CMD npm start

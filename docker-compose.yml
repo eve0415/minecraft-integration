@@ -1,8 +1,9 @@
-version: '3'
+version: '3.9'
 
 services:
   bot:
     build: .
+    image: bot:test
     volumes:
       - ./data:/app/data
     env_file: .env
