@@ -25,7 +25,7 @@ export class MinecraftStatusManager extends StatusPage {
         for (const c of cache) {
             const ch = await this.client.channels.fetch(c.channelID) as TextChannel;
             if (!ch) return database.status.removeMessage(c.messageID);
-            const mes = await ch.messages.fetch(c.messageID).catch();
+            const mes = await ch.messages.fetch(c.messageID).catch(logger.error);
             if (!mes || !this.isValidMessage(mes)) return database.status.removeMessage(c.messageID);
             const footer = toStatusFooter(mes.embeds[0].footer?.text);
             if (footer.Page) {
