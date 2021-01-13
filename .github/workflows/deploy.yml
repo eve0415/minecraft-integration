@@ -4,6 +4,7 @@ on:
     branch: docker
 jobs:
   build:
+    name: Build Docker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -32,6 +33,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: user/app:latest
+          tags: eve0415/minecraft-integration:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
