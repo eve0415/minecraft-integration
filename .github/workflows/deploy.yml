@@ -42,7 +42,21 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Prepare for Deploying
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SECRET_KEY }}
+          source: "./deploy.sh"
+          target: ${{ secrets.SSH_DIR }}
+          strip_components: 2
+      
+      - name: Deploy and clean
         uses: appleboy/ssh-action@master
         env:
           SSH_DIR: ${{ secrets.SSH_DIR }}
@@ -55,6 +69,5 @@ jobs:
           script_stop: true
           script: |
             cd $SSH_DIR
-            docker pull eve0415/minecraft-integration:latest 1>/dev/null
-            docker stop MI 2>/dev/null
-            docker run -v $PWD/data:/app/data/ --env-file .env --name MI -itd --rm eve0415/minecraft-integration
+            bash deploy.sh
+            rm -rf deploy.sh
