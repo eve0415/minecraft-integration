@@ -85,7 +85,7 @@ const p = new Instance(Config);
 
 ['SIGTERM', 'SIGINT', 'uncaughtException', 'unhandledRejection']
     .forEach(signal => process.on(signal, e => {
-        if (e !== 'SIGINT' || e !== 'SIGTERM') {
+        if (!(e === 'SIGINT' || e === 'SIGTERM')) {
             logger.error('Unexpected error occured');
             logger.error(e);
         }
