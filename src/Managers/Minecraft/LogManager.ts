@@ -35,20 +35,16 @@ export class MinecraftLogManager extends WebhookManager {
 
     public sendWebhook(id: number, embed: MessageEmbed): void {
         const filtered = this.filter(webhook => webhook.id === id || webhook.id === 0);
-        filtered.forEach(w => {
-            w.send(embed);
-        });
+        filtered.forEach(w => w.send(embed));
     }
 
     private async start() {
         const embed = new MessageEmbed().setTitle('Waking up bot...').setColor('GREEN');
-        const toDo = this.map(w => w.send(embed));
-        await Promise.all(toDo);
+        await Promise.all(this.map(w => w.send(embed)));
     }
 
     public shutdown(): Promise<(Message | Message[] | undefined)[]> {
         const embed = new MessageEmbed().setTitle('Bot shutting down...').setColor('BLACK');
-        const toDo = this.map(w => w.send(embed));
-        return Promise.all(toDo);
+        return Promise.all(this.map(w => w.send(embed)));
     }
 }

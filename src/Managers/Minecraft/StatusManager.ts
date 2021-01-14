@@ -140,13 +140,12 @@ export class MinecraftStatusManager extends StatusPage {
         });
 
         if (this.size === 2) {
-            const multiple = this.multiple.map(async mes => {
+            const multiple = this.multiple.map(mes => {
                 if (!this.isValidMessage(mes)) {
                     this.multiple = this.multiple.filter(m => m.id !== mes.id);
                     return database.status.removeMessage(mes.id);
                 }
-                await mes.reactions.removeAll();
-                await mes.react('◀️').then(() => mes.react('▶️'));
+                return mes.reactions.removeAll();
             });
             Promise.all([multiple, this.refreshAll()]);
         }
@@ -159,7 +158,7 @@ export class MinecraftStatusManager extends StatusPage {
     }
 
     public async shutdown(): Promise<void> {
-        const one = this.one.map(async mes => {
+        const one = this.one.map(mes => {
             if (!this.isValidMessage(mes)) {
                 this.one = this.one.filter(m => m.id !== mes.id);
                 return database.status.removeMessage(mes.id);
@@ -168,10 +167,10 @@ export class MinecraftStatusManager extends StatusPage {
                 .setDescription(`${this.client.user?.toString()} is offline`)
                 .setColor('BLACK')
                 .setFooter(mes.embeds[0].footer?.text);
-            await mes.edit(embed);
+            return mes.edit(embed).catch(logger.error);
         });
 
-        const multiple = this.multiple.map(async mes => {
+        const multiple = this.multiple.map(mes => {
             if (!this.isValidMessage(mes)) {
                 this.multiple = this.multiple.filter(m => m.id !== mes.id);
                 return database.status.removeMessage(mes.id);
@@ -180,8 +179,7 @@ export class MinecraftStatusManager extends StatusPage {
                 .setDescription(`${this.client.user?.toString()} is offline`)
                 .setColor('BLACK')
                 .setFooter(mes.embeds[0].footer?.text);
-            await mes.reactions.removeAll();
-            await mes.edit(embed);
+            return mes.reactions.removeAll().then(() => mes.edit(embed)).catch(logger.error);
         });
         await Promise.all([one, multiple]);
     }
