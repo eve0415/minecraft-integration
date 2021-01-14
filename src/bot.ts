@@ -10,7 +10,18 @@ export class DJSClient extends Client {
     private readonly events: DJSEventManager;
 
     public constructor(instance: Instance) {
-        super({ restTimeOffset: 5, retryLimit: 5, partials: ['GUILD_MEMBER'] });
+        super({
+            restTimeOffset: 5,
+            retryLimit: 5,
+            partials: ['GUILD_MEMBER'],
+            presence: {
+                status: 'dnd',
+                activity: {
+                    name: 'Initializing...',
+                    type: 'PLAYING',
+                },
+            },
+        });
         this.instance = instance;
         this.commands = new CommandManager(this);
         this.events = new DJSEventManager(this);
@@ -29,6 +40,10 @@ export class DJSClient extends Client {
 
     public login(): Promise<string> {
         return super.login();
+    }
+
+    public postInit(): void {
+        this.user?.setPresence({ status: 'online' });
     }
 
     public async preShutdown(): Promise<void> {

@@ -60,6 +60,7 @@ export class Instance {
         await this.statusManager.init();
         await this.logManager.init();
         await this.chatManager.init();
+        this.bot.postInit();
         logger.info('Initialize complete...');
     }
 
