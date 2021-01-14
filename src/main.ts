@@ -75,6 +75,7 @@ export class Instance {
             this.ws.close(),
             this.logManager.shutdown(),
             this.statusManager.shutdown(),
+            new Promise(resolve => setTimeout(resolve, 3000)),
         ]);
         this.bot.shutdown();
         logger.shutdown();
