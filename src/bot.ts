@@ -47,6 +47,13 @@ export class DJSClient extends Client {
     }
 
     public async preShutdown(): Promise<void> {
+        this.user?.setPresence({
+            status: 'dnd',
+            activity: {
+                name: 'Shutting down...',
+                type: 'PLAYING',
+            },
+        });
         await this.events.unregisterAll();
     }
 
