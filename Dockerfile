@@ -1,18 +1,18 @@
 FROM node:current-alpine AS builder-base
 RUN apk add python make gcc g++ --no-cache
-RUN npm install -g npm@7.4.0
+RUN npm install -g yarn
 
 FROM builder-base AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN yarn install --frozen-lockfile
 COPY . .
-RUN npm run build
+RUN yarn build
 
 FROM builder-base AS runner
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --only=production && npm cache clean --force
+RUN yarn install --production && yarn cache clean --force
 COPY --from=builder /app/dist ./dist
 EXPOSE ${port}
-CMD npm start
+CMD yarn start
