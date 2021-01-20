@@ -1,10 +1,10 @@
 FROM node:current-alpine AS builder-base
 RUN apk add python make gcc g++ --no-cache
-RUN npm install -g yarn
 
 FROM builder-base AS builder
 WORKDIR /app
 COPY package*.json ./
+COPY yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY . .
 RUN yarn build
