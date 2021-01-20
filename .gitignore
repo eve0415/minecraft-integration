@@ -3,5 +3,7 @@ node_modules
 
 # enviroment
 .env
-data/*
-*.test
+data
+
+#build
+dist
