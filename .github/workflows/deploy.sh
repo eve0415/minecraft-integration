@@ -15,7 +15,7 @@ do
         echo "upgrading $IMAGE"
         docker stop $NAME
         docker rm $(docker ps -a -q)
-        docker run -v $PWD/data:/app/data/ --env-file .env -p 25500:25500 --name MI -d --init --restart=unless-stopped --rm $IMAGE
+        docker run -v $PWD/data:/app/data/ --env-file .env -p 25500:25500 --name MI -d --init --restart=unless-stopped $IMAGE
     else
         echo "$IMAGE is up to date"
     fi

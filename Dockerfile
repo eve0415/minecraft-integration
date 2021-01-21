@@ -16,4 +16,4 @@ COPY yarn.lock ./
 RUN yarn install --production && yarn cache clean
 COPY --from=builder /app/dist ./dist
 EXPOSE ${port}
-CMD ["yarn", "start"]
+CMD ["node", "dist/main.js"]
