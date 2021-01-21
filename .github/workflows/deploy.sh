@@ -13,7 +13,7 @@ do
     echo "Running:" $RUNNING
     if [ "$RUNNING" != "$LATEST" ];then
         echo "upgrading $IMAGE"
-        docker stop $NAME
+        docker stop $NAME -t 120
         docker rm $(docker ps -a -q)
         docker run -v $PWD/data:/app/data/ --env-file .env -p 25500:25500 --name MI -d --init --restart=unless-stopped $IMAGE
     else
