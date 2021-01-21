@@ -1,7 +1,7 @@
 import { DJSClient, logger, websocketClient } from '.';
-import { MinecraftChatManager, MinecraftLogManager, MinecraftStatusManager } from './Managers';
 import Config, { ConfigInterface } from './config';
 import { database } from './database';
+import { MinecraftChatManager, MinecraftLogManager, MinecraftStatusManager } from './managers';
 import { Language } from './typings';
 
 export class Instance {

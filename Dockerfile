@@ -1,5 +1,5 @@
 FROM node:current-alpine AS builder-base
-RUN apk add python make gcc g++ git --no-cache
+RUN apk add --no-cache python make g++ git
 
 FROM builder-base AS builder
 WORKDIR /app
@@ -16,4 +16,4 @@ COPY yarn.lock ./
 RUN yarn install --production && yarn cache clean
 COPY --from=builder /app/dist ./dist
 EXPOSE ${port}
-CMD yarn start
+CMD ["yarn", "start"]

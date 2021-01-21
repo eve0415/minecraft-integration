@@ -1,7 +1,7 @@
 import { Message, TextChannel } from 'discord.js';
 import { DJSClient, logger } from '../..';
-import { MinecraftLogManager } from '../../Managers';
 import { database } from '../../database';
+import { MinecraftLogManager } from '../../managers';
 import { SubCommand } from '../../typings';
 
 export default class extends SubCommand {

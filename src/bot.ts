@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
 import { Instance, logger } from '.';
-import { CommandManager, DJSEventManager, LocalizationManager } from './Managers';
 import { ConfigInterface } from './config';
+import { CommandManager, DJSEventManager, LocalizationManager } from './managers';
 
 export class DJSClient extends Client {
     public readonly instance: Instance;

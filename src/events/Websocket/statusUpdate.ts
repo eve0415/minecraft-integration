@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { websocketClient } from '../..';
-import { MinecraftStatusManager } from '../../Managers';
 import { database } from '../../database';
+import { MinecraftStatusManager } from '../../managers';
 import { StatusData, StatusEmbedType, StatusType, WebsocketEvent } from '../../typings';
 
 export default class extends WebsocketEvent {

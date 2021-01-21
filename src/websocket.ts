@@ -1,7 +1,7 @@
 import { EventEmitter as eventEmitter } from 'events';
 import { Server, Socket as sock } from 'socket.io';
 import { Instance, logger } from '.';
-import { wsEventManager } from './Managers';
+import { wsEventManager } from './managers';
 import { ChatData, LogData, SendChat, ServerInfo, StatusData, WebsocketEvents } from './typings';
 
 declare module 'events' {
