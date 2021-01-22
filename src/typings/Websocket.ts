@@ -2,7 +2,7 @@ type LogEventType = 'AUTH' | 'LOGIN' | 'KICK' | 'KICKEDFROM' | 'DISCONNECT' | 'P
 
 export type StatusType = 'OFFLINE' | 'CONNECT' | 'START' | 'STOP' | 'UPDATE';
 
-export type port = string | null;
+export type port = number | null;
 
 export type WebsocketEvents = websocketEvents;
 

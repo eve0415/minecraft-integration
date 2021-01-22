@@ -12,7 +12,7 @@ declare module 'events' {
 
 declare module 'socket.io' {
     interface Socket {
-        serverID: string | undefined
+        serverID: number | undefined
     }
 }
 
@@ -73,17 +73,19 @@ export class websocketClient extends eventEmitter {
                 this.emit('disconnect', socket.serverID ?? null, reason);
             });
 
-            socket.on('ROOM', (roomID: string) => {
-                socket.join(roomID);
-                socket.serverID = roomID;
-                this.emit('connect', roomID);
-                this.emit('statusUpdate', 'CONNECT', { port: Number(roomID) } as StatusData);
+            socket.on('ROOM', async (roomID: string) => {
+                await socket.join(roomID);
+                socket.serverID = Number(roomID);
+                this.emit('connect', socket.serverID);
+                this.emit('statusUpdate', 'CONNECT', { port: socket.serverID } as StatusData);
             });
         });
     }
 
     public send(id: number, message: SendChat): void {
-        this.server.in(id.toString()).emit('chat', message);
+        this.server.sockets.sockets.forEach(s => {
+            if (s.serverID === id) s.emit('chat', message);
+        });
     }
 
     private checkIfValid(socket: sock) {
