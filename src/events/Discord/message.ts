@@ -28,7 +28,7 @@ export default class extends DiscordEvent {
                 };
                 info.forEach(i => this.client.instance.ws.send(i.serverID, data));
             }
-            if (message.attachments) {
+            if (message.attachments.size) {
                 const data: SendChat = {
                     name: 'Discord',
                     UUID: null,
@@ -39,7 +39,7 @@ export default class extends DiscordEvent {
             }
             // Sticker (Needs DJS ver.13 for official support)
             // TODO: After djs published djs13 - clean up
-            if (!message.content && !message.attachments) {
+            if (!message.content && !message.attachments.size) {
                 const data: SendChat = {
                     name: 'Discord',
                     UUID: null,
