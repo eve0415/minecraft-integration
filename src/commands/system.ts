@@ -24,7 +24,7 @@ export default class extends Command {
             .addField('\u200B', '\u200B')
             .addField('CPU manufacturer', cpuInfo.manufacturer, true)
             .addField('CPU brand', cpuInfo.brand, true)
-            .addField('CPU Usage', Math.round(load.currentload), true)
+            .addField('CPU Usage', Math.round(load.currentLoad), true)
             .addField('\u200B', '\u200B')
             .addField('Total Memory', bytesToSize(memory.total), true)
             .addField('Used Memory', bytesToSize(memory.used), true)
