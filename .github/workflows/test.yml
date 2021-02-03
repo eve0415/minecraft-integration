@@ -19,11 +19,10 @@ jobs:
       - name: Install yarn
         run: npm install -g yarn
 
-      - name: Pre-install dependencies
-        run: git config --global url."https://${{ secrets.PAT }}@github.com/".insteadOf ssh://git@github.com/
-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          git config --global url."https://${{ secrets.PAT }}@github.com/".insteadOf ssh://git@github.com/
+          yarn install --frozen-lockfile
 
       - name: Run ESLint
         run: yarn lint
