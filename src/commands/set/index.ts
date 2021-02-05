@@ -13,6 +13,6 @@ export default class extends Command {
     }
 
     public run(message: Message): void {
-        message.channel.send(this.usage as string);
+        message.channel.send(this.usage);
     }
 }

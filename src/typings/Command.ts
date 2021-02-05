@@ -3,12 +3,12 @@ import { DBase } from './Base';
 import { DJSClient } from '..';
 
 type CommandOptions = Readonly<{
-    alias: string[]
+    alias?: string[]
     description: string
     usage: string
-    hasSubcom: boolean
-    ownerOnly: boolean
-    usedInDM: boolean
+    hasSubcom?: boolean
+    ownerOnly?: boolean
+    usedInDM?: boolean
 }>;
 
 type SubCommandOptions = Readonly<{
@@ -17,18 +17,18 @@ type SubCommandOptions = Readonly<{
 
 export abstract class Command extends DBase {
     public readonly alias: string[];
-    public readonly description: string | null;
-    public readonly usage: string | null;
+    public readonly description: string;
+    public readonly usage: string;
     public readonly hasSubcom: boolean;
     public readonly ownerOnly: boolean;
     public readonly usedInDM: boolean;
 
-    public constructor(client: DJSClient, name: string, options?: Partial<CommandOptions>) {
+    public constructor(client: DJSClient, name: string, options: CommandOptions) {
         super(client, name);
 
-        this.alias = options?.alias ?? [];
-        this.description = options?.description ?? null;
-        this.usage = options?.usage ?? null;
+        this.alias = options.alias ?? [];
+        this.description = options.description;
+        this.usage = options.usage;
         this.hasSubcom = options?.hasSubcom ?? false;
         this.ownerOnly = options?.ownerOnly ?? false;
         this.usedInDM = options?.usedInDM ?? false;
