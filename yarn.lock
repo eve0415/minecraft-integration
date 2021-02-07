@@ -2489,10 +2489,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-systeminformation@^5.0.10:
-  version "5.0.10"
-  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.0.10.tgz#d35bc2adf80f4db9d43f354a1c1821686f069b64"
-  integrity sha512-RW96yG1CKnyKdyubP0/6YOclHS4+t+7IQqZRWTbO6fuyoKIvQjvdy1sylYOGEMmp0s7y3nVoHDblz++QOGpycg==
+systeminformation@^5.0.11:
+  version "5.0.11"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.0.11.tgz#c60c1a00dfa23927fd8986e6f594186864b45895"
+  integrity sha512-vH7u2FEj0Jnipq+xQHkhcshMbSQqNILyU+4OsOP0P9udh/lnflEJRC2KLeF73AQuMUs1pHeaK1PM7etiJ0HGIw==
 
 table@^6.0.4:
   version "6.0.7"
