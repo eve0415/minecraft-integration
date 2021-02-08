@@ -62,8 +62,10 @@ export class MinecraftStatusManager extends StatusPage {
         const nextPage = reaction.emoji.name === '◀️' ? page - 1 <= 0 ? this.size : page - 1 : page + 1 > this.size ? 1 : page + 1;
 
         await reaction.message
-            .edit(this.getPage({ page: nextPage }))
-            .then(() => reaction.users.remove(user));
+            .fetch(true)
+            .then(mes => mes
+                .edit(this.getPage({ page: nextPage }))
+                .then(() => reaction.users.remove(user)));
     }
 
     private isValidMessage(msg: Message) {
@@ -74,23 +76,25 @@ export class MinecraftStatusManager extends StatusPage {
         if (!id) await this.refreshAll();
 
         const one = this.one
-            .map(mes => {
+            .map(async mes => {
                 if (!this.isValidMessage(mes)) {
                     this.one = this.one.filter(m => m.id !== mes.id);
                     return database.status.removeMessage(mes.id);
                 }
                 const data = toStatusFooter(mes.embeds[0].footer?.text);
+                await mes.fetch(true);
                 if (data.ID === id?.toString()) return mes.edit(this.get(Number(data.ID))?.embed ?? '').catch(logger.error);
                 return 0;
             });
 
-        const multiple = this.multiple.map(mes => {
+        const multiple = this.multiple.map(async mes => {
             if (!this.isValidMessage(mes)) {
                 this.multiple = this.multiple.filter(m => m.id !== mes.id);
                 return database.status.removeMessage(mes.id);
             }
             const data = toStatusFooter(mes.embeds[0].footer?.text);
             const now = data.Page?.split('/').shift();
+            await mes.fetch(true);
             if (data.ID === id?.toString()) return mes.edit(this.getPage({ page: Number(now) })).catch(logger.error);
             return 0;
         });
