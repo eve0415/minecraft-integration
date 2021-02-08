@@ -7,7 +7,7 @@ export class SearchManager {
     private readonly user: User;
     private readonly message: Message;
     private readonly projects: SimpleProject[];
-    private readonly defaultReactions = ['◀️', '▶️', 'ℹ️', '📁'];
+    private readonly reactions = ['◀️', '▶️', 'ℹ️', '📁'];
     private readonly now = { project: 1, description: 0, file: 1 };
     private mode: 'Project' | 'Description' | 'File' = 'Project';
     private cacheDescription: string[] = [];
@@ -86,7 +86,7 @@ export class SearchManager {
 
     public async initialize(): Promise<void> {
         await this.message.edit(await this.getPage());
-        await Promise.all(this.defaultReactions.map(m => this.message.react(m)));
+        await Promise.all(this.reactions.map(m => this.message.react(m)));
         const filter = (_reaction: MessageReaction, user: User) => user !== this.client.user;
         const collector = this.message.createReactionCollector(filter, { dispose: true, idle: 180000 });
         collector.on('collect', (reaction, user) => this.onReaction(reaction, user));
@@ -97,7 +97,7 @@ export class SearchManager {
     private async onReaction(reaction: MessageReaction, user: User) {
         const emoji = reaction.emoji.name;
         if (this.user !== user) return reaction.users.remove(user);
-        if (!this.defaultReactions.includes(emoji)) return reaction.users.remove(user);
+        if (!this.reactions.includes(emoji)) return reaction.users.remove(user);
         if (['◀️', '▶️'].includes(emoji)) {
             await this.changePage(emoji === '◀️' ? -1 : 1);
             await reaction.users.remove(user);
