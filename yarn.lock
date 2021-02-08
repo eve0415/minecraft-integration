@@ -229,10 +229,10 @@ acorn@^7.4.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-aio-mc-api@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/aio-mc-api/-/aio-mc-api-1.1.1.tgz#7a63c308024b23d2351f4463dcb82f9095d7ce7e"
-  integrity sha512-Pl64495AhbyRzn5gHAjNozUISr8+V7l9+CrlQPoSlDPxLxeZr8RcG4bHWH/1nGCrlUAW6YCklnllmqLcSU1qLA==
+aio-mc-api@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/aio-mc-api/-/aio-mc-api-1.2.0.tgz#26340cdb9c4630bbe45deff8ae13950604b8554c"
+  integrity sha512-T1nJbAFHH3OQfgfOL96DpjZTCXEKgjyHkJi8iNmaM+DXn0BaoGtjfzvfdYRSjFeInIcjiVTlCdyyVHQ3C0nrDA==
   dependencies:
     axios "^0.21.1"
     turndown "^7.0.0"
