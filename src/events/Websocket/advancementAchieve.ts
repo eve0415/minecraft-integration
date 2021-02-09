@@ -7,8 +7,7 @@ export default class extends WebsocketEvent {
     }
 
     public run(data: ChatData): void {
-        const isVanilla = this.client.instance.localizations?.strings.advancements[data.message as keyof MinecraftKey['advancements']] as string;
-        const message = `${data.name} has made the advancement **[${isVanilla ? isVanilla : data.message}]**`;
+        const message = `${data.name} has made the advancement **[${this.client.instance.localizations?.strings.advancements[data.message as keyof MinecraftKey['advancements']] ?? data.message}]**`;
         this.client.instance.chatManager.sendWebhook({ port: data.port, name: data.name, UUID: data.UUID, message: message });
     }
 }
