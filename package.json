@@ -8,7 +8,7 @@
     },
     "scripts": {
         "lint": "npx eslint --ext ts --fix src/**/*",
-        "start": "node dist/main.js",
+        "start": "node -r dotenv/config dist/main.js",
         "test": "nodemon --config nodemon.json -r dotenv/config src/main.ts",
         "build": "tsc -p .",
         "watch": "tsc --watch"
@@ -30,7 +30,7 @@
     },
     "homepage": "https://github.com/eve0415/minecraft-integration#readme",
     "dependencies": {
-        "aio-mc-api": "^1.2.0",
+        "aio-mc-api": "^1.2.1",
         "better-sqlite3": "^7.1.2",
         "bufferutil": "^4.0.3",
         "discord.js": "^12.5.1",
@@ -39,6 +39,7 @@
         "promisify": "^0.0.3",
         "socket.io": "^3.1.1",
         "systeminformation": "^5.1.2",
+        "tslib": "^2.1.0",
         "utf-8-validate": "^5.0.4",
         "zlib-sync": "^0.1.7"
     },
