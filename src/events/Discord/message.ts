@@ -51,7 +51,11 @@ export default class extends DiscordEvent {
             return;
         }
 
-        const [command, ...args] = message.content.toLowerCase().slice(this.prefix.length).split(' ');
+        const [command, ...args] = message.content
+            .toLowerCase()
+            .slice(this.prefix.length)
+            .split(/(?:"([^"]+)"|([^ ]+)) ?/)
+            .filter(e => e);
         const cmd = this.client.commands.get(command) ?? this.client.commands.find(c => c.alias.includes(command)) as Command;
 
         if (cmd.ownerOnly && message.author.id !== this.client.config.owner) return message.channel.send('You do not have a permission to execute this command');
