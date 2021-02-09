@@ -16,7 +16,7 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "noEmitHelpers": true,
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "noUnusedLocals": true,
         "outDir": "dist",
         "pretty": true,
