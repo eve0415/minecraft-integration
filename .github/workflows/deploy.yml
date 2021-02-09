@@ -5,9 +5,9 @@ jobs:
     name: Build Docker
     runs-on: ubuntu-latest
     if: |
-      !startsWith(github.event.head_commit.message, '[skip]') ||
+      "!startsWith(github.event.head_commit.message, '[skip]') ||
       startsWith(github.event.head_commit.message, '[Deploy]') ||
-      github.ref == 'refs/heads/master'
+      github.ref == 'refs/heads/master'"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
