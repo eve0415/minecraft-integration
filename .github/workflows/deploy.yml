@@ -5,9 +5,9 @@ jobs:
     name: Build Docker
     runs-on: ubuntu-latest
     if: |
-      ${{ contains(github.event.head_commit.message, '[skip]') == false }} ||
-      ${{ contains(github.event.head_commit.message, '[Deploy]') }} ||
-      ${{ github.ref == 'refs/heads/master' }}
+      "!contains(github.event.head_commit.message, '[skip]')" ||
+      "contains(github.event.head_commit.message, '[Deploy]')" ||
+      "github.ref == 'refs/heads/master'"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
