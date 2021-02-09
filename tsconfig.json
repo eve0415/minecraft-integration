@@ -25,5 +25,8 @@
         "sourceMap": true,
         "strict": true,
         "target": "ESNext"
-    }
+    },
+    "files": [
+        "src/Object.d.ts"
+    ],
 }
