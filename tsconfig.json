@@ -23,10 +23,14 @@
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "sourceMap": true,
+        "sourceRoot": "src",
         "strict": true,
         "target": "ESNext"
     },
     "files": [
         "src/Object.d.ts"
     ],
+    "include": [
+        "src/**/*"
+    ]
 }

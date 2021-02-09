@@ -140,7 +140,7 @@ export class MinecraftStatusManager extends StatusPage {
         const result = super.addStatus(id, type);
         if (!result) return result;
         Object.keys(this.cache).forEach(port => {
-            if (Number(port) === result?.id) result.setName(this.cache[port]);
+            if (port === result?.id) result.setName(this.cache[port]);
         });
 
         if (this.size === 2) {

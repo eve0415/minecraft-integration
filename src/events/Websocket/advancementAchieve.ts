@@ -1,5 +1,5 @@
 import { websocketClient } from '../..';
-import { ChatData, WebsocketEvent } from '../../typings';
+import { ChatData, MinecraftKey, WebsocketEvent } from '../../typings';
 
 export default class extends WebsocketEvent {
     public constructor(client: websocketClient) {
@@ -7,7 +7,7 @@ export default class extends WebsocketEvent {
     }
 
     public run(data: ChatData): void {
-        const isVanilla = this.client.instance.localizations?.strings.advancements[data.message] as string;
+        const isVanilla = this.client.instance.localizations?.strings.advancements[data.message as keyof MinecraftKey['advancements']] as string;
         const message = `${data.name} has made the advancement **[${isVanilla ? isVanilla : data.message}]**`;
         this.client.instance.chatManager.sendWebhook({ port: data.port, name: data.name, UUID: data.UUID, message: message });
     }

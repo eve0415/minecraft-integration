@@ -12,7 +12,7 @@ export default class extends WebsocketEvent {
         Object.keys(data).forEach(port => {
             const info = database.server.getFromID(Number(port));
             if (!info) {
-                cache[port] = data[port] as string;
+                cache[port] = data[port];
             } else if (info.name !== data[port]) {
                 database.server.setName(info.ID, data[port]);
                 this.client.instance.statusManager.setName(info.ID, data[port]);

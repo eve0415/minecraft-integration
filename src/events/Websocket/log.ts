@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { websocketClient } from '../..';
 import { database } from '../../database';
-import { LogData, WebsocketEvent } from '../../typings';
+import { LogData, MinecraftKey, WebsocketEvent } from '../../typings';
 
 export default class extends WebsocketEvent {
     public constructor(client: websocketClient) {
@@ -76,7 +76,7 @@ export default class extends WebsocketEvent {
                 /* eslint-disable no-case-declarations */
                 const r = log.reason?.split(': ').pop() ?? '';
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                const reason = this.client.instance.localizations?.strings.reasons[r] ?? r;
+                const reason = this.client.instance.localizations?.strings.reasons[r as keyof MinecraftKey['reasons']] ?? r;
                 let desc = `Failed to forward \`${log.name}(${log.ip})\` to server because of \`${reason}\``;
                 /* eslint-enable no-case-declarations */
                 if (log.fulfill === 'DisconnectPlayer') {
