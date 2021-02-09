@@ -8,7 +8,7 @@ export default class extends Command {
     public constructor(client: DJSClient) {
         super(client, 'mod', {
             description: 'Search Minecraft mods',
-            usage: 'mod <string> [version | category]',
+            usage: 'mod <<string> [version | category] | category>',
             hasSubcom: true,
             usedInDM: true,
         });
