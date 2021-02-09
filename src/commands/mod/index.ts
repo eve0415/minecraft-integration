@@ -15,7 +15,7 @@ export default class extends Command {
     }
 
     public async run(message: Message, args: string[]): Promise<void | Message> {
-        if (!args) return message.channel.send(this.usage);
+        if (!args.length) return message.channel.send(this.usage);
 
         const mes = await message.channel.send({ embed: { description: 'Searching...\nIt might take some time' } });
         const option: Partial<SearchOptions> = {};
