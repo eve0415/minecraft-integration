@@ -2514,10 +2514,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-systeminformation@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.2.1.tgz#fc890adcff3ce1d1ee0ed7cd03964b60015d8144"
-  integrity sha512-E6/qDhQkIhrxamaQ4/9L93TkpNBxTx2/XdewSFpidtm0xwTzlwWgX23Z2RagN47DV44aiAcKBEIzVZT6ZXQS6Q==
+systeminformation@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.2.2.tgz#08bd5ecb0eba0932a0b209032c1e6868a3472326"
+  integrity sha512-FRVti86jXpLKuLjW1zIBI9LNbH3v47CRoOTYHpmy80hKJVZErA3ufHZsi39HNGmUMWeVR4XOUj0qQ5Ei3I/r8A==
 
 table@^6.0.4:
   version "6.0.7"
