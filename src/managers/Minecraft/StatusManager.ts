@@ -161,7 +161,7 @@ export class MinecraftStatusManager extends StatusPage {
         this.cache = data;
     }
 
-    public async shutdown(): Promise<void> {
+    public shutdown(): Promise<[(void | Promise<void | Message>)[], (void | Promise<void | Message>)[]]> {
         const one = this.one.map(mes => {
             if (!this.isValidMessage(mes)) {
                 this.one = this.one.filter(m => m.id !== mes.id);
@@ -185,7 +185,7 @@ export class MinecraftStatusManager extends StatusPage {
                 .setFooter(mes.embeds[0].footer?.text);
             return mes.reactions.removeAll().then(() => mes.edit(embed)).catch(logger.error);
         });
-        await Promise.all([one, multiple]);
+        return Promise.all([one, multiple]);
     }
 }
 
