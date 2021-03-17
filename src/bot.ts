@@ -46,7 +46,7 @@ export class DJSClient extends Client {
         this.user?.setPresence({ status: 'online' });
     }
 
-    public async preShutdown(): Promise<void> {
+    public preShutdown(): Promise<void> {
         this.user?.setPresence({
             status: 'dnd',
             activity: {
@@ -54,7 +54,7 @@ export class DJSClient extends Client {
                 type: 'PLAYING',
             },
         });
-        await this.events.unregisterAll();
+        return this.events.unregisterAll();
     }
 
     public shutdown(): void {
