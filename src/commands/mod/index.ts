@@ -63,7 +63,7 @@ export default class extends Command {
                     ${option.category ? '- Make sure that you are using the right category or section.' : ''}
                     ${option.gameVersion ? '- Make sure that you are using the right game version.' : ''}
                 `)
-                .setFooter(`Your search - "${option.filter}" ${option.category ? `for category ${option.category}` : ''} ${option.gameVersion ? `with version ${option.gameVersion}` : ''} - did not much any projects`)
+                .setFooter(`Your search - "${option.filter} "${option.category ? `for category ${option.category} ` : ''} ${option.gameVersion ? `with version ${option.gameVersion} ` : ''}- did not much any projects`)
                 .setColor('RED');
             return mes.edit(embed);
         }
