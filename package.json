@@ -38,7 +38,7 @@
         "log4js": "^6.3.0",
         "promisify": "^0.0.3",
         "socket.io": "^4.0.1",
-        "systeminformation": "^5.6.10",
+        "systeminformation": "^5.6.11",
         "tslib": "^2.2.0",
         "utf-8-validate": "^5.0.4",
         "zlib-sync": "^0.1.7"
