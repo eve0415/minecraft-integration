@@ -1,6 +1,6 @@
 import { MessageEmbed } from 'discord.js';
 import { websocketClient } from '../..';
-import { database } from '../../database';
+import { Server } from '../../database/entities';
 import { LogData, MinecraftKey, WebsocketEvent } from '../../typings';
 
 export default class extends WebsocketEvent {
@@ -8,9 +8,9 @@ export default class extends WebsocketEvent {
         super(client, 'log');
     }
 
-    public run(log: LogData): void {
-        const server = database.server.getFromID(log.port);
-        const serverName = server.name ?? server.type;
+    public async run(log: LogData): Promise<void> {
+        const server = await Server.findOne({ serverID: log.port });
+        const serverName = server?.name ?? server?.type;
 
         const embed = new MessageEmbed()
             .setAuthor(log.name, log.UUID?.startsWith('00000000') ? undefined : `https://crafatar.com/avatars/${log.UUID}`)
@@ -21,7 +21,7 @@ export default class extends WebsocketEvent {
                     { name: '\u200B', value: '\u200B', inline: true },
                 ],
             )
-            .setFooter(`ID: ${server.ID}`)
+            .setFooter(`ID: ${server?.serverID}`)
             .setTimestamp(new Date);
 
         if (log.mods) {

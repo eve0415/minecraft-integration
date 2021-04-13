@@ -1,6 +1,6 @@
 import { Message, Role, TextChannel } from 'discord.js';
 import { DJSClient, logger } from '../..';
-import { database } from '../../database';
+import { Status } from '../../database';
 import { MinecraftStatusManager } from '../../managers';
 import { SubCommand } from '../../typings';
 
@@ -21,7 +21,7 @@ export default class extends SubCommand {
         if (!mes) return logger.error(`There was an error trying to set message for status embeds. User: ${message.author.username}(${message.author.id})`);
 
         await channel.updateOverwrite(message.guild?.roles.everyone as Role, { SEND_MESSAGES: false });
-        database.status.addMessageCache(channelID, mes.id);
+        await new Status({ channelID: channelID, messageID: mes.id }).save();
 
         if (args[0] !== 'all') {
             mes.edit('', this.statusManager.getPage({ id: Number(args[0]) }));

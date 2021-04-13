@@ -1,6 +1,6 @@
 import { Message, TextChannel } from 'discord.js';
 import { DJSClient, logger } from '../..';
-import { database } from '../../database';
+import { Chat } from '../../database';
 import { MinecraftChatManager } from '../../managers';
 import { SubCommand } from '../../typings';
 
@@ -22,14 +22,14 @@ export default class extends SubCommand {
         if (args[0] === 'all') return mes.edit('You cannot choose `all` server for chatting');
 
         const id = Number(args[0]);
-        const cache = database.chat.getFromID(channelID);
+        const cache = await Chat.find({ channelID: channelID });
         if (cache?.filter(c => c.serverID === id).length) return mes.edit(`You have already configured for this server ID: ${args[0]}`);
 
         const webhooks = await channel.fetchWebhooks();
         const webhook = webhooks?.filter(w => w.owner === this.client.user).first() ?? await channel.createWebhook('Minecraft');
 
         this.chatManager.add(id, webhook);
-        database.chat.addCache(channelID, id);
+        await new Chat({ channelID: channelID, serverID: id }).save();
         mes.edit('Succesfully configured!');
     }
 }

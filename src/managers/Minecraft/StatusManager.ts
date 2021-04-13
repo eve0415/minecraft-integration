@@ -1,6 +1,6 @@
 import { Message, MessageEmbed, MessageReaction, TextChannel, User } from 'discord.js';
 import { DJSClient, Instance, logger } from '../..';
-import { database } from '../../database';
+import { Status as DBStatus } from '../../database';
 import { Status, StatusPage } from '../../status';
 import { ServerInfo } from '../../typings';
 
@@ -20,13 +20,15 @@ export class MinecraftStatusManager extends StatusPage {
 
     public async init(): Promise<void> {
         await super.init();
-        const cache = database.status.getMessageCache();
+        const cache = await DBStatus.find();
         if (!cache) return;
         for (const c of cache) {
-            const ch = await this.client.channels.fetch(c.channelID) as TextChannel;
-            if (!ch) return database.status.removeMessage(c.messageID);
-            const mes = await ch.messages.fetch(c.messageID).catch(logger.error);
-            if (!mes || !this.isValidMessage(mes)) return database.status.removeMessage(c.messageID);
+            const ch = await this.client.channels.fetch(c?.channelID) as TextChannel;
+            const mes = await ch.messages.fetch(c?.messageID).catch(logger.error);
+            if (!mes || !this.isValidMessage(mes)) {
+                c.remove();
+                continue;
+            }
             const footer = toStatusFooter(mes.embeds[0].footer?.text);
             if (footer.Page) {
                 await this.addMessage(mes, true);
@@ -79,7 +81,8 @@ export class MinecraftStatusManager extends StatusPage {
             .map(async mes => {
                 if (!this.isValidMessage(mes)) {
                     this.one = this.one.filter(m => m.id !== mes.id);
-                    return database.status.removeMessage(mes.id);
+                    const dbCache = await DBStatus.findOne({ where: { messageID: mes.id } });
+                    return dbCache?.remove();
                 }
                 const data = toStatusFooter(mes.embeds[0].footer?.text);
                 await mes.fetch(true);
@@ -90,7 +93,8 @@ export class MinecraftStatusManager extends StatusPage {
         const multiple = this.multiple.map(async mes => {
             if (!this.isValidMessage(mes)) {
                 this.multiple = this.multiple.filter(m => m.id !== mes.id);
-                return database.status.removeMessage(mes.id);
+                const dbCache = await DBStatus.findOne({ where: { messageID: mes.id } });
+                return dbCache?.remove();
             }
             const data = toStatusFooter(mes.embeds[0].footer?.text);
             const now = data.Page?.split('/').shift();
@@ -103,19 +107,21 @@ export class MinecraftStatusManager extends StatusPage {
     }
 
     private async refreshAll() {
-        const one = this.one.map(mes => {
+        const one = this.one.map(async mes => {
             if (!this.isValidMessage(mes)) {
                 this.one = this.one.filter(m => m.id !== mes.id);
-                return database.status.removeMessage(mes.id);
+                const dbCache = await DBStatus.findOne({ where: { messageID: mes.id } });
+                return dbCache?.remove();
             }
             const data = toStatusFooter(mes.embeds[0].footer?.text);
             return mes.edit(this.getPage({ page: Number(data.ID) })).catch(logger.error);
         });
 
-        const multiple = this.multiple.map(mes => {
+        const multiple = this.multiple.map(async mes => {
             if (!this.isValidMessage(mes)) {
                 this.multiple = this.multiple.filter(m => m.id !== mes.id);
-                return database.status.removeMessage(mes.id);
+                const dbCache = await DBStatus.findOne({ where: { messageID: mes.id } });
+                return dbCache?.remove();
             }
             const data = toStatusFooter(mes.embeds[0].footer?.text);
             const now = data.Page?.split('/').shift();
@@ -144,10 +150,11 @@ export class MinecraftStatusManager extends StatusPage {
         });
 
         if (this.size === 2) {
-            const multiple = this.multiple.map(mes => {
+            const multiple = this.multiple.map(async mes => {
                 if (!this.isValidMessage(mes)) {
                     this.multiple = this.multiple.filter(m => m.id !== mes.id);
-                    return database.status.removeMessage(mes.id);
+                    const dbCache = await DBStatus.findOne({ where: { messageID: mes.id } });
+                    return dbCache?.remove();
                 }
                 return mes.reactions.removeAll();
             });
@@ -161,11 +168,12 @@ export class MinecraftStatusManager extends StatusPage {
         this.cache = data;
     }
 
-    public shutdown(): Promise<[(void | Promise<void | Message>)[], (void | Promise<void | Message>)[]]> {
-        const one = this.one.map(mes => {
+    public shutdown(): Promise<[Promise<void | DBStatus | Message | undefined>[], Promise<void | DBStatus | Message | undefined>[]]> {
+        const one = this.one.map(async mes => {
             if (!this.isValidMessage(mes)) {
                 this.one = this.one.filter(m => m.id !== mes.id);
-                return database.status.removeMessage(mes.id);
+                const dbCache = await DBStatus.findOne({ where: { messageID: mes.id } });
+                return dbCache?.remove();
             }
             const embed = new MessageEmbed()
                 .setDescription(`${this.client.user?.toString()} is offline`)
@@ -174,10 +182,11 @@ export class MinecraftStatusManager extends StatusPage {
             return mes.edit(embed).catch(logger.error);
         });
 
-        const multiple = this.multiple.map(mes => {
+        const multiple = this.multiple.map(async mes => {
             if (!this.isValidMessage(mes)) {
                 this.multiple = this.multiple.filter(m => m.id !== mes.id);
-                return database.status.removeMessage(mes.id);
+                const dbCache = await DBStatus.findOne({ where: { messageID: mes.id } });
+                return dbCache?.remove();
             }
             const embed = new MessageEmbed()
                 .setDescription(`${this.client.user?.toString()} is offline`)

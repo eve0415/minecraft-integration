@@ -1,6 +1,6 @@
 import { TextChannel, Webhook, WebhookMessageOptions } from 'discord.js';
 import { DJSClient, Instance } from '../..';
-import { database } from '../../database';
+import { Chat } from '../../database';
 import { ChatData } from '../../typings';
 import { WebhookManager } from '../structures';
 
@@ -13,13 +13,15 @@ export class MinecraftChatManager extends WebhookManager {
     }
 
     public async init(): Promise<void> {
-        const cache = database.chat.getAll();
+        const cache = await Chat.find();
         if (!cache) return;
         for (const c of cache) {
             const ch = await this.client.channels.fetch(c.channelID) as TextChannel;
-            if (!ch) return database.chat.removeCache(c.channelID);
-            const webhook = (await ch.fetchWebhooks()).find(w => w.owner === this.client.user);
-            if (!webhook) return database.chat.removeCache(c.channelID);
+            const webhook = (await ch?.fetchWebhooks()).find(w => w.owner === this.client.user);
+            if (!webhook) {
+                await c.remove();
+                continue;
+            }
             this.addCache(Number(c.serverID), webhook);
         }
     }

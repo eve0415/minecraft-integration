@@ -1,11 +1,12 @@
 import { DJSClient, logger, websocketClient } from '.';
 import Config, { ConfigInterface } from './config';
-import { database } from './database';
+import { Database } from './database';
 import { MinecraftChatManager, MinecraftLogManager, MinecraftStatusManager } from './managers';
 import { Language } from './typings';
 
 export class Instance {
     public readonly config: ConfigInterface;
+    public readonly database: Database;
     public readonly bot: DJSClient;
     public readonly ws: websocketClient;
     public readonly statusManager: MinecraftStatusManager;
@@ -16,6 +17,7 @@ export class Instance {
         logger.info('Starting Discord bot and Websocket Integrations');
         this.config = config;
 
+        this.database = new Database();
         this.bot = new DJSClient(this);
         this.ws = new websocketClient(this);
         this.statusManager = new MinecraftStatusManager(this);
@@ -42,7 +44,6 @@ export class Instance {
 
     private async init() {
         logger.info('Initializing...');
-        database.init();
 
         await this.bot.init().catch(e => {
             logger.error(e);
@@ -71,6 +72,7 @@ export class Instance {
     public async shutdown(): Promise<void> {
         logger.info('Shutting down');
         await Promise.all([
+            this.database?.close(),
             this.bot.preShutdown(),
             this.ws.close(),
             this.logManager.shutdown(),

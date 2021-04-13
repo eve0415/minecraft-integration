@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { DJSClient } from '../..';
-import { database } from '../../database';
+import { Chat } from '../../database';
 import { Command, DiscordEvent, SendChat } from '../../typings';
 
 export default class extends DiscordEvent {
@@ -11,13 +11,13 @@ export default class extends DiscordEvent {
         this.prefix = this.client.config.prefix;
     }
 
-    public run(message: Message): void | Promise<Message> {
+    public async run(message: Message): Promise<void | Message> {
         if (message.system || message.author.bot) return;
 
         const isCommand = this.isCommand(message.content);
 
         if (!isCommand) {
-            const info = database.chat.getFromID(message.channel.id);
+            const info = await Chat.find({ channelID: message.channel.id });
             if (!info.length) return;
             if (message.content) {
                 const data: SendChat = {

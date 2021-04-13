@@ -1,25 +1,23 @@
 import { Collection, MessageEmbed } from 'discord.js';
 import { getStatusEmbed } from './statusTemplate';
-import { database } from '../database';
+import { Server } from '../database';
 import { logger } from '../logger';
 import { StatusData, StatusEmbedType } from '../typings';
 
 export class StatusPage extends Collection<number, Status> {
-    public init(): Promise<void> {
-        return new Promise(resolve => {
-            logger.info('Initializing status page');
-            logger.info('Retrieving from cache data');
+    public async init(): Promise<void> {
+        logger.info('Initializing status page');
+        logger.info('Retrieving from cache data');
 
-            const cache = database.server.getAllServer();
-            if (!cache) return resolve();
-            for (const c of cache) {
-                const s = this.addStatus(c.ID, c.type);
-                if (c.name) s?.setName(c.name);
-            }
+        const cache = await Server.find();
+        if (!cache) return Promise.resolve();
+        for (const c of cache) {
+            const s = this.addStatus(c.serverID, c.type);
+            if (c.name) s?.setName(c.name);
+        }
 
-            logger.info(`${this.size} status has been cached!`);
-            resolve();
-        });
+        logger.info(`${this.size} status has been cached!`);
+        Promise.resolve();
     }
 
     public addStatus(id: number, type: string): Status {

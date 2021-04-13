@@ -1,5 +1,5 @@
 import { websocketClient } from '../..';
-import { database } from '../../database';
+import { Server } from '../../database';
 import { ServerInfo, WebsocketEvent } from '../../typings';
 
 export default class extends WebsocketEvent {
@@ -9,14 +9,15 @@ export default class extends WebsocketEvent {
 
     public run(data: ServerInfo): void {
         const cache: ServerInfo = {};
-        Object.keys(data).forEach(port => {
-            const info = database.server.getFromID(Number(port));
+        Object.keys(data).forEach(async port => {
+            const info = await Server.findOne({ serverID: port });
             if (!info) {
                 cache[port] = data[port];
             } else if (info.name !== data[port]) {
-                database.server.setName(info.ID, data[port]);
-                this.client.instance.statusManager.setName(info.ID, data[port]);
-                this.client.instance.statusManager.refreshStatus(info.ID);
+                info.name = data[port];
+                await info.save();
+                this.client.instance.statusManager.setName(info.serverID, data[port]);
+                this.client.instance.statusManager.refreshStatus(info.serverID);
             }
         });
         this.client.instance.statusManager.cacheUnknownServer(cache);
