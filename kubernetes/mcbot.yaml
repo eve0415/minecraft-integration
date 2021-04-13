@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcbot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcbot
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: mcbot
+    spec:
+      containers:
+        - name: mcbot
+          image: eve0415/minecraft-integration
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 520M
+              cpu: 300m
+          env:
+            - name: owner
+              valueFrom:
+                secretKeyRef:
+                  name: discord
+                  key: owner
+            - name: DISCORD_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: discord
+                  key: token
+            - name: prefix
+              value: /
+            - name: port
+              value: "25500"
+            - name: DATABASE_HOST
+              value: postgres
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: password
+          ports:
+            - containerPort: 25500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcbot
+spec:
+  clusterIP: None
+  type: ClusterIP
+  ports:
+    - port: 25500
+  selector:
+    app: mcbot
