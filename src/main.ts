@@ -45,6 +45,8 @@ export class Instance {
     private async init() {
         logger.info('Initializing...');
 
+        await this.database.connect();
+
         await this.bot.init().catch(e => {
             logger.error(e);
         });
