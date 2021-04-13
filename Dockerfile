@@ -12,7 +12,6 @@ FROM builder-base AS runner
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --production && yarn cache clean
-COPY --from=builder /app/dist/ormconfig.js /app/dist/ormconfig.js.map ./
-COPY --from=builder /app/dist/src ./
+COPY --from=builder /app/dist/ormconfig.js /app/dist/ormconfig.js.map /app/dist/src ./
 EXPOSE ${port}
 CMD ["node", "main.js"]
