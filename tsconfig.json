@@ -4,6 +4,7 @@
         "allowSyntheticDefaultImports": true,
         "alwaysStrict": true,
         "esModuleInterop": true,
+        "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "importHelpers": true,
         "lib": [
@@ -23,8 +24,9 @@
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "sourceMap": true,
-        "sourceRoot": "src",
         "strict": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
         "target": "ESNext"
     },
     "files": [
