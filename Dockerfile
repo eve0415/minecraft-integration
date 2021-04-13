@@ -14,6 +14,6 @@ WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install --production && yarn cache clean
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/dist ./
 EXPOSE ${port}
-CMD ["node", "dist/main.js"]
+CMD ["node", "main.js"]
