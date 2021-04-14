@@ -6,7 +6,7 @@ type CommandOptions = Readonly<{
     alias?: string[]
     description: string
     usage: string
-    hasSubcom?: boolean
+    hasSubCom?: boolean
     ownerOnly?: boolean
     usedInDM?: boolean
 }>;
@@ -19,7 +19,7 @@ export abstract class Command extends DBase {
     public readonly alias: string[];
     public readonly description: string;
     public readonly usage: string;
-    public readonly hasSubcom: boolean;
+    public readonly hasSubCom: boolean;
     public readonly ownerOnly: boolean;
     public readonly usedInDM: boolean;
 
@@ -29,7 +29,7 @@ export abstract class Command extends DBase {
         this.alias = options.alias ?? [];
         this.description = options.description;
         this.usage = options.usage;
-        this.hasSubcom = options?.hasSubcom ?? false;
+        this.hasSubCom = options?.hasSubCom ?? false;
         this.ownerOnly = options?.ownerOnly ?? false;
         this.usedInDM = options?.usedInDM ?? false;
     }

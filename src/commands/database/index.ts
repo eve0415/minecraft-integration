@@ -8,6 +8,7 @@ export default class extends Command {
             description: 'Check | Delete database data',
             usage: 'database < list | delete <ID> >',
             alias: ['db'],
+            hasSubCom: true,
             ownerOnly: true,
         });
     }

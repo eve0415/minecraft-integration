@@ -35,7 +35,7 @@ export class CommandManager extends ModuleManager<string, Command> {
 
         await super.registerAll(commands);
 
-        const needsSubcommands = this.filter(c => c.hasSubcom).map(({ name }) => name);
+        const needsSubcommands = this.filter(c => c.hasSubCom).map(({ name }) => name);
         for (const c of needsSubcommands) {
             const sub = subCommands.filter(s => s.parent.name === c);
             if (!sub.length) {

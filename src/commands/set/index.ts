@@ -7,7 +7,7 @@ export default class extends Command {
         super(client, 'set', {
             description: 'Set channel to use for logging or chatting with minecraft server',
             usage: 'set <status|chat|log> <id|all> [#channel]',
-            hasSubcom: true,
+            hasSubCom: true,
             ownerOnly: true,
         });
     }

@@ -9,7 +9,7 @@ export default class extends Command {
         super(client, 'mod', {
             description: 'Search Minecraft mods',
             usage: 'mod <<string> [version | category] | category>',
-            hasSubcom: true,
+            hasSubCom: true,
             usedInDM: true,
         });
     }

@@ -60,7 +60,7 @@ export default class extends DiscordEvent {
 
         if (cmd.ownerOnly && message.author.id !== this.client.config.owner) return message.channel.send('You do not have a permission to execute this command');
 
-        if (cmd.hasSubcom) {
+        if (cmd.hasSubCom) {
             const subCommands = this.client.commands.subCommands.get(command);
             const subCommand = subCommands?.get(args[0]) ?? subCommands?.find(s => s.alias.includes(args[0]));
             if (subCommand) return subCommand.run(message, args.slice(1));
