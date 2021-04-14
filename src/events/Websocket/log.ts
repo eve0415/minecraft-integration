@@ -9,8 +9,8 @@ export default class extends WebsocketEvent {
     }
 
     public async run(log: LogData): Promise<void> {
-        const server = await Server.findOne({ serverID: log.port });
-        const serverName = server?.name ?? server?.type;
+        const server = await Server.findOne({ serverID: log.serverId });
+        if (!server) return;
 
         const embed = new MessageEmbed()
             .setAuthor(log.name, log.UUID?.startsWith('00000000') ? undefined : `https://crafatar.com/avatars/${log.UUID}`)
@@ -46,28 +46,28 @@ export default class extends WebsocketEvent {
             case 'AUTH':
                 embed
                     .setColor('BLUE')
-                    .setTitle(`${log.name} is trying to connect to server ${serverName}`)
-                    .setDescription(`\`${log.name}(${log.ip})\` is trying to connect to server \`${serverName}\` ${log.address ? `by using \`${log.address}\` to connect` : ''}.`);
+                    .setTitle(`${log.name} is trying to connect to server ${server.name}`)
+                    .setDescription(`\`${log.name}(${log.ip})\` is trying to connect to server \`${server.name}\` ${log.address ? `by using \`${log.address}\` to connect` : ''}.`);
                 break;
 
             case 'LOGIN':
                 embed
                     .setColor('BLUE')
-                    .setTitle(`${log.name} is logging in to server ${serverName}`)
-                    .setDescription(`\`${log.name}(${log.ip})\` is logging in to server \`${serverName}\` ${log.address ? `by using \`${log.address}\` to connect` : ''}.`);
+                    .setTitle(`${log.name} is logging in to server ${server.name}`)
+                    .setDescription(`\`${log.name}(${log.ip})\` is logging in to server \`${server.name}\` ${log.address ? `by using \`${log.address}\` to connect` : ''}.`);
                 break;
 
             case 'DISCONNECT':
                 embed
                     .setColor('BLUE')
-                    .setTitle(`${log.name} has disconnected from server ${serverName}`)
-                    .setDescription(`\`${log.name}(${log.ip})\` has disconnected from server \`${serverName}\`.`);
+                    .setTitle(`${log.name} has disconnected from server ${server.name}`)
+                    .setDescription(`\`${log.name}(${log.ip})\` has disconnected from server \`${server.name}\`.`);
                 break;
 
             case 'KICK':
                 embed
                     .setColor('RED')
-                    .setTitle(`${log.name} was kicked from server ${serverName}`)
+                    .setTitle(`${log.name} was kicked from server ${server.name}`)
                     .setDescription(`\`${log.name}(${log.ip})\` was kicked from server because of \`${log.reason}\``)
                     .addField('Reason', log.reason);
                 break;
@@ -109,6 +109,6 @@ export default class extends WebsocketEvent {
                 break;
         }
 
-        this.client.instance.logManager.sendWebhook(log.port, embed);
+        this.client.instance.logManager.sendWebhook(log.serverId, embed);
     }
 }

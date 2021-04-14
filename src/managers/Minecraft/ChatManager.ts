@@ -31,7 +31,7 @@ export class MinecraftChatManager extends WebhookManager {
     }
 
     public sendWebhook(data: ChatData): void {
-        const filtered = this.filter(webhook => webhook.id === data.port);
+        const filtered = this.filter(webhook => webhook.id === data.serverId);
         filtered.forEach(w => {
             w.send(data.message, {
                 username: data.name,
