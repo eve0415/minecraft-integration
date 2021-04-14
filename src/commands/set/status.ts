@@ -1,4 +1,4 @@
-import { Message, Role, TextChannel } from 'discord.js';
+import { Message, TextChannel } from 'discord.js';
 import { DJSClient, logger } from '../..';
 import { Status } from '../../database';
 import { MinecraftStatusManager } from '../../managers';
@@ -20,7 +20,6 @@ export default class extends SubCommand {
         const mes = await channel.send('Configuring...').catch(logger.error);
         if (!mes) return logger.error(`There was an error trying to set message for status embeds. User: ${message.author.username}(${message.author.id})`);
 
-        await channel.updateOverwrite(message.guild?.roles.everyone as Role, { SEND_MESSAGES: false });
         await new Status({ channelID: channelID, messageID: mes.id }).save();
 
         if (args[0] !== 'all') {
