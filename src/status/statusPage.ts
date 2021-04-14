@@ -12,7 +12,7 @@ export class StatusPage extends Collection<number, Status> {
         const cache = await Server.find();
         if (!cache) return Promise.resolve();
         for (const c of cache) {
-            const s = this.addStatus(c.serverID, c.type);
+            const s = this.addStatus(c.serverID, c.name);
             if (c.name) s?.setName(c.name);
         }
 
@@ -45,7 +45,7 @@ export class StatusPage extends Collection<number, Status> {
     }
 
     public getUnknown(id: number): MessageEmbed {
-        return getStatusEmbed('UNKNOWN', { id: id });
+        return getStatusEmbed('UNKNOWN', { serverId: id } as StatusData);
     }
 }
 
@@ -54,14 +54,14 @@ export class Status {
     private name: string;
     public embed: MessageEmbed;
 
-    constructor(id: number, type: string) {
+    constructor(id: number, name: string) {
         this.id = id;
-        this.name = type;
-        this.embed = getStatusEmbed('OFFLINE', { name: this.name, id: this.id });
+        this.name = name;
+        this.embed = getStatusEmbed('OFFLINE', { serverName: this.name, serverId: this.id } as StatusData);
     }
 
     public updateStatus(st: StatusEmbedType, data: StatusData): void {
-        this.embed = getStatusEmbed(st, { data: data, name: this.name, id: this.id });
+        this.embed = getStatusEmbed(st, data);
     }
 
     public setName(name: string): void {

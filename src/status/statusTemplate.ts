@@ -1,15 +1,9 @@
 import { MessageEmbed } from 'discord.js';
 import { StatusData, StatusEmbedType } from '../typings';
 
-interface statusEmbedData {
-    id: number
-    name: string
-    data: StatusData
-}
 
-export const getStatusEmbed = (s: StatusEmbedType, info: Partial<statusEmbedData>): MessageEmbed => {
-    const data = info?.data;
-    const embed = new MessageEmbed().setTimestamp(new Date).setFooter(`ID: ${info.id}`);
+export const getStatusEmbed = (s: StatusEmbedType, data?: StatusData): MessageEmbed => {
+    const embed = new MessageEmbed().setTimestamp(new Date).setFooter(`ID: ${data?.serverId}`);
 
     switch (s) {
         case 'UNKNOWN':
@@ -19,7 +13,7 @@ export const getStatusEmbed = (s: StatusEmbedType, info: Partial<statusEmbedData
             break;
 
         case 'UPDATE':
-            embed.setTitle(info.name ?? data?.platform)
+            embed.setTitle(data?.serverName)
                 .setColor('BLUE')
                 .addField('Status', 'Online', true)
                 .addField('\u200B', '\u200B', true)
@@ -37,9 +31,21 @@ export const getStatusEmbed = (s: StatusEmbedType, info: Partial<statusEmbedData
             break;
 
         case 'START':
-            embed.setTitle(info.name ?? data?.platform)
+        case 'CONSTRUCTING':
+        case 'PREINITIALIZING':
+        case 'INITIALIZING':
+        case 'POSTINITIALIZING':
+        case 'LOADCOMPLETE':
+        case 'ABOUTTOSTART':
+            if (s === 'START') embed.addField('Status', 'Preparing...', true);
+            if (s === 'CONSTRUCTING') embed.addField('Status', 'Constructing...', true);
+            if (s === 'PREINITIALIZING') embed.addField('Status', 'Pre Initializing...', true);
+            if (s === 'INITIALIZING') embed.addField('Status', 'Initializing...', true);
+            if (s === 'POSTINITIALIZING') embed.addField('Status', 'Post Initializing...', true);
+            if (s === 'LOADCOMPLETE') embed.addField('Status', 'Load Complete...', true);
+            if (s === 'ABOUTTOSTART') embed.addField('Status', 'Building World...', true);
+            embed.setTitle(data?.serverName)
                 .setColor('YELLOW')
-                .addField('Status', 'Preparing...', true)
                 .addField('\u200B', '\u200B', true)
                 .addField('TPS', 'N/A', true)
                 .addField('\u200B', '\u200B')
@@ -55,7 +61,7 @@ export const getStatusEmbed = (s: StatusEmbedType, info: Partial<statusEmbedData
             break;
 
         case 'STOP':
-            embed.setTitle(info.name ?? data?.platform)
+            embed.setTitle(data?.serverName)
                 .setColor('RED')
                 .addField('Status', 'Shutting down...', true)
                 .addField('\u200B', '\u200B', true)
@@ -73,13 +79,13 @@ export const getStatusEmbed = (s: StatusEmbedType, info: Partial<statusEmbedData
             break;
 
         case 'OFFLINE':
-            embed.setTitle(info.name)
+            embed.setTitle(data?.serverName)
                 .setColor('BLACK')
                 .setDescription('Offline');
             break;
 
         case 'CONNECT':
-            embed.setTitle(info.name)
+            embed.setTitle(data?.serverName)
                 .setColor('GREEN')
                 .setDescription('Connected. Waiting for status update');
             break;

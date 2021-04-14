@@ -59,17 +59,23 @@ export class websocketClient extends eventEmitter {
 
             socket.on('CHAT', (data: ChatData) => this.emit('chat', data));
             socket.on('ADVANCEMENT', data => this.emit('advancementAchieve', data));
-
             socket.on('LOG', (log: LogData) => this.emit('log', log));
 
             socket.on('SERVERINFO', (data: ServerInfo) => this.emit('serverInfo', data));
 
             socket.on('STARTING', (data: StatusData) => this.emit('statusUpdate', 'START', data));
+            socket.on('CONSTRUCTING', (data: StatusData) => this.emit('statusUpdate', 'CONSTRUCTING', data));
+            socket.on('PREINITIALIZATION', (data: StatusData) => this.emit('statusUpdate', 'PREINITIALIZING', data));
+            socket.on('INITIALIZATION', (data: StatusData) => this.emit('statusUpdate', 'INITIALIZING', data));
+            socket.on('POSTINITIALIZATION', (data: StatusData) => this.emit('statusUpdate', 'POSTINITIALIZING', data));
+            socket.on('LOADCOMPLETE', (data: StatusData) => this.emit('statusUpdate', 'LOADCOMPLETE', data));
+            socket.on('ABOUTTOSTART', (data: StatusData) => this.emit('statusUpdate', 'ABOUTTOSTART', data));
+            socket.on('GAMESTART', (data: StatusData) => this.emit('statusUpdate', 'GAMESTART', data));
             socket.on('STOPPING', (data: StatusData) => this.emit('statusUpdate', 'STOP', data));
             socket.on('STATUS', (data: StatusData) => this.emit('statusUpdate', 'UPDATE', data));
 
             socket.on('disconnect', reason => {
-                this.emit('statusUpdate', 'OFFLINE', { port: Number(socket.serverID) } as StatusData);
+                this.emit('statusUpdate', 'OFFLINE', { serverId: Number(socket.serverID) } as StatusData);
                 this.emit('disconnect', socket.serverID ?? null, reason);
             });
 
@@ -77,7 +83,7 @@ export class websocketClient extends eventEmitter {
                 await socket.join(roomID);
                 socket.serverID = Number(roomID);
                 this.emit('connect', socket.serverID);
-                this.emit('statusUpdate', 'CONNECT', { port: socket.serverID } as StatusData);
+                this.emit('statusUpdate', 'CONNECT', { serverId: socket.serverID } as StatusData);
             });
         });
     }

@@ -1,14 +1,22 @@
 type LogEventType = 'AUTH' | 'LOGIN' | 'KICK' | 'KICKEDFROM' | 'DISCONNECT' | 'PRECONNECT' | 'POSTCONNECT';
 
-export type StatusType = 'OFFLINE' | 'CONNECT' | 'START' | 'STOP' | 'UPDATE';
+export type StatusType =
+    'OFFLINE' |
+    'CONNECT' |
+    'START' |
+    'STOP' |
+    'UPDATE' |
+    'CONSTRUCTING' |
+    'PREINITIALIZING' |
+    'INITIALIZING' |
+    'POSTINITIALIZING' |
+    'LOADCOMPLETE' |
+    'ABOUTTOSTART' |
+    'GAMESTART';
 
 export type port = number | null;
 
 export type WebsocketEvents = websocketEvents;
-
-interface basicData {
-    port: number
-}
 
 interface websocketEvents {
     'statusUpdate': [StatusType, StatusData]
@@ -21,8 +29,13 @@ interface websocketEvents {
     'error': [port, Error]
 }
 
+interface basicData {
+    serverId: number
+}
+
 export interface StatusData extends basicData {
     platform: string
+    serverName: string
     totalMemory: string
     usedMemory: string
     freeMemory: string
