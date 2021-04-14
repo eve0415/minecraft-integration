@@ -12,6 +12,7 @@ export default class extends SubCommand {
         const servers = await Server.findOne({ serverID: Number(args[0]) });
         if (servers) {
             await servers.remove();
+            this.client.instance.statusManager.delete(Number(args[0]));
             message.channel.send({ embed: { description: 'Successfully removed', color: 'BLUE' } });
         } else {
             message.channel.send({ embed: { description: 'Failed to find', color: 'RED' } });
