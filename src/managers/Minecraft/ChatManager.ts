@@ -16,7 +16,7 @@ export class MinecraftChatManager extends WebhookManager {
         const cache = await Chat.find();
         if (!cache) return;
         for (const c of cache) {
-            const ch = await this.client.channels.fetch(c.channelID) as TextChannel;
+            const ch = this.client.channels.resolve(c.channelID) as TextChannel;
             const webhook = (await ch?.fetchWebhooks()).find(w => w.owner === this.client.user);
             if (!webhook) {
                 await c.remove();
