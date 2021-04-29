@@ -127,10 +127,15 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
-"@types/node@>=10.0.0", "@types/node@^15.0.0":
+"@types/node@>=10.0.0":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.0.0.tgz#557dd0da4a6dca1407481df3bbacae0cd6f68042"
   integrity sha512-YN1d+ae2MCb4U0mMa+Zlb5lWTdpFShbAj5nmte6lel27waMMBfivrm0prC16p/Di3DyTrmerrYUT8/145HXxVw==
+
+"@types/node@^15.0.1":
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.0.1.tgz#ef34dea0881028d11398be5bf4e856743e3dc35a"
+  integrity sha512-TMkXt0Ck1y0KKsGr9gJtWGjttxlZnnvDtphxUOSd0bfaR6Q1jle+sPvrzNR1urqYTWMinoKvjKfXUGsumaO1PA==
 
 "@types/zen-observable@^0.8.2":
   version "0.8.2"
@@ -237,13 +242,13 @@ acorn@^7.4.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-aio-mc-api@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/aio-mc-api/-/aio-mc-api-1.2.2.tgz#0b257c7a17343a575fbbfe6c2c4e50cf0e0833e0"
-  integrity sha512-d6p0dcrwkUodVZZO0w756/46L0uFs92nyIHnRoL0kPfvE/ALAtghpOMVVtWbwWQmobwcteFN+S3WrU7XE25TqQ==
+aio-mc-api@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/aio-mc-api/-/aio-mc-api-1.2.3.tgz#2692af6aafea8461aed6fb32336c75eea3866505"
+  integrity sha512-vImnoT2FPOTkrTsJNCxDJzQpvae4KtoJfnEd/Cl8ytj2Q2RyDXl3nIzdmxL036A/A+2JO2stOJVEDmWREbxtdQ==
   dependencies:
     axios "^0.21.1"
-    tslib "^2.1.0"
+    tslib "^2.2.0"
     turndown "^7.0.0"
 
 ajv@^6.10.0, ajv@^6.12.4:

@@ -30,7 +30,7 @@
     },
     "homepage": "https://github.com/eve0415/minecraft-integration#readme",
     "dependencies": {
-        "aio-mc-api": "^1.2.2",
+        "aio-mc-api": "^1.2.3",
         "bufferutil": "^4.0.3",
         "discord.js": "^12.5.3",
         "erlpack": "github:discord/erlpack",
@@ -47,7 +47,7 @@
     },
     "devDependencies": {
         "@types/better-sqlite3": "^5.4.1",
-        "@types/node": "^15.0.0",
+        "@types/node": "^15.0.1",
         "@typescript-eslint/eslint-plugin": "^4.22.0",
         "@typescript-eslint/parser": "^4.22.0",
         "better-sqlite3": "^7.1.5",
