@@ -17,6 +17,11 @@ interface LanguageOptions {
 }
 
 export interface MinecraftKey {
+    translate: {
+        'multiplayer.player.joined': string
+        'multiplayer.player.left': string
+    }
+
     reasons: {
         'multiplayer.disconnect.authservers_down': string
         'multiplayer.disconnect.banned': string

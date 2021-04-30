@@ -11,6 +11,10 @@ export default class extends Language {
 }
 
 const strings: MinecraftKey = {
+    translate: {
+        'multiplayer.player.joined': '%s joined the game',
+        'multiplayer.player.left': '%s left the game',
+    },
     reasons: {
         'multiplayer.disconnect.authservers_down': 'Authentication servers are down. Please try again later, sorry!',
         'multiplayer.disconnect.banned': 'You are banned from this server.',
