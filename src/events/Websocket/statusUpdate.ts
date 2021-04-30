@@ -20,7 +20,7 @@ export default class extends WebsocketEvent {
             if (data.serverName) newDataToSave.name = data.serverName;
             await newDataToSave.save();
             this.statusManager.addStatus(data.serverId, firstNameToSave);
-        } else if (data.serverName !== 'undefined' && inDatabase.name !== data.serverName) {
+        } else if (data.serverName && inDatabase.name !== data.serverName) {
             inDatabase.name = data.serverName;
             this.statusManager.setName(data.serverId, data.serverName);
             await inDatabase.save();

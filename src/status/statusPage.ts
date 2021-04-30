@@ -35,6 +35,7 @@ export class StatusPage extends Collection<number, Status> {
     public updateStatus(id: number, status: StatusEmbedType, data: StatusData): void {
         const page = this.get(id);
         if (!page) return logger.error(`Cannot update status ID ${id} because of unknown status`);
+        if (!data.serverName) data.serverName = page.getName();
         page.updateStatus(status, data);
     }
 
@@ -67,5 +68,9 @@ export class Status {
     public setName(name: string): void {
         this.name = name;
         this.embed.setTitle(name);
+    }
+
+    public getName(): string {
+        return this.name;
     }
 }
