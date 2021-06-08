@@ -46,6 +46,33 @@ export class DJSClient extends Client {
         this.user?.setPresence({ status: 'online' });
     }
 
+    public updatePresence(): void {
+        this.user?.setPresence({
+            status: 'online',
+            activity: {
+                name: `${this.instance.ws.connected} server${this.instance.ws.connected <= 1 ? '' : 's'}`,
+                type: 'WATCHING',
+            },
+        });
+
+        if (this.instance.ws.connected === 0) {
+            this.instance.bot.setTimeout(() => {
+                if (this.instance.ws.connected === 0) {
+                    this.user?.setPresence({
+                        status: 'idle',
+                        activity: {
+                            name: `${this.instance.ws.connected} server${this.instance.ws.connected <= 1 ? '' : 's'}`,
+                            type: 'WATCHING',
+                        },
+                    });
+                    this.user?.setAFK(true);
+                }
+            }, 30000);
+        } else {
+            this.user?.setAFK(false);
+        }
+    }
+
     public preShutdown(): Promise<void> {
         this.user?.setPresence({
             status: 'dnd',

@@ -71,29 +71,6 @@ export class Instance {
         return this.bot.localizations.getLocalization();
     }
 
-    public updatePresence(): void {
-        this.bot.options.presence = {
-            status: 'online',
-            activity: {
-                name: `${this.ws.connected} server${this.ws.connected <= 1 ? '' : 's'}`,
-                type: 'WATCHING',
-            },
-        };
-        if (this.ws.connected === 0) {
-            this.bot.setTimeout(() => {
-                if (this.ws.connected === 0) {
-                    this.bot.options.presence = {
-                        status: 'online',
-                        activity: {
-                            name: `${this.ws.connected} server${this.ws.connected <= 1 ? '' : 's'}`,
-                            type: 'WATCHING',
-                        },
-                    };
-                }
-            }, 30000);
-        }
-    }
-
     public async shutdown(): Promise<void> {
         logger.info('Shutting down');
         await Promise.all([

@@ -54,6 +54,7 @@ export class websocketClient extends eventEmitter {
     private register(): void {
         this.server.on('connection', (socket: sock) => {
             this.connected++;
+            this.instance.bot.updatePresence();
             this.checkIfValid(socket);
             this.emit('connect', null);
 
@@ -78,6 +79,7 @@ export class websocketClient extends eventEmitter {
 
             socket.on('disconnect', reason => {
                 this.connected--;
+                this.instance.bot.updatePresence();
                 this.emit('statusUpdate', 'OFFLINE', { serverId: Number(socket.serverID) } as StatusData);
                 this.emit('disconnect', socket.serverID ?? null, reason);
             });
