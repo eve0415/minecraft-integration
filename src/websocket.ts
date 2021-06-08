@@ -18,6 +18,7 @@ declare module 'socket.io' {
 
 export class websocketClient extends eventEmitter {
     public readonly instance: Instance;
+    public connected = 0;
     private readonly wsPort: number;
     private readonly server: Server;
     private readonly events: wsEventManager;
@@ -52,6 +53,7 @@ export class websocketClient extends eventEmitter {
 
     private register(): void {
         this.server.on('connection', (socket: sock) => {
+            this.connected++;
             this.checkIfValid(socket);
             this.emit('connect', null);
 
@@ -75,6 +77,7 @@ export class websocketClient extends eventEmitter {
             socket.on('STATUS', (data: StatusData) => this.emit('statusUpdate', 'UPDATE', data));
 
             socket.on('disconnect', reason => {
+                this.connected--;
                 this.emit('statusUpdate', 'OFFLINE', { serverId: Number(socket.serverID) } as StatusData);
                 this.emit('disconnect', socket.serverID ?? null, reason);
             });
