@@ -146,6 +146,8 @@ export class MinecraftStatusManager extends StatusPage {
         const result = super.addStatus(id, type);
         if (!result) return result;
         Object.keys(this.cache).forEach(port => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             if (port === result?.id) result.setName(this.cache[port]);
         });
 
