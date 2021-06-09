@@ -81,9 +81,10 @@ export class DJSClient extends Client {
         return this.events.unregisterAll();
     }
 
-    public shutdown(): void {
+    public shutdown(): Promise<void> {
         logger.info('Shutting down bot');
         this.destroy();
+        return new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     get config(): ConfigInterface {
