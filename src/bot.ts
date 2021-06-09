@@ -43,7 +43,7 @@ export class DJSClient extends Client {
     }
 
     public postInit(): void {
-        this.user?.setPresence({ status: 'online' });
+        this.updatePresence();
     }
 
     public updatePresence(): void {
@@ -65,11 +65,8 @@ export class DJSClient extends Client {
                             type: 'WATCHING',
                         },
                     });
-                    this.user?.setAFK(true);
                 }
             }, 30000);
-        } else {
-            this.user?.setAFK(false);
         }
     }
 
