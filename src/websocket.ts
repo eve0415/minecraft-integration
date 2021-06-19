@@ -80,7 +80,7 @@ export class websocketClient extends eventEmitter {
             socket.on('disconnect', reason => {
                 this.connected--;
                 this.instance.bot.updatePresence();
-                this.emit('statusUpdate', 'OFFLINE', { serverId: Number(socket.serverID) } as StatusData);
+                if (socket.serverID) this.emit('statusUpdate', 'OFFLINE', { serverId: Number(socket.serverID) } as StatusData);
                 this.emit('disconnect', socket.serverID ?? null, reason);
             });
 
