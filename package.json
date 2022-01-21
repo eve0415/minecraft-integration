@@ -34,7 +34,7 @@
         "bufferutil": "^4.0.3",
         "discord.js": "^12.5.3",
         "erlpack": "discord/erlpack",
-        "log4js": "^6.3.0",
+        "log4js": "^6.4.0",
         "pg": "^8.6.0",
         "promisify": "^0.0.3",
         "reflect-metadata": "^0.1.13",
